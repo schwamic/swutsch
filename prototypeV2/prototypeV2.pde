@@ -5,11 +5,14 @@ import processing.video.*;
 Capture cam; // using cam for now, must be replaced by video stream later on
 
 color[][] matrix;
-int matrixHorizontalSegments = 25;
+int matrixHorizontalSegments = 40;
 int matrixVerticalSegments; // will be set dynamically, depends on horizonal Segments and video res
+int ledSize = 30;
 
 void setup() {
-  size(640, 480);
+  //size(640, 480);
+  size(1920, 1080);
+  //size(1280, 960);
 
   String[] cameras = Capture.list();
   
@@ -17,7 +20,7 @@ void setup() {
     println("no camera available.");
     exit();
   } else {
-    cam = new Capture(this, width, height, 30);
+    cam = new Capture(this, 640, 480, 30);
     cam.start(); 
   }      
   
@@ -33,11 +36,7 @@ void draw() {
     cam.read();
   }
   
-  image(cam, 0, 0);
-  
-  PImage currentFrame = get();
-  currentFrame.resize(matrixHorizontalSegments, matrixVerticalSegments);
-  image(currentFrame, 0, 0);
+  image(cam, 0, 0, matrixHorizontalSegments, matrixVerticalSegments);
   
   // fill array
   for (int i = 0; i < matrixHorizontalSegments; i++) {
@@ -54,10 +53,8 @@ void draw() {
   for (int i = 0; i < matrixHorizontalSegments; i++) {
     for (int k = 0; k < matrixVerticalSegments; k++) {
       fill(matrix[i][k]);
-      ellipse(i * width/matrixHorizontalSegments, k * height/matrixVerticalSegments, 20, 20);
+      ellipse(i * width/matrixHorizontalSegments, k * height/matrixVerticalSegments, ledSize, ledSize);
       
     }
   }
-  
-  //filter(BLUR, 6);
 }
