@@ -5,9 +5,9 @@ import processing.video.*;
 Capture cam; // using cam for now, must be replaced by video stream later on
 
 color[][] matrix;
-int matrixHorizontalSegments = 40;
+int matrixHorizontalSegments = 25;
 int matrixVerticalSegments; // will be set dynamically, depends on horizonal Segments and video res
-int ledSize = 30;
+int ledSize = 50;
 
 void setup() {
   //size(640, 480);
@@ -41,7 +41,6 @@ void draw() {
   // fill array
   for (int i = 0; i < matrixHorizontalSegments; i++) {
     for (int k = 0; k < matrixVerticalSegments; k++) {
-      matrix[i][k] = get(i, k);
     }
   }
   
