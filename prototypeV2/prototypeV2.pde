@@ -41,6 +41,7 @@ void draw() {
   // fill array
   for (int i = 0; i < matrixHorizontalSegments; i++) {
     for (int k = 0; k < matrixVerticalSegments; k++) {
+      matrix[matrixHorizontalSegments - 1 - i][k] = get(i, k);
     }
   }
   
