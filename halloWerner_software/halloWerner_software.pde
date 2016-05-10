@@ -7,16 +7,17 @@ Input input;
 Controller controller;
 Output output;
 
-void setup(){
-input = new Input(this);
-controller = new Controller(this);
-output = new Output(this);
-input.init();
+void setup() {
+  size(800, 600);
+  input = new Input(this);
+  controller = new Controller(this);
+  output = new Output(this);
+  input.init();
 }
 
-void draw(){
+void draw() {
   clear();
-controller.gui.render();
-output.out(input.out());
-input.out();
+  controller.gui.render();
+  output.out(input.out());
+  input.out();
 }
