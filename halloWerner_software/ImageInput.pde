@@ -3,7 +3,8 @@ class ImageInput {
   PImage[] images;
   PImage currentImage;
   PImage newImage;
-  int newImageInt = 1;
+  int newImageInt = 2;
+  int imageCounter = 0;
   ImageInput(PApplet sketch) {
     pa = sketch;
   }
@@ -20,9 +21,27 @@ class ImageInput {
     int dimension = currentImage.width * currentImage.height;
     currentImage.loadPixels();
     newImage.loadPixels();
+    for (int i = 0; i < dimension; i ++) { 
+      currentImage.pixels[i] = lerpColor(currentImage.pixels[i], newImage.pixels[i], 0.1);
+     
+    } 
+    currentImage.updatePixels();
+    if (imageCounter >= 100) {
+      imageCounter = 0;
+      currentImage = newImage;
+      newImage = images[newImageInt];
+      if (newImageInt >= images.length-1) {
+        newImageInt = 0;
+      } else {
+        newImageInt ++;
+      }
+    } else {
+      imageCounter++;
+    }
+    println(newImageInt);
   }
   PImage frame() {
-    image(images[0], 0, 0);
-    return images[0];
+    image(currentImage, 0, 0);
+    return currentImage;
   }
 }

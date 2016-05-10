@@ -19,5 +19,5 @@ void draw() {
   clear();
   controller.gui.render();
   output.out(input.out());
-  input.out();
+  input.update();
 }
