@@ -5,6 +5,7 @@ class Input {
   };
   VideoInput videoInput;
   ImageInput imageInput;
+  
   String[] images = {"image01.jpg","image02.jpg","image03.jpg"};
   
   void update() {

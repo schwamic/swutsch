@@ -4,6 +4,7 @@ class VideoInput {
 
   VideoInput(PApplet sketch) {
     pa = sketch;
+    //veränderung
   }
   void init(String path) {
     myMovie= new Movie(pa, path);
