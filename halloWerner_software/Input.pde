@@ -11,7 +11,7 @@ class Input {
   }
   void init() {
     videoInput = new VideoInput(pa);
-    videoInput.init("file_1.mov");
+    videoInput.init("file1.mp4");
   }
   PImage out() { //wird vom output abgerufen
     return videoInput.frame();
