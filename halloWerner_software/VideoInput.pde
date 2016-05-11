@@ -1,6 +1,9 @@
 class VideoInput {
   PApplet pa;
   Movie myMovie;
+  int frame = 0;
+  float speed = -1.0;
+  PImage image;
 
   VideoInput(PApplet sketch) {
     pa = sketch;
@@ -8,15 +11,21 @@ class VideoInput {
   }
   void init(String path) {
     myMovie= new Movie(pa, path);
+    myMovie.speed(speed);
+    myMovie.loop();
+    image = new PImage(myMovie.width, myMovie.height, RGB);
+  }
+  void update() {
+    if (myMovie.available()) {
+      myMovie.read();
+    }
+    //image(myMovie, 0, 0, width, height);
+  }
+  void changeSpeed(float spd) {
+    speed = spd;
   }
 
-  void start() {
-    myMovie.loop();
-  }
-  
-  PImage frame(int frame){
-    PImage image = new PImage(myMovie.width,myMovie.height,RGB);
-    image.copy(myMovie,0,0,myMovie.width,myMovie.height,0,0,width,height);
-  return image;
+  PImage frame() {
+    return myMovie;
   }
 }

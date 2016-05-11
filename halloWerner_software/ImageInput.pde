@@ -22,7 +22,7 @@ class ImageInput {
     currentImage.loadPixels();
     newImage.loadPixels();
     for (int i = 0; i < dimension; i ++) { 
-      currentImage.pixels[i] = lerpColor(currentImage.pixels[i], newImage.pixels[i], 0.1);
+      currentImage.pixels[i] = lerpColor(currentImage.pixels[i], newImage.pixels[i], 0.01);
      
     } 
     currentImage.updatePixels();
