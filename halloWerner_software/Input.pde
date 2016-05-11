@@ -4,20 +4,21 @@ class Input {
     pa = sketch;
   };
   VideoInput videoInput;
-  ImageInput imageInput;
-  String[] images = {"image01.jpg","image02.jpg","image03.jpg"};
+  //ImageInput imageInput;
+  //String[] images = {"file01.jpg","file02.jpg","file03.jpg","file04.jpg"};
   
   void update() {
-    imageInput.update();
-    //branch update
+    //imageInput.update();
+    videoInput.update();
   }
   void init() {
-    //videoInput = new VideoInput(pa);
-    imageInput = new ImageInput(pa);
-    imageInput.init(images);
+    videoInput = new VideoInput(pa);
+    videoInput.init("file.mov");
+    //imageInput = new ImageInput(pa);
+    //imageInput.init(images);
   }
   PImage out() { //wird vom output abgerufen
-    //return videoInput.frame(4);
-    return imageInput.frame();
+    return videoInput.frame();
+    //return imageInput.frame();
   }
 }
