@@ -2,22 +2,29 @@ class VideoInput {
   PApplet pa;
   Movie myMovie;
   int frame = 0;
+  float speed = -1.0;
+  PImage image;
+
   VideoInput(PApplet sketch) {
     pa = sketch;
   }
   void init(String path) {
     myMovie= new Movie(pa, path);
-    start();
-  }
-
-  void start() {
+    myMovie.speed(speed);
     myMovie.loop();
+    image = new PImage(myMovie.width, myMovie.height, RGB);
   }
   void update() {
-    image(myMovie, 0, 0, width, height);
+    if (myMovie.available()) {
+      myMovie.read();
+    }
+    //image(myMovie, 0, 0, width, height);
   }
+  void changeSpeed(float spd) {
+    speed = spd;
+  }
+
   PImage frame() {
-    PImage image = new PImage(myMovie.width, myMovie.height, RGB);
-    return image;
+    return myMovie;
   }
 }
