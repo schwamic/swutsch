@@ -1,14 +1,16 @@
 class VideoInput {
+  
   PApplet pa;
+  
   Movie myMovie;
   int frame = 0;
   float speed = -1.0;
   PImage image;
-
-  VideoInput(PApplet sketch) {
-    pa = sketch;
-    //veränderung
+  
+  VideoInput(PApplet pa) {
+    this.pa = pa;
   }
+
   void init(String path) {
     myMovie= new Movie(pa, path);
     myMovie.speed(speed);
