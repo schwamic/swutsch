@@ -9,7 +9,7 @@ import processing.video.*;
 import processing.serial.*;
 import java.awt.Rectangle;
 
-//create child PApplet for sound analysis and controls
+//create child PApplet for generative animation and output
 ChildApplet outPut;
 
 //create Input objects
@@ -22,7 +22,7 @@ int setFrameRate = 60;
 
 
 void settings() {
-  size(1000, 500, JAVA2D);
+  size(1000, 500);
 }
 
 void setup() {

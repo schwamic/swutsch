@@ -4,7 +4,6 @@ class SoundAnalysis {
   //create object array for frequencys
   AvgFrequency[] avgFrequencys;
 
-  //create minim library globals for sound detection
   Minim minim;  
   AudioInput mic;
   FFT fftLog;
@@ -13,7 +12,6 @@ class SoundAnalysis {
   //sets the time in which the past values of a frequency are stored, after avgSeconds the old values are getting replaced by new ones to determin the avg of the frequency
   int avgSeconds = 15;
 
-  //create globals for sound detection
   float[] pastAverages;
   float overallAverage;
 
@@ -37,7 +35,6 @@ class SoundAnalysis {
 
     float scaleAvg = 2;
 
-    //pastAverages takes in the last 5 seconds of frequency averages
     pastAverages = new float[avgSeconds*setFrameRate];
 
     //getMicInput(); 
@@ -52,7 +49,6 @@ class SoundAnalysis {
       avgFrequencys[i] = new AvgFrequency(pa.width/2-avgFrequencys.length/2*avgFrequencyXDisplayLength+i*avgFrequencyXDisplayLength, fftLog.getAverageCenterFrequency(i), scaleAvg, avgFrequencyXDisplayLength);
     }
 
-    //pastAverages takes in the last 5 seconds of frequency averages
     pastAverages = new float[avgSeconds*setFrameRate];
   }
 
@@ -74,7 +70,6 @@ class SoundAnalysis {
       //scale the values by the average of all frequencys
       //this allows the code to work on quiet as well as loud sound
       //--- don't really know how to implement this yet ---
-      //everything scaled by 5 for now (scaleAverages)
 
       //draw frequencys for visualization
       drawFrequencys(i);

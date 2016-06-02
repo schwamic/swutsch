@@ -2,7 +2,7 @@ class ChildApplet extends PApplet {
 
   Generative generative;
   PGraphics pg;
-  Output output;
+  Output LEDoutput;
 
   public ChildApplet() {
     super();
@@ -18,11 +18,11 @@ class ChildApplet extends PApplet {
     surface.setTitle("Output window - child PApplet");
     generative = new Generative(this);
 
-    //creates a number of particles --- !!has to be particleNbr%3 = 0, becase we want to draw triangles with them
+    //creates a number of particles --- !!has to be particleNbr%3 = 0, because we want to draw triangles with them
     generative.setupParticles(150);
     
     //create output to LEDs
-    output = new Output(this);
+    LEDoutput = new Output(this);
     
 
     pg = createGraphics(this.width, this.height);
@@ -44,7 +44,7 @@ class ChildApplet extends PApplet {
     generative.drawTriangles(pg);
     pg.endDraw();
     
-    output.out(pg);
+    LEDoutput.out(pg);
     
     image(pg, 0,0);
   }

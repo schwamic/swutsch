@@ -22,6 +22,7 @@ class AvgFrequency {
       maxValue = currentValue;
       peaked = true;
     }
+    
     //decay maxValue over time
     maxValue -= maxValue/500;
 
