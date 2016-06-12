@@ -4,6 +4,9 @@ class ChildApplet extends PApplet {
   PGraphics pg;
   Output LEDoutput;
 
+
+
+
   public ChildApplet() {
     super();
     PApplet.runSketch(new String[]{this.getClass().getName()}, this);
@@ -20,10 +23,11 @@ class ChildApplet extends PApplet {
 
     //creates a number of particles --- !!has to be particleNbr%3 = 0, because we want to draw triangles with them
     generative.setupParticles(150);
-    
+
     //create output to LEDs
     LEDoutput = new Output(this);
-    
+
+
 
     pg = createGraphics(this.width, this.height);
   }
@@ -32,6 +36,7 @@ class ChildApplet extends PApplet {
   void draw() {
     //update particles
     generative.updateParticles();
+    
 
     //draw everything into the PGraphic pg to later scale to LED screen size
     pg.beginDraw();
@@ -43,9 +48,9 @@ class ChildApplet extends PApplet {
     generative.drawParticles(pg);
     generative.drawTriangles(pg);
     pg.endDraw();
-    
+
     LEDoutput.out(pg);
-    
-    image(pg, 0,0);
+
+    image(pg, 0, 0);
   }
 }
