@@ -62,7 +62,7 @@ class GUI {
     knob5 = cp5.addKnob("param05")
       .setRange(0, 255)
       .setValue(param05)
-      .setPosition(0, 440)
+      .setPosition(440, 110)
       .setRadius(50)
       .setColorForeground(color(255))
       .setColorBackground(color(0, 0, 0))
