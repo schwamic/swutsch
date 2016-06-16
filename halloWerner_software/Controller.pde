@@ -1,21 +1,29 @@
-class Controller { //parameters in halloWerner_software
-  PApplet pa;
+class Controller {
+  //test variable until sliders are implemented
+  int playVideo, particleAmount, colorIntensity, triangleSize;
+
   GUI gui;
-  
+  MidiController midiController;
+
+  PApplet pa;
+
+  public Controller(PApplet pa) {
+    colorIntensity = 5;
+    particleAmount = 125;
+    triangleSize = 1;
+    this.pa = pa;
+  }
+
   void init() {
+
     gui = new GUI(pa);
     gui.init();
+    midiController = new MidiController(pa);
+    //gui.guiSetup();
+    midiController.midiControllerSetup();
   }
 
-  Controller(PApplet sketch) {
-    pa = sketch;
-  }
-
-  void update() {
-    gui.render();
-  }
-
-  void change(int cha, int pit, int vel, boolean cont) {
-    gui.change(cha, pit, vel, cont);
+  void update() {   
+    //midiController.midiControllerUpdate();
   }
 }

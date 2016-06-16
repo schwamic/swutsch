@@ -31,7 +31,7 @@ class Slider {
     
     textAlign(CENTER);
     fill(0, 180);
-    text(name + ": " + sliderValue(), pos.x+size.x/2, pos.y - 10);
+    text(name + ": " + getValue(), pos.x+size.x/2, pos.y - 10);
     
     noFill();
     rect(pos.x, pos.y, size.x, size.y);
@@ -41,7 +41,7 @@ class Slider {
     noFill();
   }
 
-  int sliderValue() {
+  int getValue() {
     return (int) map(value, sliderSize/2, size.y-sliderSize/2, minValue, maxValue+1);
   }
 }

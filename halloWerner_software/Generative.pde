@@ -2,20 +2,36 @@ class Generative {
   PApplet pa;
 
   //create globals for sound visualization / particle behaviour
-  SoundParticle[] particles;
+  //SoundParticle[] particles;
+  ArrayList<SoundParticle> particles = new ArrayList<SoundParticle>();
+  float maxRadius, minRadius;
+  int particleNbr;
 
 
-  public Generative(PApplet pa) {
+  public Generative(PApplet pa, int particleNbr) {
     this.pa = pa;
+    this.particleNbr = particleNbr;
   }
 
-  void setupParticles(int particleNbr) {
+  void setupParticles() {
     //setup variables for particle simulation
-    particles = new SoundParticle[particleNbr];
-    for (int i = 0; i < particles.length; i++) {
+    //particles = new SoundParticle[particleNbr];
+    maxRadius = (pa.width*pa.height)/(particleNbr*(particleNbr/1.2));
+    minRadius = 10;
+    for (int i = 0; i < particleNbr; i++) {
       PVector randomizePosition = new PVector(random(pa.width), random(pa.height));
       AvgFrequency randomPartnerFrequency = soundAnalysis.avgFrequencys[(int) random(0, soundAnalysis.fftLog.avgSize()-10)];
-      particles[i] = new SoundParticle(randomizePosition, randomPartnerFrequency);
+      //particles.get(i) = new SoundParticle(randomizePosition, randomPartnerFrequency, maxRadius);
+      particles.add(i, new SoundParticle(randomizePosition, randomPartnerFrequency, maxRadius));
+    }
+  }
+
+  float getRandomExcept(float minValue, float maxValue, float exceptValue) {
+    float r = random(minValue, maxValue);
+    if (r != exceptValue) {
+      return r;
+    } else {
+      return getRandomExcept(minValue, maxValue, exceptValue);
     }
   }
 
@@ -23,81 +39,141 @@ class Generative {
     pg.fill(0, 0, 50, 30);
     pg.beginShape(TRIANGLES);
     for (SoundParticle p : particles) {
-      //fill(255, 0, 0, map(((overallAverage/2+p.partnerFrequency.maxValue*(overallAverage/25))), 0, 800, 0, 180));
-      pg.fill(map(((soundAnalysis.overallAverage/2+p.partnerFrequency.maxValue*(soundAnalysis.overallAverage/25))), 0, 500, 0, 255), 0, 0, map(((soundAnalysis.overallAverage/2+p.partnerFrequency.maxValue*(soundAnalysis.overallAverage/25)))*physicalInput.colorIntensity.sliderValue(), 0, 500, 0, 180));
+      //DODAT another fill formula
+      pg.fill(p.energy*(controller.colorIntensity+1), 0, 0, p.energy*2*(controller.colorIntensity+1));
+
       pg.strokeWeight(1);
-      pg.stroke(255, 0, 0, map(((soundAnalysis.overallAverage/2+p.partnerFrequency.maxValue*(soundAnalysis.overallAverage/25))), 0, 800, 0, 230));
+      //DODAT another stroke formula
+      pg.stroke(255, 0, 0, p.energy*controller.colorIntensity);
+
+      //pg.noStroke();
       pg.vertex(p.pos.x, p.pos.y);
-      pg.vertex(p.neighbourP1.x, p.neighbourP1.y);
-      pg.vertex(p.neighbourP2.x, p.neighbourP2.y);
+      pg.vertex(p.neighbour1Pos.x, p.neighbour1Pos.y);
+      pg.vertex(p.neighbour2Pos.x, p.neighbour2Pos.y);
     }
     pg.endShape();
   }
 
   void updateParticles() {
     //iterate thorugh all particles
-    for (int i = 0; i < particles.length; i++) {
+    for (int i = 0; i < particles.size(); i++) {
+
+      //decay energy over time
+      if (particles.get(i).energy > 0) {
+        particles.get(i).energy -= (particles.get(i).energy/3.5+3);
+      }
+
+      //increase energy when partnerFrequency is peaking
+      if (particles.get(i).partnerFrequency.peaked == true && particles.get(i).partnerFrequency.avgValue > soundAnalysis.overallAverage) {
+        //particles.get(i).energy += particles.get(i).energy+2;
+        particles.get(i).energy += soundAnalysis.overallAverage+5;
+      }
+
 
       //add to radius for particles by sound overallAverage and a currentValue from the partnerFrequency
-      particles[i].rad += (soundAnalysis.overallAverage/(particles.length/45) + particles[i].partnerFrequency.avgValue/(particles.length/32) + particles[i].partnerFrequency.currentValue/(particles.length/35));
-      particles[i].rad -= particles[i].rad/5;
+      particles.get(i).rad += (soundAnalysis.overallAverage/(particles.size()/45) + particles.get(i).partnerFrequency.avgValue/(particles.size()/32) + particles.get(i).partnerFrequency.currentValue/(particles.size()/35));
+
+      //decay radius
+      particles.get(i).rad -= particles.get(i).rad/5;
+
+      particles.get(i).energy += particles.get(i).partnerFrequency.maxValue/50;
+      //increase energy when point is near other points
 
 
-      for (int j = 0; j < particles.length; j++) {
+      for (int j = 0; j < particles.size(); j++) {
         if (i != j) {
           //check for collission with any other particle
-          float distance = dist(particles[i].pos.x, particles[i].pos.y, particles[j].pos.x, particles[j].pos.y);
-          if (distance < particles[i].rad+ particles[j].rad) {
-            particles[i].vel.x += (particles[i].pos.x - particles[j].pos.x) / distance;
-            particles[i].vel.y += (particles[i].pos.y - particles[j].pos.y) / distance;
-            float xDist = particles[i].vel.x - particles[j].vel.x;
-            float yDist = particles[i].vel.y - particles[j].vel.y;
-            particles[i].vel.x += xDist / distance / 5;
-            particles[i].vel.y += yDist / distance / 5;
+          float distance = dist(particles.get(i).pos.x, particles.get(i).pos.y, particles.get(j).pos.x, particles.get(j).pos.y);
+          if (distance < particles.get(i).rad+ particles.get(j).rad) {
+            particles.get(i).vel.x += (particles.get(i).pos.x - particles.get(j).pos.x) / distance;
+            particles.get(i).vel.y += (particles.get(i).pos.y - particles.get(j).pos.y) / distance;
+            float xDist = particles.get(i).vel.x - particles.get(j).vel.x;
+            float yDist = particles.get(i).vel.y - particles.get(j).vel.y;
+            particles.get(i).vel.x += xDist / distance / 5;
+            particles.get(i).vel.y += yDist / distance / 5;
           }
 
           //save the closest two neighbour points to later draw a triangle from them if the frequency its partnered with is higher then its maximum
-          float neighbourP1distance = dist(particles[i].pos.x, particles[i].pos.y, particles[i].neighbourP1.x, particles[i].neighbourP1.y);
-          float neighbourP2distance = dist(particles[i].pos.x, particles[i].pos.y, particles[i].neighbourP2.x, particles[i].neighbourP2.y);
-          //if ( particles[i].partnerFrequency.currentValue > particles[i].partnerFrequency.maxValue) {
-          if ((particles[i].partnerFrequency.peaked == true && particles[i].partnerFrequency.currentValue > soundAnalysis.overallAverage*2) || pa.frameCount < 50 || neighbourP1distance+neighbourP2distance > 250) {
+          float neighbourP1distance = dist(particles.get(i).pos.x, particles.get(i).pos.y, particles.get(i).neighbour1Pos.x, particles.get(i).neighbour1Pos.y);
+          float neighbourP2distance = dist(particles.get(i).pos.x, particles.get(i).pos.y, particles.get(i).neighbour2Pos.x, particles.get(i).neighbour2Pos.y);
+
+          //if ( particles.get(i).partnerFrequency.currentValue > particles.get(i).partnerFrequency.maxValue) {
+          if ((particles.get(i).partnerFrequency.peaked == true && particles.get(i).partnerFrequency.currentValue > soundAnalysis.overallAverage*2) || neighbourP1distance > 150 || neighbourP2distance > 150 || particles.get(i).created == true) {
+         // if (neighbourP1distance+neighbourP2distance > controller.triangleSize || particles.get(i).created == true) {
             if (distance < neighbourP1distance) {
-              particles[i].neighbourP1 = particles[j].pos;
+
+                particles.get(i).newNeighbour1Pos = particles.get(j).pos;
+                particles.get(i).changeNeighbour = true;
+             
             }
+            //distance
             if (distance < neighbourP2distance && neighbourP1distance < distance) {
-              particles[i].neighbourP2 = particles[j].pos;
+                particles.get(i).newNeighbour2Pos = particles.get(j).pos;
+                particles.get(i).changeNeighbour = true;
             }
           }
         }
       }
 
+      //ease out of current neighbour when finding new one
+      if (particles.get(i).changeNeighbour == true) {
+        particles.get(i).energy -= particles.get(i).energy/2 + 5;
+        if (particles.get(i).energy <= 10) {
+          particles.get(i).neighbour1Pos = particles.get(i).newNeighbour1Pos;
+          particles.get(i).neighbour2Pos = particles.get(i).newNeighbour2Pos;
+          particles.get(i).changeNeighbour = false;
+          particles.get(i).created = false;
+        }
+      }
+
+
       //check for "wall" collission and push away from walls
-      if (particles[i].pos.x < particles[i].rad/2) {
-        particles[i].vel.x += (7+soundAnalysis.overallAverage/2);
+      if (particles.get(i).pos.x < particles.get(i).rad/4) {
+        particles.get(i).vel.x += (7+soundAnalysis.overallAverage/2);
       }
-      if (particles[i].pos.x > pa.width - particles[i].rad/2) {
-        particles[i].vel.x -= (7+soundAnalysis.overallAverage/2);
+      if (particles.get(i).pos.x > pa.width - particles.get(i).rad/4) {
+        particles.get(i).vel.x -= (7+soundAnalysis.overallAverage/2);
       }
-      if (particles[i].pos.y < particles[i].rad/2) {
-        particles[i].vel.y += (7+soundAnalysis.overallAverage/2);
+      if (particles.get(i).pos.y < particles.get(i).rad/4) {
+        particles.get(i).vel.y += (7+soundAnalysis.overallAverage/2);
       }
-      if (particles[i].pos.y > pa.height - particles[i].rad/2) {
-        particles[i].vel.y -= (7+soundAnalysis.overallAverage/2);
+      if (particles.get(i).pos.y > pa.height - particles.get(i).rad/4) {
+        particles.get(i).vel.y -= (7+soundAnalysis.overallAverage/2);
       }
 
       //add velocity to positon
-      particles[i].vel.x *= 0.8;
-      particles[i].vel.y *= 0.8;
-      particles[i].pos.x += particles[i].vel.x/5;
-      particles[i].pos.y += particles[i].vel.y/5;
+      particles.get(i).vel.x *= 0.8;
+      particles.get(i).vel.y *= 0.8;
+      particles.get(i).pos.x += map(particles.get(i).vel.x, -3, 3, -1, 1);
+      particles.get(i).pos.y += map(particles.get(i).vel.y, -3, 3, -1, 1);
     }
   }
 
   void drawParticles(PGraphics pg) {
     pg.noStroke();
-    pg.fill(255, 60);
+    pg.fill(255,0,0, 255);
     for (SoundParticle p : particles) {
-      pg.ellipse(p.pos.x, p.pos.y, 2, 2);
+      pg.ellipse(p.pos.x, p.pos.y, 4, 4);
+    }
+  }
+
+
+  void addParticle() {
+    if (particles.size() < particleNbr + controller.particleAmount) {
+      for (int i = 0; i < particleNbr+controller.particleAmount - particles.size(); i++) {
+        PVector randomizePosition = new PVector(random(pa.width), random(pa.height));
+        AvgFrequency randomPartnerFrequency = soundAnalysis.avgFrequencys[(int) random(0, soundAnalysis.fftLog.avgSize()-10)];
+        particles.add(particles.size(), new SoundParticle(randomizePosition, randomPartnerFrequency, maxRadius));
+      }
+    }
+  }
+
+  //no idea why this works, should throw a nullpointer exception but w/e
+  void deleteParticle() {
+    if (particles.size() > particleNbr + controller.particleAmount) {
+      for (int i = 0; i > particleNbr + controller.particleAmount - particles.size(); i--) {
+        particles.remove(particles.get(particles.size()-1));
+      }
     }
   }
 }

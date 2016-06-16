@@ -33,12 +33,12 @@ class SoundAnalysis {
 
   void setup() {
 
-    float scaleAvg = 2;
+    float scaleAvg = 5;
 
     pastAverages = new float[avgSeconds*setFrameRate];
 
-    //getMicInput(); 
-    getSongInput();
+    getMicInput(); 
+    //getSongInput();
 
     fftLog.logAverages(100, 10);
 
@@ -55,10 +55,10 @@ class SoundAnalysis {
   void update() {
     float average = 0;
     //keeps the fft updated with a mix of both left and right mic input
-    //fftLog.forward( mic.mix );
-    fftLog.forward( song.mix );
+    fftLog.forward( mic.mix );
+    //fftLog.forward( song.mix );
 
-    song.play();
+    //song.play();
     //iterate thorugh all the avgFrequencys
     for (int i = 0; i < avgFrequencys.length; i++) {
       //reset the peaked boolean to detect beats peaking
@@ -101,7 +101,7 @@ class SoundAnalysis {
     //draw overall average value
     fill(160, 0, 0, 80);
     noStroke();
-    rect(avgFrequencys[avgFrequencys.length-1].xPos+avgFrequencys[0].xDisplayLength, pa.height/1.5, avgFrequencys[0].xDisplayLength, -overallAverage);
+    rect(avgFrequencys[avgFrequencys.length-1].xPos+avgFrequencys[0].xDisplayLength, pa.height/1.1, avgFrequencys[0].xDisplayLength, -overallAverage);
   }
 
   void drawFrequencys(int i) {
@@ -112,15 +112,15 @@ class SoundAnalysis {
     if ( avgFrequencys[i].peaked == true) {
       fill(0);
     }
-    rect(avgFrequencys[i].xPos, pa.height/1.5, avgFrequencys[i].xDisplayLength, -avgFrequencys[i].currentValue);
+    rect(avgFrequencys[i].xPos, pa.height/1.1, avgFrequencys[i].xDisplayLength, -avgFrequencys[i].currentValue);
 
     //draw maxValues
     stroke(150);
-    line(avgFrequencys[i].xPos, pa.height/1.5-avgFrequencys[i].maxValue, avgFrequencys[i].xPos+avgFrequencys[i].xDisplayLength, pa.height/1.5-avgFrequencys[i].maxValue);
+    line(avgFrequencys[i].xPos, pa.height/1.1-avgFrequencys[i].maxValue, avgFrequencys[i].xPos+avgFrequencys[i].xDisplayLength, pa.height/1.1-avgFrequencys[i].maxValue);
 
     //draw average values
     fill(160, 0, 0, 80);
     noStroke();
-    rect(avgFrequencys[i].xPos, pa.height/1.5, avgFrequencys[i].xDisplayLength, -avgFrequencys[i].avgValue);
+    rect(avgFrequencys[i].xPos, pa.height/1.1, avgFrequencys[i].xDisplayLength, -avgFrequencys[i].avgValue);
   }
 }
