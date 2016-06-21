@@ -80,7 +80,7 @@ void draw() {
 
   //update and draw sound Analysis, draw is inside the update since then I only have to iterate through all frequencys once
   soundAnalysis.update();
-  println(param01+" "+param02+" "+param03+" "+param04+" "+param05+" "+param06+" "+param07+" "+param08);
+  //println(param01+" "+param02+" "+param03+" "+param04+" "+param05+" "+param06+" "+param07+" "+param08);
 }
 
 /*void switchVideo() {
@@ -134,7 +134,7 @@ void reeper(int theValue) {
     //println("a button event from button3: "+theValue);
   }
 }
-
+//midi input, wird üner controller an midiController weiter geleitet
 void controllerChange(ControlChange change) {
   controller.updateKnob(change.number(),change.value());
   println("Number:"+change.number());
