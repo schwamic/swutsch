@@ -8,13 +8,13 @@ class ChildApplet extends PApplet {
     PApplet.runSketch(new String[]{this.getClass().getName()}, this);
   }
 
-  void settings() {
+  public void settings() {
     size(1280, 720);
     //size(displayWidth,displayHeight);
     //size(640,360);
   }
 
-  void setup() {
+  public void setup() {
     this.frameRate(setFrameRate);
     surface.setTitle("Output window - child PApplet");
     
@@ -24,7 +24,7 @@ class ChildApplet extends PApplet {
     graphicOutput.setupGraphic();
   }
   
-  void draw() {
+  public void draw() {
     
     //call graphicOutput to display stuff
     graphicOutput.drawGraphic();
