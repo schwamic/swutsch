@@ -25,5 +25,6 @@ class Controller {
 
   void update() {   
     //midiController.midiControllerUpdate();
+    gui.update();
   }
 }

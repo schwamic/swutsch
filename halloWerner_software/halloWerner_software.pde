@@ -26,14 +26,24 @@ int setFrameRate = 30;
 
 //control parameters
 float speed = 1.0;
-int param01 = 10;
-int param02 = 125;
+int param01 = 0;
+int param02 = 0;
 int param03 = 0;
 int param04 = 0;
-int param05 = 155;
+int param05 = 0;
 int param06 = 0;
-int param07 = 255;
+int param07 = 0;
 int param08 = 0;
+boolean button01 = false;
+boolean button02 = false;
+boolean button03 = false;
+boolean button04 = false;
+boolean button05 = false;
+boolean button06 = false;
+boolean button07 = false;
+boolean button08 = false;
+
+
 
 void settings() {
   size(1000, 500);
@@ -144,5 +154,5 @@ void rawMidi(byte[] data) { // You can also use rawMidi(byte[] data, String bus_
   // }
 
 
-  controller.midiController.midiControllerUpdate((int) (data[0] & 0xFF), (int) (data[1] & 0xFF), (int) (data[2] & 0xFF));
+  controller.midiController.update((int) (data[0] & 0xFF), (int) (data[1] & 0xFF), (int) (data[2] & 0xFF));
 }

@@ -141,11 +141,17 @@ class GUI {
       .setSize(100, 100)
       ;
   }
-  void render() {//Zeigt die gui am bildschirm an
-  }
   public void white(int theValue) {
     println("a button event from white: "+theValue);
   }
-  void change(int cha, int pit, int vel, boolean cont) {
+  void update() {
+    param01=(int)knob1.getValue();
+    param02=(int)knob2.getValue();
+    param03=(int)knob3.getValue();
+    param04=(int)knob4.getValue();
+    param05=(int)knob5.getValue();
+    param06=(int)knob6.getValue();
+    param07=(int)knob7.getValue();
+    param08=(int)knob8.getValue();
   }
 }

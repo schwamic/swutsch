@@ -12,7 +12,7 @@ class MidiController {
     myBus = new MidiBus(pa, 0, 0);
   }
 
-  void midiControllerUpdate(int pressed, int button, int value) {
+  void update(int pressed, int button, int value) {
     //if any button is pressed on the midi Controller
     if (pressed == 144) {
       //button 1 is for water (left top)
