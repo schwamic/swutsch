@@ -80,6 +80,7 @@ void draw() {
 
   //update and draw sound Analysis, draw is inside the update since then I only have to iterate through all frequencys once
   soundAnalysis.update();
+  println(param01+" "+param02+" "+param03+" "+param04+" "+param05+" "+param06+" "+param07+" "+param08);
 }
 
 /*void switchVideo() {
@@ -134,25 +135,18 @@ void reeper(int theValue) {
   }
 }
 
+void controllerChange(ControlChange change) {
+  controller.updateKnob(change.number(),change.value());
+  println("Number:"+change.number());
+  println("Value:"+change.value());
+}
 
-//I'm just giving the midiBus class the byte status from here
-void rawMidi(byte[] data) { // You can also use rawMidi(byte[] data, String bus_name)
-  // Receive some raw data
-  // data[0] will be the status byte
-  // data[1] and data[2] will contain the parameter of the message (e.g. pitch and volume for noteOn noteOff)
-  //println();
-  // println("Raw Midi Data:");
-  // println("----------");
-  // println("Status Byte/MIDI Command:"+(int)(data[0] & 0xFF));
-  // N.B. In some cases (noteOn, noteOff, controllerChange, etc) the first half of the status byte is the command and the second half if the channel
-  // In these cases (data[0] & 0xF0) gives you the command and (data[0] & 0x0F) gives you the channel
+void noteOn(Note note) {
+  controller.updateButton(note.pitch(),true);
+  println("Pitch:"+note.pitch());
+}
 
-  //in this case and with our midi controller the data array only has a length of 3
-  //data[0] changes when ANY button is pressed on the controller
-  // for (int i = 1; i < data.length; i++) {
-  //   println("Param "+(i)+": "+(int)(data[i] & 0xFF));
-  // }
-
-
-  controller.midiController.update((int) (data[0] & 0xFF), (int) (data[1] & 0xFF), (int) (data[2] & 0xFF));
+void noteOff(Note note) {
+  controller.updateButton(note.pitch(),false);
+  //println("Pitch:"+note.pitch());
 }

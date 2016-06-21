@@ -15,16 +15,19 @@ class Controller {
   }
 
   void init() {
-
     gui = new GUI(pa);
     gui.init();
     midiController = new MidiController(pa);
     //gui.guiSetup();
     midiController.midiControllerSetup();
   }
-
-  void update() {   
-    //midiController.midiControllerUpdate();
-    gui.update();
+  void update() {
+    //gui.update(); //funktioniert nicht mit midi zusammen
+  }
+  void updateKnob(int number, int value) {   
+    midiController.updateKnob(number, value);
+  }
+  void updateButton(int pitch,boolean on) {   
+    midiController.updateButton(pitch,on);
   }
 }

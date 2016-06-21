@@ -9,77 +9,92 @@ class MidiController {
 
   void midiControllerSetup() {
     //MidiBus.list();
-    myBus = new MidiBus(pa, 0, 0);
+    myBus = new MidiBus(pa, "LPD8", 0);
   }
 
-  void update(int pressed, int button, int value) {
-    //if any button is pressed on the midi Controller
-    if (pressed == 144) {
-      //button 1 is for water (left top)
-      if (button == 40) {
-        videoInput.videoFolder1 = "Water";
-      }
-
-      //button 2 is for mystic (2 left top)
-      if (button == 41) {
-        videoInput.videoFolder1 = "Mystic";
-      }
-
-      //button 3 is for reeper (2.right top)
-      if (button == 42) {
-        videoInput.videoFolder1 = "Reeper";
-      }
-
-      //button 4 is for clear (1.right top)
-      if (button == 43) {
-        controller.playVideo = 0;
-        videoInput.myVideo.stop();
-      }
-
-      //button 5 is for fast (1.left bot)
-      if (button == 36) {
-        videoInput.videoFolder2 = "Fast";
-        workaround();
-        videoInput.loadVideo();
-      }
-
-      //button 6 is for medium (2.left bot)
-      if (button == 37) {
-        videoInput.videoFolder2 = "Medium";
-        workaround();
-        videoInput.loadVideo();
-      }
-
-      //button 7 is for slow (2.left bot)
-      if (button == 38) {
-        videoInput.videoFolder2 = "Slow";
-        workaround();
-        videoInput.loadVideo();
-      }
-
-      //button 8 is for slow (2.left bot)
-      if (button == 39) {
-        videoInput.videoFolder1 = "OwnContent";
-        videoInput.videoFolder2 = "";
-        videoInput.loadVideo();
-      }
+  void updateKnob(int number, int value) {
+    switch(number) {
+    case 1: 
+      param01=value;
+          println("updateKnob "+value);
+      break;
+    case 2: 
+      param02=value;
+      break;
+    case 3: 
+      param03=value;
+      break;
+    case 4: 
+      param04=value;
+      break;
+    case 5: 
+      param05=value;
+      break;
+    case 6: 
+      param06=value;
+      break;
+    case 7: 
+      param07=value;
+      break;
+    case 8: 
+      param08=value;
+      break;
     }
-
-    if (pressed == 176) {
-
-      //"slider" 1 is for particleAmount (slider top left);
-      if (button == 1) {
-        controller.particleAmount = (int)map(value, 0, 127, 0, 255);
+  }
+  void updateButton(int pitch, boolean on) {
+    if (!on) {
+      switch(pitch) {
+      case 36: 
+        button01 = true;
+        break;
+      case 37: 
+        button02 = true;
+        break;
+      case 38: 
+        button03 = true;
+        break;
+      case 39: 
+        button04 = true;
+        break;
+      case 40: 
+        button05 = true;
+        break;
+      case 41: 
+        button06 = true;
+        break;
+      case 42: 
+        button07 = true;
+        break;
+      case 43: 
+        button08 = true;
+        break;
       }
-
-      //"slider" 2 is for colorIntensity (2.slider top left);
-      if (button == 2) {
-        controller.colorIntensity = (int)map(value, 0, 127, 0, 10);
-      }
-
-      //"slider" 3 is for triangleAngle (2.slider top right);
-      if (button == 3) {
-        controller.triangleSize = (int) map(value, 0, 127, 50, 150);
+    } else {
+      switch(pitch) {
+      case 36: 
+        button01 = false;
+        break;
+      case 37: 
+        button02 = false;
+        break;
+      case 38: 
+        button03 = false;
+        break;
+      case 39: 
+        button04 = false;
+        break;
+      case 40: 
+        button05 = false;
+        break;
+      case 41: 
+        button06 = false;
+        break;
+      case 42: 
+        button07 = false;
+        break;
+      case 43: 
+        button08 = false;
+        break;
       }
     }
   }
