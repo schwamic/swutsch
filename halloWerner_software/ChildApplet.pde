@@ -18,7 +18,7 @@ class ChildApplet extends PApplet {
   public void setup() {
     this.frameRate(setFrameRate);
     surface.setTitle("Output window - child PApplet");
-    testImage = loadImage("image.JPG");
+    testImage = loadImage("image.jpg");
 
     //create graphicoutput, needs to be created after generative since its using values from it
     graphicOutput = new GraphicOutput(this);
@@ -30,7 +30,7 @@ class ChildApplet extends PApplet {
 
     //call graphicOutput to display stuff
     graphicOutput.drawGraphic();
-    image(bildAnpassungen(testImage),0,0);
+    //image(bildAnpassungen(testImage),0,0);
   }
 
   PImage bildAnpassungen(PImage input) {
