@@ -29,10 +29,10 @@ int setFrameRate = 30;
 
 //control parameters
 float speed = 1.0;
-int param01 = 0;
-int param02 = 0;
-int param03 = 0;
-int param04 = 0;
+int param01 = 127;
+int param02 = 64;
+int param03 = 127;
+int param04 = 127;
 int param05 = 0;
 int param06 = 0;
 int param07 = 0;
@@ -54,7 +54,7 @@ void settings() {
 }
 
 void setup() {
-      testImage = loadImage("image.jpg");
+      testImage = loadImage("image03.jpg");
 
   //videoInput = new VideoInput(this);
 

@@ -15,6 +15,7 @@ class ChildApplet extends PApplet {
   }
 
   public void setup() {
+    colorMode(HSB, 360, 127, 127, 127);
     this.frameRate(setFrameRate);
     surface.setTitle("Output window - child PApplet");
 
@@ -32,21 +33,42 @@ class ChildApplet extends PApplet {
   }
 
   PImage bildAnpassungen(PImage input) {
+    PGraphics output;
+    output = createGraphics(input.width, input.height);
+    output.beginDraw();
+    output.image(input, 0, 0);
+    output.endDraw();
+
     input.loadPixels();
     for (int y=0; y<input.height; y++) {
       for (int x= 0; x<input.width; x++) {
         color c = input.get(x, y);
-        int r = (c >> 16) & 0xFF;  
-        int g = (c >> 8) & 0xFF;   
-        int b = c & 0xFF;
+        float h = hue(c);
+        float s = saturation(c);
+        float b = brightness(c);
+        float a = 0;
+        /* int r = (c >> 16) & 0xFF;  
+         int g = (c >> 8) & 0xFF;   
+         int b = c & 0xFF;*/
 
-        r= param01;
-        b= param02;
+        //h=(param01-64)*2+h;//alle farben ändern sich
+        //h=232+param01;//tint
+        //h=(h/360)*232+param01;//test
+        h= 240+newHSB((int)h)/2*param01/127;//final
+        s=(param02-64)*2+s;
+        //b=(param03-64)*2+b;
+        a=param04;
 
-        input.pixels[y*input.width+x] = color(r, g, b);
+        output.pixels[y*input.width+x] = color(h, s, b, a);
       }
     }
-    input.updatePixels();
-    return input;
+    output.updatePixels();
+    //output.blend(input, 0, 0, input.width, input.height, 0, 0, input.width, input.height, OVERLAY);
+    if (!button01)return output;
+    else return input;
+  }
+  int newHSB(int oldHSB) {
+    if (oldHSB>0 && oldHSB<240)return 360-oldHSB/2;
+    else return oldHSB;
   }
 }
