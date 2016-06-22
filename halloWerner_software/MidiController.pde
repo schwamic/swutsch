@@ -1,5 +1,4 @@
 class MidiController {
-
   PApplet pa;
   MidiBus myBus;
 
@@ -8,15 +7,22 @@ class MidiController {
   }
 
   void midiControllerSetup() {
-    //MidiBus.list();
-    myBus = new MidiBus(pa, "LPD8", 0);
+    String[] midiArray = MidiBus.availableInputs();
+    List<String> midiList = Arrays.asList(midiArray);
+    if (midiList.contains("LPD8")) {
+      myBus = new MidiBus(pa, "LPD8", 0);
+      GUI = false;
+    } else
+    {
+      GUI = true;
+    }
   }
 
   void updateKnob(int number, int value) {
     switch(number) {
     case 1: 
       param01=value;
-          println("updateKnob "+value);
+      println("updateKnob "+value);
       break;
     case 2: 
       param02=value;

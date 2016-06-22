@@ -22,7 +22,7 @@ class Controller {
     midiController.midiControllerSetup();
   }
   void update() {
-    //gui.update(); //funktioniert nicht mit midi zusammen
+    if(GUI) gui.update(); //funktioniert nicht mit midi zusammen
   }
   void updateKnob(int number, int value) {   
     midiController.updateKnob(number, value);

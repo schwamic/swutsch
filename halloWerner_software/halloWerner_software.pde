@@ -15,6 +15,9 @@ import java.awt.Rectangle;
 //import libraries for gui and midi input
 import themidibus.*;
 import controlP5.*;
+//import for midi devices check
+import java.util.Arrays;
+import java.util.List;
 
 //create child PApplet for generative animation and output
 ChildApplet outPut;
@@ -32,7 +35,7 @@ float speed = 1.0;
 int param01 = 127;
 int param02 = 64;
 int param03 = 127;
-int param04 = 127;
+int param04 = 0;
 int param05 = 0;
 int param06 = 0;
 int param07 = 0;
@@ -45,7 +48,7 @@ boolean button05 = false;
 boolean button06 = false;
 boolean button07 = false;
 boolean button08 = false;
-
+boolean GUI = false;
 
 
 void settings() {
@@ -54,7 +57,7 @@ void settings() {
 }
 
 void setup() {
-      testImage = loadImage("image03.jpg");
+      testImage = loadImage("image04.jpg");
 
   //videoInput = new VideoInput(this);
 

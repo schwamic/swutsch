@@ -56,8 +56,9 @@ class ChildApplet extends PApplet {
         //h=(h/360)*232+param01;//test
         h= 240+newHSB((int)h)/2*param01/127;//final
         s=(param02-64)*2+s;
+        if(s > 127) s= 127;
         //b=(param03-64)*2+b;
-        a=param04;
+        a=param03;
 
         output.pixels[y*input.width+x] = color(h, s, b, a);
       }

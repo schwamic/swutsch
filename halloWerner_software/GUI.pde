@@ -18,7 +18,7 @@ class GUI {
     cp5 = new ControlP5(pa);
 
     knob1 = cp5.addKnob("param01")
-      .setRange(0, 255)
+      .setRange(0, 127)
       .setValue(param01)
       .setPosition(440, 0)
       .setRadius(50)
@@ -29,7 +29,7 @@ class GUI {
       ;
 
     knob2 = cp5.addKnob("param02")
-      .setRange(0, 255)
+      .setRange(0, 127)
       .setValue(param02)
       .setPosition(550, 0)
       .setRadius(50)
@@ -40,7 +40,7 @@ class GUI {
       ;
 
     knob3 = cp5.addKnob("param03")
-      .setRange(0, 255)
+      .setRange(0, 127)
       .setValue(param03)
       .setPosition(660, 0)
       .setRadius(50)
@@ -50,7 +50,7 @@ class GUI {
       .setDragDirection(Knob.HORIZONTAL)
       ;
     knob4 = cp5.addKnob("param04")
-      .setRange(0, 255)
+      .setRange(0, 127)
       .setValue(param04)
       .setPosition(770, 0)
       .setRadius(50)
@@ -60,7 +60,7 @@ class GUI {
       .setDragDirection(Knob.HORIZONTAL)
       ;   
     knob5 = cp5.addKnob("param05")
-      .setRange(0, 255)
+      .setRange(0, 127)
       .setValue(param05)
       .setPosition(440, 110)
       .setRadius(50)
@@ -70,7 +70,7 @@ class GUI {
       .setDragDirection(Knob.HORIZONTAL)
       ;
     knob6 = cp5.addKnob("param06")
-      .setRange(0, 255)
+      .setRange(0, 127)
       .setValue(param06)
       .setPosition(550, 110)
       .setRadius(50)
@@ -80,7 +80,7 @@ class GUI {
       .setDragDirection(Knob.HORIZONTAL)
       ;
     knob7 = cp5.addKnob("param07")
-      .setRange(0, 255)
+      .setRange(0, 127)
       .setValue(param07)
       .setPosition(660, 110)
       .setRadius(50)
@@ -90,7 +90,7 @@ class GUI {
       .setDragDirection(Knob.HORIZONTAL)
       ;   
     knob8 = cp5.addKnob("param08")
-      .setRange(0, 255)
+      .setRange(0, 127)
       .setValue(param08)
       .setPosition(770, 110)
       .setRadius(50)
