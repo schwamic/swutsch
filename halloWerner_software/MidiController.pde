@@ -42,7 +42,7 @@ class MidiController {
     }
   }
   void updateButton(int pitch, boolean on) {
-    if (!on) {
+    if (on) {
       switch(pitch) {
       case 36: 
         button01 = true;

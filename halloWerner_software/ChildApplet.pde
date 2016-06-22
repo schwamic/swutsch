@@ -2,7 +2,6 @@ class ChildApplet extends PApplet {
 
   PGraphics pg;
   GraphicOutput graphicOutput;
-  PImage testImage;
 
   public ChildApplet() {
     super();
@@ -18,7 +17,6 @@ class ChildApplet extends PApplet {
   public void setup() {
     this.frameRate(setFrameRate);
     surface.setTitle("Output window - child PApplet");
-    testImage = loadImage("image.jpg");
 
     //create graphicoutput, needs to be created after generative since its using values from it
     graphicOutput = new GraphicOutput(this);
@@ -30,25 +28,25 @@ class ChildApplet extends PApplet {
 
     //call graphicOutput to display stuff
     graphicOutput.drawGraphic();
-    //image(bildAnpassungen(testImage),0,0);
+    image(bildAnpassungen(testImage), 0, 0);
   }
 
   PImage bildAnpassungen(PImage input) {
-    //int dimensions = input.width*input.height;
-    PImage img = input;
-    img.loadPixels();
+    input.loadPixels();
     for (int y=0; y<input.height; y++) {
       for (int x= 0; x<input.width; x++) {
-        color c = img.get(x, y);
+        color c = input.get(x, y);
         int r = (c >> 16) & 0xFF;  
         int g = (c >> 8) & 0xFF;   
         int b = c & 0xFF;
 
-        r= r+ (255-r)*(255/param01);
-        img.pixels[x+y] = color(r, g, b);
+        r= param01;
+        b= param02;
+
+        input.pixels[y*input.width+x] = color(r, g, b);
       }
     }
-    img.updatePixels();
+    input.updatePixels();
     return input;
   }
 }

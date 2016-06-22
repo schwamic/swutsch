@@ -1,3 +1,6 @@
+  PImage testImage;
+
+
 //import libraries for sound detection
 import ddf.minim.analysis.*;
 import ddf.minim.*;
@@ -51,6 +54,7 @@ void settings() {
 }
 
 void setup() {
+      testImage = loadImage("image.jpg");
 
   //videoInput = new VideoInput(this);
 
