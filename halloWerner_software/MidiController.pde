@@ -104,11 +104,4 @@ class MidiController {
       }
     }
   }
-
-  void workaround() {
-    //workaround, fix later
-    if (videoInput.videoFolder1 == "OwnContent") {
-      videoInput.videoFolder1 = "Mystic";
-    }
-  }
 }

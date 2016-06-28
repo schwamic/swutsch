@@ -76,71 +76,67 @@ void setup() {
 
 void draw() {
   background(210);
-  //switchVideo();
-  /*if (controller.playVideo == 1) {
-   videoInput.update();
-   } else {
-   videoInput.myVideo.stop();
-   }
-   */
   controller.update();
 
   //update and draw sound Analysis, draw is inside the update since then I only have to iterate through all frequencys once
   soundAnalysis.update();
-  //println(param01+" "+param02+" "+param03+" "+param04+" "+param05+" "+param06+" "+param07+" "+param08);
 }
-
-/*void switchVideo() {
- if (controller.playVideo == 1) {
- if (controller.mystic == 1) {
- videoInput.startVideo(new String("Mystic"));
- }
- if ( controller.reeper == 1) {
- videoInput.startVideo(new String("Reeper"));
- }
- if ( controller.water == 1) {
- videoInput.startVideo(new String("Water"));
- }
- }
- }*/
 
 
 
 //this has to be done here because the libraries (midibus and ControlP5) only check for these methods in the PApplet itself, not in it's classes...
-
-//this is called when any button is pressed
-void controlEvent(ControlEvent theEvent) {
-  if (frameCount > 10) {
-    // println(theEvent.getController().getName());
-  }
-}
-
-void water(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button4: "+theValue);
-    videoInput.videoFolder2 = "Fast";
-    videoInput.loadVideo();
-  }
-}
-
-void playVideo(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button1: "+theValue);
-    controller.playVideo = 0;
-  }
-}
-
-void mystic(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-  }
-}
-
-void reeper(int theValue) {
+//slow = 0; middle = 1; fast = 2; wave = 3; women = 4;
+void button01(int theValue) {
   if (frameCount > 10) {
     //println("a button event from button3: "+theValue);
+    videoInput.loadVideo(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
+    controller.playVideo = 1;
   }
 }
+
+void button02(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    videoInput.loadVideo(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
+
+void button03(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    videoInput.loadVideo(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
+
+void button04(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    controller.playVideo = 0;
+    videoInput.displayedVideo1.end = true;
+    videoInput.displayedVideo2.end = true;
+  }
+}
+
+void button05(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    videoInput.loadVideo(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
+
+void button06(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    videoInput.loadVideo(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
+
+
+
 //midi input, wird üner controller an midiController weiter geleitet
 void controllerChange(ControlChange change) {
   controller.updateKnob(change.number(),change.value());

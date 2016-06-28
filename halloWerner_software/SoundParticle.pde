@@ -2,7 +2,7 @@ class SoundParticle {
 
   PVector pos, vel, newNeighbour1Pos, newNeighbour2Pos, neighbour1Pos, neighbour2Pos;
 
-  float rad, energy;
+  float rad, energy, neighbours;
   boolean changeNeighbour, created;
   AvgFrequency partnerFrequency;
 

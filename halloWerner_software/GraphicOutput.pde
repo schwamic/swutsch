@@ -4,7 +4,6 @@ class GraphicOutput {
   LEDOutput ledOutput;
   PGraphics pg;
   Generative generative;
-  int fade = 0;
 
   GraphicOutput(PApplet pa) {
     this.pa = pa;
@@ -13,7 +12,7 @@ class GraphicOutput {
 
 
   void setupGraphic() {
-    pg = createGraphics(pa.width, pa.height);
+    pg = pa.createGraphics(pa.width, pa.height);
 
     //create generative soudn visualizer
     generative = new Generative(pa, 150);
@@ -28,9 +27,6 @@ class GraphicOutput {
     //update particles
     if (controller.playVideo == 0) {
       generative.updateParticles();
-
-
-
       generative.deleteParticle();
       generative.addParticle();
     }
@@ -38,25 +34,25 @@ class GraphicOutput {
 
     //draw everything into the PGraphic pg to later scale to LED screen size
     pg.beginDraw();
-    pg.background(0);
-
-    if (controller.playVideo == 1) {
-      if (videoInput.myVideo.duration()-videoInput.myVideo.time() < 3 && fade > 0) {
-        fade -= 10;
-      }
-      if (videoInput.myVideo.time() + videoInput.myVideo.duration() < videoInput.myVideo.duration()+3 && fade < 255) {
-        fade += 10;
-      }
-      //pg.tint(255, fade);
-      pg.image(videoInput.displayVideo(), 0, 0);
-    }
+    //pg.background(0);
+    pg.fill(0, 0, 0, 180);
+    pg.rect(0, 0, pa.width, pa.height);
+    pg.noFill();
     if (controller.playVideo == 0) {
-      generative.drawParticles(pg);
+      //generative.drawParticles(pg);
       generative.drawTriangles(pg);
+    }
+    try {
+      pg.tint(255, 255-videoInput.displayedVideo1.fade);
+      pg.image(outPut.bildAnpassungen(videoInput.displayedVideo1.video), 0, 0, pa.width, pa.height);
+      pg.tint(255, 255-videoInput.displayedVideo2.fade);
+      pg.image(outPut.bildAnpassungen(videoInput.displayedVideo2.video), 0, 0, pa.width, pa.height);
+    } 
+    catch(NullPointerException e) {
     }
     pg.endDraw();
     //pa.scale(0.1);
-
+   // pg = (PGraphics) outPut.bildAnpassungen(pg);
     ledOutput.out(pg);
     pa.image(pg, 0, 0);
 

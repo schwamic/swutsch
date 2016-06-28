@@ -9,9 +9,9 @@ class ChildApplet extends PApplet {
   }
 
   public void settings() {
-    size(1280, 720);
+    //size(1280, 720);
     //size(displayWidth,displayHeight);
-    //size(640,360);
+    size(640,360);
   }
 
   public void setup() {
@@ -29,7 +29,7 @@ class ChildApplet extends PApplet {
 
     //call graphicOutput to display stuff
     graphicOutput.drawGraphic();
-    image(bildAnpassungen(testImage), 0, 0);
+    //image(bildAnpassungen(graphicOutput.pg), 0, 0);
   }
 
   PImage bildAnpassungen(PImage input) {
