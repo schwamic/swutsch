@@ -76,7 +76,7 @@ class MidiController {
         break;
       }
     } else {
-      switch(pitch) {
+      /*switch(pitch) {
       case 36: 
         button01 = false;
         break;
@@ -101,7 +101,7 @@ class MidiController {
       case 43: 
         button08 = false;
         break;
-      }
+      }*/
     }
   }
 }

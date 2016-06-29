@@ -1,4 +1,4 @@
-  PImage testImage;
+PImage testImage;
 
 
 //import libraries for sound detection
@@ -57,7 +57,7 @@ void settings() {
 }
 
 void setup() {
-      testImage = loadImage("image04.jpg");
+  testImage = loadImage("image04.jpg");
 
   //videoInput = new VideoInput(this);
 
@@ -86,70 +86,72 @@ void draw() {
 
 //this has to be done here because the libraries (midibus and ControlP5) only check for these methods in the PApplet itself, not in it's classes...
 //slow = 0; middle = 1; fast = 2; wave = 3; women = 4;
-void button01(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button3: "+theValue);
-    videoInput.loadVideo(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
-}
 
-void button02(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideo(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
-}
-
-void button03(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideo(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
-}
-
-void button04(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    controller.playVideo = 0;
-    videoInput.displayedVideo1.end = true;
-    videoInput.displayedVideo2.end = true;
-  }
-}
-
-void button05(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideo(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
-}
-
-void button06(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideo(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
-}
+/* Moved to Controller
+ void button01(int theValue) {
+ if (frameCount > 10) {
+ //println("a button event from button3: "+theValue);
+ videoInput.loadVideo(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
+ controller.playVideo = 1;
+ }
+ }
+ 
+ void button02(int theValue) {
+ if (frameCount > 10) {
+ //println("a button event from button2: "+theValue);
+ videoInput.loadVideo(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
+ controller.playVideo = 1;
+ }
+ }
+ 
+ void button03(int theValue) {
+ if (frameCount > 10) {
+ //println("a button event from button2: "+theValue);
+ videoInput.loadVideo(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
+ controller.playVideo = 1;
+ }
+ }
+ 
+ void button04(int theValue) {
+ if (frameCount > 10) {
+ //println("a button event from button2: "+theValue);
+ controller.playVideo = 0;
+ videoInput.displayedVideo1.end = true;
+ videoInput.displayedVideo2.end = true;
+ }
+ }
+ 
+ void button05(int theValue) {
+ if (frameCount > 10) {
+ //println("a button event from button2: "+theValue);
+ videoInput.loadVideo(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
+ controller.playVideo = 1;
+ }
+ }
+ 
+ void button06(int theValue) {
+ if (frameCount > 10) {
+ //println("a button event from button2: "+theValue);
+ videoInput.loadVideo(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
+ controller.playVideo = 1;
+ }
+ }*/
 
 
 
 //midi input, wird üner controller an midiController weiter geleitet
 void controllerChange(ControlChange change) {
-  controller.updateKnob(change.number(),change.value());
+  controller.updateKnob(change.number(), change.value());
   println("Number:"+change.number());
   println("Value:"+change.value());
 }
 
 void noteOn(Note note) {
-  controller.updateButton(note.pitch(),true);
+  controller.updateButton(note.pitch(), true);
   println("Pitch:"+note.pitch());
 }
 
 void noteOff(Note note) {
-  controller.updateButton(note.pitch(),false);
+  controller.updateButton(note.pitch(), false);
   //println("Pitch:"+note.pitch());
 }
