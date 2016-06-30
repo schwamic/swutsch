@@ -29,7 +29,6 @@ class ChildApplet extends PApplet {
 
     //call graphicOutput to display stuff
     graphicOutput.drawGraphic();
-    //image(bildAnpassungen(graphicOutput.pg), 0, 0);
   }
 
   PImage bildAnpassungen(PImage input) {

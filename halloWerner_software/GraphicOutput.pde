@@ -44,9 +44,11 @@ class GraphicOutput {
     }
     try {
       pg.tint(255, 255-videoInput.displayedVideo1.fade);
-      pg.image(outPut.bildAnpassungen(videoInput.displayedVideo1.video), 0, 0, pa.width, pa.height);
+      //pg.image(outPut.bildAnpassungen(videoInput.displayedVideo1.video), 0, 0, pa.width, pa.height);
+      pg.image(videoInput.displayedVideo1.video, 0, 0, pa.width, pa.height);
       pg.tint(255, 255-videoInput.displayedVideo2.fade);
-      pg.image(outPut.bildAnpassungen(videoInput.displayedVideo2.video), 0, 0, pa.width, pa.height);
+      //pg.image(outPut.bildAnpassungen(videoInput.displayedVideo2.video), 0, 0, pa.width, pa.height);
+      pg.image(videoInput.displayedVideo2.video, 0, 0, pa.width, pa.height);
     } 
     catch(NullPointerException e) {
     }

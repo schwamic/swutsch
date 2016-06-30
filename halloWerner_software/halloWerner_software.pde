@@ -59,7 +59,8 @@ void settings() {
 void setup() {
   testImage = loadImage("image04.jpg");
 
-  //videoInput = new VideoInput(this);
+  videoInput = new VideoInput(this);
+  videoInput.videoInputSetup();
 
 
   //analysis has to be called before the output, since the generative animation needs sound values
@@ -77,7 +78,7 @@ void setup() {
 void draw() {
   background(210);
   controller.update();
-
+  videoInput.update();
   //update and draw sound Analysis, draw is inside the update since then I only have to iterate through all frequencys once
   soundAnalysis.update();
 }
@@ -87,7 +88,7 @@ void draw() {
 //this has to be done here because the libraries (midibus and ControlP5) only check for these methods in the PApplet itself, not in it's classes...
 //slow = 0; middle = 1; fast = 2; wave = 3; women = 4;
 
-/* Moved to Controller
+// Moved to Controller
  void button01(int theValue) {
  if (frameCount > 10) {
  //println("a button event from button3: "+theValue);
@@ -135,7 +136,7 @@ void draw() {
  videoInput.loadVideo(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
  controller.playVideo = 1;
  }
- }*/
+ }
 
 
 
