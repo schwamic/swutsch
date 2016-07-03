@@ -87,7 +87,7 @@ void draw() {
 void button01(int theValue) {
   if (frameCount > 10) {
     //println("a button event from button3: "+theValue);
-    videoInput.loadVideo(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
+    videoInput.loadVideoOnClick(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
     controller.playVideo = 1;
   }
 }
@@ -95,7 +95,7 @@ void button01(int theValue) {
 void button02(int theValue) {
   if (frameCount > 10) {
     //println("a button event from button2: "+theValue);
-    videoInput.loadVideo(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
+    videoInput.loadVideoOnClick(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
     controller.playVideo = 1;
   }
 }
@@ -103,7 +103,7 @@ void button02(int theValue) {
 void button03(int theValue) {
   if (frameCount > 10) {
     //println("a button event from button2: "+theValue);
-    videoInput.loadVideo(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
+    videoInput.loadVideoOnClick(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
     controller.playVideo = 1;
   }
 }
@@ -120,7 +120,7 @@ void button04(int theValue) {
 void button05(int theValue) {
   if (frameCount > 10) {
     //println("a button event from button2: "+theValue);
-    videoInput.loadVideo(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
+    videoInput.loadVideoOnClick(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
     controller.playVideo = 1;
   }
 }
@@ -129,7 +129,7 @@ void button05(int theValue) {
 void keyPressed() {
   if (frameCount > 10) {
     //println("a button event from button2: "+theValue);
-    videoInput.loadVideo(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
+    videoInput.loadVideoOnClick(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
     controller.playVideo = 1;
   }
 }
@@ -138,7 +138,7 @@ void keyPressed() {
 void button06(int theValue) {
   if (frameCount > 10) {
     //println("a button event from button2: "+theValue);
-    videoInput.loadVideo(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
+    videoInput.loadVideoOnClick(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
     controller.playVideo = 1;
   }
 }
@@ -147,7 +147,7 @@ void button06(int theValue) {
 void button07(int theValue) {
   if (frameCount > 10) {
     //println("a button event from button2: "+theValue);
-    videoInput.loadVideo(5, (int) random(-1, videoInput.custom01.size()), videoInput.videos);
+    videoInput.loadVideoOnClick(5, (int) random(-1, videoInput.custom01.size()), videoInput.videos);
     controller.playVideo = 1;
   }
 }
@@ -155,7 +155,7 @@ void button07(int theValue) {
 void button08(int theValue) {
   if (frameCount > 10) {
     //println("a button event from button2: "+theValue);
-    videoInput.loadVideo(6, (int) random(-1, videoInput.custom02.size()), videoInput.videos);
+    videoInput.loadVideoOnClick(6, (int) random(-1, videoInput.custom02.size()), videoInput.videos);
     controller.playVideo = 1;
   }
 }

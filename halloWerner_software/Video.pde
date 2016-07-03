@@ -6,7 +6,7 @@ class Video {
   Video(Movie video, int loopTimes) {
     this.loopTimes = loopTimes;
     this.video = video;
-    end = false;
+    end = true;
     play = false;
     fade = 255;
   }
