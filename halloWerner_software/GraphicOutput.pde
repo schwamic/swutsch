@@ -55,7 +55,7 @@ class GraphicOutput {
     pg.endDraw();
     
     //displays large size graphic output
-    //pa.image(outPut.bildAnpassungen(pg), 0, 0);
+    pa.image(outPut.bildAnpassungen(pg), 0, 0);
     pa.scale(0.1);
     
     //scale PGraphic and give it to LEDOutput

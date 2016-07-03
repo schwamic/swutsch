@@ -112,8 +112,8 @@ void button04(int theValue) {
   if (frameCount > 10) {
     //println("a button event from button2: "+theValue);
     controller.playVideo = 0;
-    videoInput.displayedVideo1.end = true;
-    videoInput.displayedVideo2.end = true;
+    videoInput.resetVideo(videoInput.displayedVideo1);
+    videoInput.resetVideo(videoInput.displayedVideo2);
   }
 }
 
@@ -124,6 +124,16 @@ void button05(int theValue) {
     controller.playVideo = 1;
   }
 }
+
+
+void keyPressed() {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    videoInput.loadVideo(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
+
 
 void button06(int theValue) {
   if (frameCount > 10) {

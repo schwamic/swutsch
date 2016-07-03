@@ -76,7 +76,7 @@ class Generative {
           float neighbourP2distance = dist(particles.get(i).pos.x, particles.get(i).pos.y, particles.get(i).neighbour2Pos.x, particles.get(i).neighbour2Pos.y);
 
           //if ( particles.get(i).partnerFrequency.currentValue > particles.get(i).partnerFrequency.maxValue) {
-          if ((particles.get(i).partnerFrequency.peaked == true && particles.get(i).partnerFrequency.currentValue > soundAnalysis.overallAverage*2) || neighbourP1distance+neighbourP2distance > 150 || particles.get(i).created == true) {
+          if ((particles.get(i).partnerFrequency.peaked == true && particles.get(i).partnerFrequency.currentValue > soundAnalysis.overallAverage*2) || neighbourP1distance+neighbourP2distance > 50 || particles.get(i).created == true) {
             // if (neighbourP1distance+neighbourP2distance > controller.triangleSize || particles.get(i).created == true) {
             if (distance < neighbourP1distance) {
 
@@ -97,7 +97,7 @@ class Generative {
 
       //ease out of current neighbour when finding new one
       if (particles.get(i).changeNeighbour == true) {
-        particles.get(i).energy -= particles.get(i).energy/4 + 5;
+        particles.get(i).energy -= particles.get(i).energy/1.5 + 10;
         if (particles.get(i).energy <= 10) {
           particles.get(i).neighbour1Pos = particles.get(i).newNeighbour1Pos;
           particles.get(i).neighbour2Pos = particles.get(i).newNeighbour2Pos;

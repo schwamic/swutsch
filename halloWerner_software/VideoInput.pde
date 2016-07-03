@@ -24,6 +24,16 @@ class VideoInput {
   VideoInput(PApplet pa) {
     this.pa = pa;
   }
+  
+  void resetVideo(Video v) {
+    v.end = false;
+    v.play = false;
+    v.fade = 255;
+    currentVideos = 0;
+    videoNumber1 = 0;
+    videoNumber2 = 0;
+    videoPlays = 0;
+  }
 
   void videoInputSetup() {
 
@@ -67,7 +77,7 @@ class VideoInput {
       displayedVideo1.end = false;
       videoPlays = 0;
       displayedVideo1.video.loop();
-      displayedVideo2.end = true;
+      //displayedVideo2.end = true;
       println("loadVideo1");
     } else if ( displayedVideo1.play == true && displayedVideo2.play == false) {
       videoNumber2 = i;
