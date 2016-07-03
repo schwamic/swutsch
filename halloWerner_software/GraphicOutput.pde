@@ -53,10 +53,22 @@ class GraphicOutput {
     catch(NullPointerException e) {
     }
     pg.endDraw();
-    //pa.scale(0.1);
-   // pg = (PGraphics) outPut.bildAnpassungen(pg);
-    ledOutput.out(pg);
-    pa.image(pg, 0, 0);
+    
+    //displays large size graphic output
+    //pa.image(outPut.bildAnpassungen(pg), 0, 0);
+    pa.scale(0.1);
+    
+    //scale PGraphic and give it to LEDOutput
+    PGraphics scaledGraphic = pa.createGraphics(pa.width, pa.height);
+    scaledGraphic.beginDraw();
+    scaledGraphic.image(outPut.bildAnpassungen(pg), 0, 0);
+    scaledGraphic.endDraw();
+    ledOutput.out(scaledGraphic);
+    
+    
+    //displays scaled down graphic output for LEDs
+    //pa.image(scaledGraphic, 0, 0);
+    
 
 
     //you can scale PGraphics with pa.scale(0.1 to 1)

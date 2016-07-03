@@ -6,9 +6,11 @@ class VideoInput {
   ArrayList<Video> fast = new ArrayList<Video>();
   ArrayList<Video> wave = new ArrayList<Video>();
   ArrayList<Video> women = new ArrayList<Video>();
+  ArrayList<Video> custom01 = new ArrayList<Video>();
+  ArrayList<Video> custom02 = new ArrayList<Video>();
 
 
-  ArrayList[] videos = new ArrayList[5];
+  ArrayList[] videos = new ArrayList[7];
 
   int currentVideos = 0;
 
@@ -30,6 +32,8 @@ class VideoInput {
     videos[2] = loadVideos("Fast", fast);
     videos[3] = loadVideos("Wave", wave);
     videos[4] = loadVideos("Women", women);
+    videos[5] = loadVideos("Custom01", custom01);
+    videos[6] = loadVideos("Custom02", custom02);
 
 
     displayedVideo1 = new Video(null, 0);

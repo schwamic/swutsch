@@ -11,7 +11,7 @@ class ChildApplet extends PApplet {
   public void settings() {
     //size(1280, 720);
     //size(displayWidth,displayHeight);
-    size(640,360);
+    size(800,320);
   }
 
   public void setup() {

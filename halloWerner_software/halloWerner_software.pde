@@ -1,6 +1,3 @@
-PImage testImage;
-
-
 //import libraries for sound detection
 import ddf.minim.analysis.*;
 import ddf.minim.*;
@@ -57,8 +54,6 @@ void settings() {
 }
 
 void setup() {
-  testImage = loadImage("image04.jpg");
-
   videoInput = new VideoInput(this);
   videoInput.videoInputSetup();
 
@@ -89,54 +84,71 @@ void draw() {
 //slow = 0; middle = 1; fast = 2; wave = 3; women = 4;
 
 // Moved to Controller
- void button01(int theValue) {
- if (frameCount > 10) {
- //println("a button event from button3: "+theValue);
- videoInput.loadVideo(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
- controller.playVideo = 1;
- }
- }
- 
- void button02(int theValue) {
- if (frameCount > 10) {
- //println("a button event from button2: "+theValue);
- videoInput.loadVideo(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
- controller.playVideo = 1;
- }
- }
- 
- void button03(int theValue) {
- if (frameCount > 10) {
- //println("a button event from button2: "+theValue);
- videoInput.loadVideo(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
- controller.playVideo = 1;
- }
- }
- 
- void button04(int theValue) {
- if (frameCount > 10) {
- //println("a button event from button2: "+theValue);
- controller.playVideo = 0;
- videoInput.displayedVideo1.end = true;
- videoInput.displayedVideo2.end = true;
- }
- }
- 
- void button05(int theValue) {
- if (frameCount > 10) {
- //println("a button event from button2: "+theValue);
- videoInput.loadVideo(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
- controller.playVideo = 1;
- }
- }
- 
- void button06(int theValue) {
- if (frameCount > 10) {
- //println("a button event from button2: "+theValue);
- videoInput.loadVideo(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
- controller.playVideo = 1;
- }
- }
+void button01(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button3: "+theValue);
+    videoInput.loadVideo(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
+
+void button02(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    videoInput.loadVideo(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
+
+void button03(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    videoInput.loadVideo(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
+
+void button04(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    controller.playVideo = 0;
+    videoInput.displayedVideo1.end = true;
+    videoInput.displayedVideo2.end = true;
+  }
+}
+
+void button05(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    videoInput.loadVideo(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
+
+void button06(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    videoInput.loadVideo(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
+
+
+void button07(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    videoInput.loadVideo(5, (int) random(-1, videoInput.custom01.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
+
+void button08(int theValue) {
+  if (frameCount > 10) {
+    //println("a button event from button2: "+theValue);
+    videoInput.loadVideo(6, (int) random(-1, videoInput.custom02.size()), videoInput.videos);
+    controller.playVideo = 1;
+  }
+}
 
 
 
