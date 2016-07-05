@@ -68,7 +68,6 @@ class VideoInput {
   void loadVideoOnClick(int n, int i, ArrayList[] b) {
 
     ArrayList<Video> m = b[n];
-    println("loadVideos : " + n );
 
     if (displayedVideo1.play == false && displayedVideo2.play == false) {
       currentVideos = n;
@@ -145,18 +144,15 @@ class VideoInput {
       if (v.video.time() >= v.video.duration()-0.12 && v.play == true && videoPlays < v.loopTimes) {
         v.video.jump(0);
         videoPlays += 1;
-        println("Video played: " + videoPlays + "times");
       }
       //next video in folder
       else if (v.video.time() >= v.video.duration()-0.12 && videoPlays >= v.loopTimes && vN < videos[currentVideos].size()-1 && v.play == true) {
-        println("a" + pa.frameCount);
         videoPlays = 0;
         vN += 1;
         loadVideo(currentVideos, vN, videos, v);
       }
       //random video in same folder
       else if (v.video.time() >= v.video.duration()-0.12 && videoPlays >= v.loopTimes && vN >= videos[currentVideos].size()-1 && v.play == true) {
-        println( v.video.duration() + " b ");
         videoPlays = 0;
         vN = (int) random(-1, videos[currentVideos].size()- 1);
         loadVideo(currentVideos, vN, videos, v);
