@@ -52,7 +52,8 @@ class VideoInput {
 
   ArrayList loadVideos(String f1, ArrayList<Video> m) {
     File[] files;
-    File f = new File(dataPath("/"+f1));
+   // Windows File f = new File(dataPath("/"+f1));
+    File f = new File(dataPath(f1));  //Mac
     files = f.listFiles();
     for (int i = 0; i< files.length; i++) {
       int loopTimes = 0;
@@ -125,7 +126,7 @@ class VideoInput {
 
   void updateVideo(Video v, int vN) {
     try {
-      println(vN + "    " + v.video.time() + "    //    " + v.loopTimes + "   " + v.video.duration());
+      //println(vN + "    " + v.video.time() + "    //    " + v.loopTimes + "   " + v.video.duration());
       if (v.video.available() == true && v.play == true) {
         v.video.read();
       }

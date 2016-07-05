@@ -51,57 +51,65 @@ class MidiController {
     if (on) {
       switch(pitch) {
       case 36: 
-        button01 = true;
+        //button01 = true;
+        button05(0);
         break;
       case 37: 
-        button02 = true;
+        button06(0);
+        //button02 = true;
         break;
       case 38: 
-        button03 = true;
+        button07(0);
+        //button03 = true;
         break;
       case 39: 
-        button04 = true;
+        button08(0);
+        //button04 = true;
         break;
       case 40: 
-        button05 = true;
+        button01(0);
+        //button05 = true;
         break;
       case 41: 
-        button06 = true;
+        button02(0);
+        //button06 = true;
         break;
       case 42: 
-        button07 = true;
+        button03(0);
+        //button07 = true;
         break;
       case 43: 
-        button08 = true;
+        button04(0);
+        //button08 = true;
         break;
       }
     } else {
       /*switch(pitch) {
-      case 36: 
-        button01 = false;
-        break;
-      case 37: 
-        button02 = false;
-        break;
-      case 38: 
-        button03 = false;
-        break;
-      case 39: 
-        button04 = false;
-        break;
-      case 40: 
-        button05 = false;
-        break;
-      case 41: 
-        button06 = false;
-        break;
-      case 42: 
-        button07 = false;
-        break;
-      case 43: 
-        button08 = false;
-        break;
-      }*/
+       case 36: 
+       button01 = false;
+       break;
+       case 37: 
+       button02 = false;
+       break;
+       case 38: 
+       button03 = false;
+       break;
+       case 39: 
+       button04 = false;
+       break;
+       case 40: 
+       button05 = false;
+       break;
+       case 41: 
+       button06 = false;
+       break;
+       case 42: 
+       button07 = false;
+       break;
+       case 43: 
+       button08 = false;
+       break;
+       }*/
     }
   }
 }

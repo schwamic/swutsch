@@ -19,7 +19,9 @@ class GraphicOutput {
     generative.setupParticles();
 
     //create output to LEDs
+    //LED OUTPUT FUNCTIONS
     ledOutput = new LEDOutput(pa);
+    ledOutput.setupDisplay();
   }
 
 
@@ -34,6 +36,7 @@ class GraphicOutput {
 
     //draw everything into the PGraphic pg to later scale to LED screen size
     pg.beginDraw();
+    pg.scale(0.1);
     //pg.background(0);
     pg.fill(0, 0, 0, 180);
     pg.rect(0, 0, pa.width, pa.height);
@@ -56,18 +59,22 @@ class GraphicOutput {
     
     //displays large size graphic output
     //pa.image(outPut.bildAnpassungen(pg), 0, 0);
-    pa.scale(0.1);
+    
+    //println("graphicOutput Draw call");
     
     //scale PGraphic and give it to LEDOutput
-    PGraphics scaledGraphic = pa.createGraphics(pa.width, pa.height);
+    PGraphics scaledGraphic = pa.createGraphics(80, 32);
     scaledGraphic.beginDraw();
     scaledGraphic.image(outPut.bildAnpassungen(pg), 0, 0);
     scaledGraphic.endDraw();
-    ledOutput.out(scaledGraphic);
+    
+    //LED OUTPUT FUNCTIONS
+    ledOutput.getGraphic(scaledGraphic);
+    ledOutput.drawDisplay();
     
     
     //displays scaled down graphic output for LEDs
-    pa.image(scaledGraphic, 0, 0);
+    pa.image(scaledGraphic, 0, 0, pa.width, pa.height);
     
 
 
