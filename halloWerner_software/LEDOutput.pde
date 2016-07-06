@@ -552,8 +552,8 @@ class LEDOutput {
   //Erstellt die Reihenfolge für die Module.
   float[] makeRightOrder(float[] rgb, int[] order) {
     int count = 1;
-    float[] newrgb = new float[735];      //300*3=900 
-    //float[] newrgb = new float[900]; 
+    //float[] newrgb = new float[735];      //245*3=735 
+    float[] newrgb = new float[900];    //max=300 -> 3*300=900
     for (int i = 0; i<order.length; i++) {
       if (order[i] != -1) {
         newrgb[(count*3)-3] = rgb[(order[i]*3)-3];
