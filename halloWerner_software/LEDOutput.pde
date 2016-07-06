@@ -137,7 +137,7 @@ class LEDOutput {
     
     println(newrgb7.length); //-> 735 -> 3*245 -> muss noch auf 300 angepasst werden. -> 900
                               // Auch Arduino !
-
+    println(dataLED.length);
     //***************
 
     myPort.write(dataLED);
