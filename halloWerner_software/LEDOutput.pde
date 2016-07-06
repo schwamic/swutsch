@@ -96,19 +96,46 @@ class LEDOutput {
     moduleAufbau();
     //drawAll();
 
-    //drawM1();
-    //drawM2();
-    //drawM3();
-    //drawM4();
+    /* 
+     drawM1();
+     drawM2();
+     drawM3();
+     drawM4();
+     */
     //drawM5();
-    //drawM6();
-    drawM7();
-    // drawM8();
-    //drawM9();
-    //drawM10();*/
 
-    float[] newrgb = makeRightOrder(rgbModules[6], moduleOrder2); //hier richtiges Modul übergeben!
-    makeDataLED(newrgb);
+    //drawM6();
+
+    drawM7();
+    drawM8();
+    drawM9();
+
+    //drawM10();
+
+    //***************
+    //HIER MUSS (newrgb1 mit newrgb6) und (newrgb5 mit newrgb10) zusammengefuegt werden.
+    /*
+  float[] newrgb2 = makeRightOrder(rgbModules[1], moduleOrder2); //hier richtiges Modul übergeben!
+     float[] newrgb3 = makeRightOrder(rgbModules[2], moduleOrder3); //hier richtiges Modul übergeben!
+     float[] newrgb4 = makeRightOrder(rgbModules[3], moduleOrder4); //hier richtiges Modul übergeben!*/
+    //float[] newrgb1u6 = ?
+    float[] newrgb7 = makeRightOrder(rgbModules[6], moduleOrder7); //hier richtiges Modul übergeben!
+    float[] newrgb8 = makeRightOrder(rgbModules[8], moduleOrder8); //hier richtiges Modul übergeben!
+    float[] newrgb9 = makeRightOrder(rgbModules[7], moduleOrder9); //hier richtiges Modul übergeben!
+
+    //float[] newrgb5u10 = ?
+    //println(newrgb);
+    makeDataLED(newrgb7);
+    makeDataLED(newrgb7);
+    makeDataLED(newrgb8);
+    makeDataLED(newrgb9);
+    makeDataLED(newrgb7);
+    makeDataLED(newrgb8);
+    makeDataLED(newrgb9);
+    makeDataLED(newrgb7);
+
+    //***************
+
     myPort.write(dataLED);
     clearAll();
     //delay(10);
