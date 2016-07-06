@@ -11,7 +11,7 @@ class ChildApplet extends PApplet {
   public void settings() {
     //size(1280, 720);
     //size(displayWidth,displayHeight);
-    size(800,320);
+    size(800, 320);
   }
 
   public void setup() {
@@ -31,7 +31,7 @@ class ChildApplet extends PApplet {
     graphicOutput.drawGraphic();
   }
 
-  PImage bildAnpassungen(PImage input) {
+  PImage videoAlteration(PImage input) {
     PGraphics output;
     output = createGraphics(input.width, input.height);
     output.beginDraw();
@@ -55,7 +55,7 @@ class ChildApplet extends PApplet {
         //h=(h/360)*232+param01;//test
         h= 240+newHSB((int)h)/2*param01/127;//final
         s=(param02-64)*2+s;
-        if(s > 127) s= 127;
+        if (s > 127) s= 127;
         //b=(param03-64)*2+b;
         a=param03;
 
@@ -70,5 +70,42 @@ class ChildApplet extends PApplet {
   int newHSB(int oldHSB) {
     if (oldHSB>0 && oldHSB<240)return 360-oldHSB/2;
     else return oldHSB;
+  }
+
+  PImage generativeAlteration(PImage input) {
+    PGraphics output;
+    output = createGraphics(input.width, input.height);
+    output.beginDraw();
+    output.image(input, 0, 0);
+    output.endDraw();
+
+    input.loadPixels();
+    for (int y=0; y<input.height; y++) {
+      for (int x= 0; x<input.width; x++) {
+        color c = input.get(x, y);
+        float h = hue(c);
+        float s = saturation(c);
+        float b = brightness(c);
+        float a = 0;
+        /* int r = (c >> 16) & 0xFF;  
+         int g = (c >> 8) & 0xFF;   
+         int b = c & 0xFF;*/
+
+        //h=(param01-64)*2+h;//alle farben ändern sich
+        //h=232+param01;//tint
+        //h=(h/360)*232+param01;//test
+        h= 240+newHSB((int)h)/2*param01/127;//final
+        s=(param02-64)*2+s;
+        if (s > 127) s= 127;
+        //b=(param03-64)*2+b;
+        a=param05;
+
+        output.pixels[y*input.width+x] = color(h, s, b, a);
+      }
+    }
+    output.updatePixels();
+    //output.blend(input, 0, 0, input.width, input.height, 0, 0, input.width, input.height, OVERLAY);
+    if (!button01)return output;
+    else return input;
   }
 }
