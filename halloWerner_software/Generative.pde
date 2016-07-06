@@ -22,15 +22,6 @@ class Generative {
     }
   }
 
-  float getRandomExcept(float minValue, float maxValue, float exceptValue) {
-    float r = random(minValue, maxValue);
-    if (r != exceptValue) {
-      return r;
-    } else {
-      return getRandomExcept(minValue, maxValue, exceptValue);
-    }
-  }
-
   void updateParticles() {
     //iterate thorugh all particles
     for (int i = 0; i < particles.size(); i++) {

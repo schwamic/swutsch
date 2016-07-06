@@ -27,8 +27,6 @@ class VideoInput {
 
   void resetVideo(Video v) {
     v.end = true;
-    v.play = false;
-    v.fade = 255;
     currentVideos = 0;
     videoNumber1 = 0;
     videoNumber2 = 0;
@@ -52,8 +50,7 @@ class VideoInput {
 
   ArrayList loadVideos(String f1, ArrayList<Video> m) {
     File[] files;
-   // Windows File f = new File(dataPath("/"+f1));
-    File f = new File(dataPath(f1));  //Mac
+    File f = new File(dataPath(f1));
     files = f.listFiles();
     for (int i = 0; i< files.length; i++) {
       int loopTimes = 0;
@@ -79,7 +76,6 @@ class VideoInput {
       displayedVideo1.end = false;
       videoPlays = 0;
       displayedVideo1.video.noLoop();
-      println("loadVideo1");
     } else if ( displayedVideo1.play == true && displayedVideo2.play == false) {
       currentVideos = n;
       videoNumber2 = i;
@@ -90,7 +86,6 @@ class VideoInput {
       videoPlays = 0;
       displayedVideo2.video.noLoop();
       displayedVideo1.end = true;
-      println("loadVideo2");
     } else if (displayedVideo2.play == true && displayedVideo1.play == false) {
       currentVideos = n;
       videoNumber1 = i;
@@ -101,7 +96,6 @@ class VideoInput {
       displayedVideo1.video.noLoop();
       videoPlays = 0;
       displayedVideo2.end = true;
-      println("loadVideo1");
     }
   }
 

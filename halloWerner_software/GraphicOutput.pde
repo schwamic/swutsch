@@ -38,18 +38,24 @@ class GraphicOutput {
 
     pgGenerative.beginDraw();
     pgGenerative.scale(0.1);
+    pgGenerative.background(0);
     generative.drawTriangles(pgGenerative);
     pgGenerative.endDraw();
 
 
     pgVideo.beginDraw();
     pgVideo.scale(0.1);
+    pgVideo.background(0);
     try {
+      println("video1 : " + (255-videoInput.displayedVideo1.fade));
       pgVideo.tint(255, 255-videoInput.displayedVideo1.fade);
-      //pg.image(outPut.bildAnpassungen(videoInput.displayedVideo1.video), 0, 0, pa.width, pa.height);
       pgVideo.image(videoInput.displayedVideo1.video, 0, 0, pa.width, pa.height);
+    } 
+    catch(NullPointerException e) {
+    }
+    try {
+      println("video2: " + (255-videoInput.displayedVideo2.fade));
       pgVideo.tint(255, 255-videoInput.displayedVideo2.fade);
-      //pg.image(outPut.bildAnpassungen(videoInput.displayedVideo2.video), 0, 0, pa.width, pa.height);
       pgVideo.image(videoInput.displayedVideo2.video, 0, 0, pa.width, pa.height);
     } 
     catch(NullPointerException e) {
@@ -64,8 +70,7 @@ class GraphicOutput {
     //scale PGraphic and give it to LEDOutput
     PGraphics scaledGraphic = pa.createGraphics(80, 32);
     scaledGraphic.beginDraw();
-    scaledGraphic.fill(0);
-    scaledGraphic.rect(0, 0, scaledGraphic.width, scaledGraphic.height);
+    scaledGraphic.background(0);
     scaledGraphic.image(outPut.videoAlteration(pgVideo), 0, 0);
     scaledGraphic.image(outPut.generativeAlteration(pgGenerative), 0, 0);
     scaledGraphic.endDraw();
@@ -76,7 +81,8 @@ class GraphicOutput {
 
 
     //displays scaled down graphic output for LEDs
-    pa.image(scaledGraphic, 0, 0, pa.width, pa.height);
+    //pa.image(scaledGraphic, 0, 0, pa.width, pa.height);
+    pa.image(scaledGraphic, 0, 0);
 
 
 
