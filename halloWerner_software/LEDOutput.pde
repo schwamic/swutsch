@@ -67,6 +67,7 @@ class LEDOutput {
   //MODULE
   int[][] allModules;
   float[][] rgbModules;
+
   void setupDisplay() {
 
     println(Serial.list()[3]);
@@ -88,7 +89,7 @@ class LEDOutput {
     state2=5;
     allModules = new int[10][0];
     rgbModules = new float[10][0];
-    dataLED =  new byte[5880];    //Hier für 245LEDs pro Modul -> muss später angepasst werden!!!
+    dataLED =  new byte[0];    //Hier für 245LEDs pro Modul -> muss später angepasst werden!!!
   }
 
   void drawDisplay() {
@@ -195,7 +196,7 @@ class LEDOutput {
   //Erstellt aus der RGB-Array ein Byte-Array
   void makeDataLED(float[] rgbArray) {
     for (int i = 0; i<rgbArray.length; i++) {
-      dataLED[i] = byte(rgbArray[i]);
+      dataLED = append(dataLED, byte(rgbArray[i]));
       //println(dataLED[i]);
     }
   }
@@ -205,7 +206,7 @@ class LEDOutput {
     Pixels = new int[0];
     allModules = new int[10][0];
     rgbModules = new float[10][0];
-    dataLED =  new byte[5880];
+    dataLED =  new byte[0];
     count = 0;
     state1=0;
     state2=5;
@@ -552,8 +553,8 @@ class LEDOutput {
   //Erstellt die Reihenfolge für die Module.
   float[] makeRightOrder(float[] rgb, int[] order) {
     int count = 1;
-    //float[] newrgb = new float[735];      //245*3=735 
-    float[] newrgb = new float[900];    //max=300 -> 3*300=900
+    float[] newrgb = new float[735];      //245*3=735 
+    //float[] newrgb = new float[900];    //max=300 -> 3*300=900
     for (int i = 0; i<order.length; i++) {
       if (order[i] != -1) {
         newrgb[(count*3)-3] = rgb[(order[i]*3)-3];
