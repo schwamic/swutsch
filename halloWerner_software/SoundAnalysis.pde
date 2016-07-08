@@ -33,7 +33,7 @@ class SoundAnalysis {
 
   void setup() {
 
-    float scaleAvg = 5;
+    float scaleAvg = 2.5;
 
     pastAverages = new float[avgSeconds*setFrameRate];
 

@@ -47,14 +47,14 @@ class GraphicOutput {
     pgVideo.scale(0.1);
     pgVideo.background(0);
     try {
-      println("video1 : " + (255-videoInput.displayedVideo1.fade));
+      //println("video1 : " + (255-videoInput.displayedVideo1.fade));
       pgVideo.tint(255, 255-videoInput.displayedVideo1.fade);
       pgVideo.image(videoInput.displayedVideo1.video, 0, 0, pa.width, pa.height);
     } 
     catch(NullPointerException e) {
     }
     try {
-      println("video2: " + (255-videoInput.displayedVideo2.fade));
+      //println("video2: " + (255-videoInput.displayedVideo2.fade));
       pgVideo.tint(255, 255-videoInput.displayedVideo2.fade);
       pgVideo.image(videoInput.displayedVideo2.video, 0, 0, pa.width, pa.height);
     } 
@@ -76,8 +76,8 @@ class GraphicOutput {
     scaledGraphic.endDraw();
 
     //LED OUTPUT FUNCTIONS
-    //ledOutput.getGraphic(scaledGraphic);
-    //ledOutput.drawDisplay();
+    ledOutput.getGraphic(scaledGraphic);
+    ledOutput.drawDisplay();
 
 
     //displays scaled down graphic output for LEDs
