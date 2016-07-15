@@ -11,39 +11,34 @@ class MidiController {
     List<String> midiList = Arrays.asList(midiArray);
     if (midiList.contains("LPD8")) {
       myBus = new MidiBus(pa, "LPD8", 0);
-      GUI = false;
-    } else
-    {
-      GUI = true;
     }
   }
 
   void updateKnob(int number, int value) {
     switch(number) {
     case 1: 
-      param01=value;
-      println("updateKnob "+value);
+      controller.gui.hueSlider.value= (int) map(value, 0, 127, controller.gui.hueSlider.minValue, controller.gui.hueSlider.maxValue);
       break;
     case 2: 
-      param02=value;
+      controller.gui.saturationSlider.value=(int) map(value, 0, 127, controller.gui.saturationSlider.minValue, controller.gui.saturationSlider.maxValue);
       break;
     case 3: 
-      param03=value;
+      controller.gui.videoAlphaSlider.value= (int) map(value, 0, 127, controller.gui.videoAlphaSlider.minValue, controller.gui.videoAlphaSlider.maxValue);
       break;
     case 4: 
-      param04=value;
+      //param04=value;
       break;
     case 5: 
-      param05=value;
+      controller.gui.generativAlphaSlider.value= (int) map(value, 0, 127, controller.gui.generativAlphaSlider.minValue, controller.gui.generativAlphaSlider.maxValue);
       break;
     case 6: 
-      param06=value;
+      controller.gui.pitchSlider.value= (int) map(value, 0, 127, controller.gui.pitchSlider.minValue, controller.gui.pitchSlider.maxValue);
       break;
     case 7: 
-      param07=value;
+      //param07=value;
       break;
     case 8: 
-      param08=value;
+      //param08=value;
       break;
     }
   }
@@ -52,65 +47,30 @@ class MidiController {
       println("abc");
       switch(pitch) {
       case 36: 
-        //button01 = true;
-        button05(0);
+        women();
         break;
       case 37: 
-        button06(0);
-        //button02 = true;
+        wave();
         break;
       case 38: 
-        button07(0);
-        //button03 = true;
+        custom01();
         break;
       case 39: 
-        button08(0);
-        //button04 = true;
+        custom02();
         break;
       case 40: 
-        button01(0);
-        //button05 = true;
+        fast();
         break;
       case 41: 
-        button02(0);
-        //button06 = true;
+        middle();
         break;
       case 42: 
-        button03(0);
-        //button07 = true;
+        slow();
         break;
       case 43: 
-        button04(0);
-        //button08 = true;
+        reset();
         break;
       }
-    } else {
-      /*switch(pitch) {
-       case 36: 
-       button01 = false;
-       break;
-       case 37: 
-       button02 = false;
-       break;
-       case 38: 
-       button03 = false;
-       break;
-       case 39: 
-       button04 = false;
-       break;
-       case 40: 
-       button05 = false;
-       break;
-       case 41: 
-       button06 = false;
-       break;
-       case 42: 
-       button07 = false;
-       break;
-       case 43: 
-       button08 = false;
-       break;
-       }*/
     }
   }
 }

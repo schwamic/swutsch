@@ -1,157 +1,115 @@
 class GUI {
-  ControlP5 cp5;
   PApplet pa;
-  Knob knob1;
-  Knob knob2;
-  Knob knob3;
-  Knob knob4;
-  Knob knob5;
-  Knob knob6;
-  Knob knob7;
-  Knob knob8;
+
+
+  Slider hueSlider;
+  Slider saturationSlider;
+  Slider videoAlphaSlider;
+  Slider generativAlphaSlider;
+  Slider pitchSlider;
+
+  Button[] buttons;
+  Button fast;
+  Button middle;
+  Button slow;
+  Button reset;
+  Button women;
+  Button wave;
+  Button custom01;
+  Button custom02;
+
 
   GUI(PApplet sketch) {
     pa = sketch;
   }
 
   void init() {
-    cp5 = new ControlP5(pa);
 
-    knob1 = cp5.addKnob("param01")
-      .setRange(0, 127)
-      .setValue(param01)
-      .setPosition(440, 0)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;
 
-    knob2 = cp5.addKnob("param02")
-      .setRange(0, 127)
-      .setValue(param02)
-      .setPosition(550, 0)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;
+    //Slider
+    int SliderXPos = 500;
+    hueSlider = new Slider("Hue", new PVector(50+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    saturationSlider = new Slider("Saturation", new PVector(200+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    videoAlphaSlider = new Slider("Video Alpha", new PVector(350+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    generativAlphaSlider = new Slider("Generativ Alpha", new PVector(50+SliderXPos, 250), new PVector(50, 150), 50, 0, 255);
+    pitchSlider = new Slider("Pitch", new PVector(200+SliderXPos, 250), new PVector(50, 150), 50, 0, 100);
 
-    knob3 = cp5.addKnob("param03")
-      .setRange(0, 127)
-      .setValue(param03)
-      .setPosition(660, 0)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;
-    knob4 = cp5.addKnob("param04")
-      .setRange(0, 127)
-      .setValue(param04)
-      .setPosition(770, 0)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;   
-    knob5 = cp5.addKnob("param05")
-      .setRange(0, 127)
-      .setValue(param05)
-      .setPosition(440, 110)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;
-    knob6 = cp5.addKnob("param06")
-      .setRange(0, 127)
-      .setValue(param06)
-      .setPosition(550, 110)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;
-    knob7 = cp5.addKnob("param07")
-      .setRange(0, 127)
-      .setValue(param07)
-      .setPosition(660, 110)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;   
-    knob8 = cp5.addKnob("param08")
-      .setRange(0, 127)
-      .setValue(param08)
-      .setPosition(770, 110)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;   
-
-    cp5.addButton("button01")
-      .setValue(0)
-      .setPosition(0, 0)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button02")
-      .setValue(0)
-      .setPosition(110, 0)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button03")
-      .setValue(0)
-      .setPosition(220, 0)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button04")
-      .setValue(0)
-      .setPosition(330, 0)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button05")
-      .setValue(0)
-      .setPosition(0, 110)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button06")
-      .setValue(0)
-      .setPosition(110, 110)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button07")
-      .setValue(0)
-      .setPosition(220, 110)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button08")
-      .setValue(0)
-      .setPosition(330, 110)
-      .setSize(100, 100)
-      ;
-  }
-  public void white(int theValue) {
-    println("a button event from white: "+theValue);
+    //Buttons
+    int ButtonXPos = 50;
+    buttons = new Button[8];
+    fast = new Button("Schnelle Videos", new PVector (50+ButtonXPos, 50), new PVector (50, 50));
+    buttons[0] = fast;
+    middle = new Button("Mittlere Videos", new PVector (150+ButtonXPos, 50), new PVector (50, 50));
+    buttons[1] = middle;
+    slow = new Button("Langsame Videos", new PVector (250+ButtonXPos, 50), new PVector (50, 50));
+    buttons[2] = slow;
+    reset = new Button("Stop Videos", new PVector (350+ButtonXPos, 50), new PVector (50, 50));
+    buttons[3] = reset;
+    women = new Button("Frauen", new PVector(50+ButtonXPos, 150), new PVector(50, 50));
+    buttons[4] = women;
+    wave = new Button("Wellen", new PVector(150+ButtonXPos, 150), new PVector(50, 50));
+    buttons[5] = wave;
+    custom01 = new Button("Eigene Videos 1", new PVector(250+ButtonXPos, 150), new PVector(50, 50));
+    buttons[6] = custom01;
+    custom02 = new Button("Eigene Videos 2", new PVector(350+ButtonXPos, 150), new PVector(50, 50));
+    buttons[7] = custom02;
   }
   void update() {
-    param01=(int)knob1.getValue();
-    param02=(int)knob2.getValue();
-    param03=(int)knob3.getValue();
-    param04=(int)knob4.getValue();
-    param05=(int)knob5.getValue();
-    param06=(int)knob6.getValue();
-    param07=(int)knob7.getValue();
-    param08=(int)knob8.getValue();
+    //Slider
+    hueSlider.update();
+    saturationSlider.update();
+    videoAlphaSlider.update();
+    generativAlphaSlider.update();
+    pitchSlider.update();
+
+    //Buttons
+    for (Button b : buttons) {
+      buttonUpdate(b);
+    }
+  }
+
+
+  void buttonUpdate(Button b) {
+    b.drawSlider();
+    String name = b.name;
+    if (mousePressed) {
+      if (mouseX > b.pos.x && mouseX < (b.pos.x+b.size.x) && mouseY > b.pos.y && mouseY < (b.pos.y + b.size.y)) {
+        if (b.pressed == false) {
+          for (Button bt : buttons) {
+            bt.active = false;
+          }
+          if (name == "Schnelle Videos")
+            fast();
+
+          else if (name == "Mittlere Videos")
+            middle();
+
+          else if (name == "Langsame Videos")
+            slow();
+
+          else if (name == "Stop Videos") 
+            reset();
+
+          else if (name == "Wellen") 
+            wave();
+
+          else if (name == "Frauen")
+            women();
+
+          else if (name == "Eigene Videos 1")
+            custom01();
+
+          else if (name == "Eigene Videos 2") 
+            custom02();
+
+          b.value = -b.value;
+
+          b.active = true;
+        }
+        b.pressed = true;
+      }
+    } else {
+      b.pressed = false;
+    }
   }
 }

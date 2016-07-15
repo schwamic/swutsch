@@ -27,26 +27,6 @@ VideoInput videoInput;
 //must be setFrameRate % 5 = 0 -- used in some calculations in soundAnalysis
 int setFrameRate = 30;
 
-//control parameters
-float speed = 1.0;
-int param01 = 127;
-int param02 = 64;
-int param03 = 127;
-int param04 = 0;
-int param05 = 0;
-int param06 = 0;
-int param07 = 0;
-int param08 = 0;
-boolean button01 = false;
-boolean button02 = false;
-boolean button03 = false;
-boolean button04 = false;
-boolean button05 = false;
-boolean button06 = false;
-boolean button07 = false;
-boolean button08 = false;
-boolean GUI = false;
-
 
 void settings() {
   size(1000, 500);
@@ -57,14 +37,13 @@ void setup() {
   videoInput = new VideoInput(this);
   videoInput.videoInputSetup();
 
+  controller = new Controller(this);
+  controller.init();
 
   //analysis has to be called before the output, since the generative animation needs sound values
   soundAnalysis = new SoundAnalysis(this);
   soundAnalysis.setup();
   outPut = new ChildApplet();
-
-  controller = new Controller(this);
-  controller.init();
 
   surface.setTitle("Input - main sketch");
   frameRate(setFrameRate);
@@ -74,90 +53,55 @@ void draw() {
   background(210);
   controller.update();
   videoInput.update();
+  
   //update and draw sound Analysis, draw is inside the update since then I only have to iterate through all frequencys once
   soundAnalysis.update();
 }
 
 
-
-//this has to be done here because the libraries (midibus and ControlP5) only check for these methods in the PApplet itself, not in it's classes...
-//slow = 0; middle = 1; fast = 2; wave = 3; women = 4;
-
-// Moved to Controller
-void button01(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button3: "+theValue);
-    videoInput.loadVideoOnClick(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
-}
-
-void button02(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideoOnClick(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
-}
-
-void button03(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
+void fast() {
     videoInput.loadVideoOnClick(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
     controller.playVideo = 1;
-  }
 }
 
-void button04(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
+void middle() {
+    videoInput.loadVideoOnClick(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
+    controller.playVideo = 1;
+}
+
+void slow() {
+    videoInput.loadVideoOnClick(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
+    controller.playVideo = 1;
+}
+
+void reset() {
     controller.playVideo = 0;
     videoInput.resetVideo(videoInput.displayedVideo1);
     videoInput.resetVideo(videoInput.displayedVideo2);
-  }
 }
 
-void button05(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
+void wave() {
     videoInput.loadVideoOnClick(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
     controller.playVideo = 1;
-  }
 }
 
-
-void keyPressed() {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideoOnClick(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
-}
-
-
-void button06(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
+void women() {
     videoInput.loadVideoOnClick(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
     controller.playVideo = 1;
-  }
 }
 
 
-void button07(int theValue) {
-  if (frameCount > 10) {
+void custom01() {
     //println("a button event from button2: "+theValue);
     videoInput.loadVideoOnClick(5, (int) random(-1, videoInput.custom01.size()), videoInput.videos);
     controller.playVideo = 1;
-  }
 }
 
-void button08(int theValue) {
-  if (frameCount > 10) {
+void custom02() {
     //println("a button event from button2: "+theValue);
     videoInput.loadVideoOnClick(6, (int) random(-1, videoInput.custom02.size()), videoInput.videos);
     controller.playVideo = 1;
-  }
+
 }
 
 

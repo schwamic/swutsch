@@ -53,19 +53,18 @@ class ChildApplet extends PApplet {
         //h=(param01-64)*2+h;//alle farben ändern sich
         //h=232+param01;//tint
         //h=(h/360)*232+param01;//test
-        h= 240+newHSB((int)h)/2*param01/127;//final
-        s=(param02-64)*2+s;
+        h= 240+newHSB((int)h)/2*controller.gui.hueSlider.value/127;//final
+        s=(controller.gui.saturationSlider.value-64)*2+s;
         if (s > 127) s= 127;
         //b=(param03-64)*2+b;
-        a=param03;
+        a=controller.gui.videoAlphaSlider.value;
 
         output.pixels[y*input.width+x] = color(h, s, b, a);
       }
     }
     output.updatePixels();
     //output.blend(input, 0, 0, input.width, input.height, 0, 0, input.width, input.height, OVERLAY);
-    if (!button01)return output;
-    else return input;
+    return output;
   }
   int newHSB(int oldHSB) {
     if (oldHSB>0 && oldHSB<240)return 360-oldHSB/2;
@@ -94,18 +93,17 @@ class ChildApplet extends PApplet {
         //h=(param01-64)*2+h;//alle farben ändern sich
         //h=232+param01;//tint
         //h=(h/360)*232+param01;//test
-        h= 240+newHSB((int)h)/2*param01/127;//final
-        s=(param02-64)*2+s;
+        h= 240+newHSB((int)h)/2*controller.gui.hueSlider.value/127;//final
+        s=(controller.gui.saturationSlider.value-64)*2+s;
         if (s > 127) s= 127;
         //b=(param03-64)*2+b;
-        a=param05;
+        a=controller.gui.generativAlphaSlider.value;
 
         output.pixels[y*input.width+x] = color(h, s, b, a);
       }
     }
     output.updatePixels();
     //output.blend(input, 0, 0, input.width, input.height, 0, 0, input.width, input.height, OVERLAY);
-    if (!button01)return output;
-    else return input;
+    return output;
   }
 }

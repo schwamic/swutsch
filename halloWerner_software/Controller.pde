@@ -1,6 +1,6 @@
 class Controller {
   //test variable until sliders are implemented
-  int playVideo, particleAmount, colorIntensity, triangleSize;
+  int particleAmount, playVideo;
 
   GUI gui;
   MidiController midiController;
@@ -8,9 +8,7 @@ class Controller {
   PApplet pa;
 
   public Controller(PApplet pa) {
-    colorIntensity = 5;
-    particleAmount = 125;
-    triangleSize = 1;
+    particleAmount = 0;
     this.pa = pa;
   }
 
@@ -18,11 +16,10 @@ class Controller {
     gui = new GUI(pa);
     gui.init();
     midiController = new MidiController(pa);
-    //gui.guiSetup();
     midiController.midiControllerSetup();
   }
   void update() {
-    if (GUI) gui.update(); //funktioniert nicht mit midi zusammen
+     gui.update();
   }
   void updateKnob(int number, int value) {   
     midiController.updateKnob(number, value);

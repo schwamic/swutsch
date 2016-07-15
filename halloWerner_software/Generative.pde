@@ -126,11 +126,12 @@ class Generative {
     pg.beginShape(TRIANGLES);
     for (SoundParticle p : particles) {
       //DODAT another fill formula
-      pg.fill(p.energy*controller.colorIntensity, 255, 255, p.energy*controller.colorIntensity);
+      pg.fill(p.energy*5, 255, 255, p.energy*5);
+      
 
       pg.strokeWeight(1);
       //DODAT another stroke formula
-      pg.stroke(p.energy*controller.colorIntensity, 255, 255, p.energy*controller.colorIntensity);
+      pg.stroke(p.energy*5, 255, 255, p.energy*5);
 
       //pg.noStroke();
       pg.vertex(p.pos.x, p.pos.y);
