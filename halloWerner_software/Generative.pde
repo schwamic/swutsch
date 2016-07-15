@@ -131,7 +131,7 @@ class Generative {
 
       pg.strokeWeight(1);
       //DODAT another stroke formula
-      pg.stroke(p.energy*5, 255, 255, p.energy*5);
+      //pg.stroke(p.energy*5, 255, 255, p.energy*5);
 
       //pg.noStroke();
       pg.vertex(p.pos.x, p.pos.y);

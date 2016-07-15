@@ -66,6 +66,7 @@ class ChildApplet extends PApplet {
     //output.blend(input, 0, 0, input.width, input.height, 0, 0, input.width, input.height, OVERLAY);
     return output;
   }
+  
   int newHSB(int oldHSB) {
     if (oldHSB>0 && oldHSB<240)return 360-oldHSB/2;
     else return oldHSB;
@@ -85,7 +86,7 @@ class ChildApplet extends PApplet {
         float h = hue(c);
         float s = saturation(c);
         float b = brightness(c);
-        float a = 0;
+        float a = alpha(c);
         /* int r = (c >> 16) & 0xFF;  
          int g = (c >> 8) & 0xFF;   
          int b = c & 0xFF;*/
@@ -97,7 +98,11 @@ class ChildApplet extends PApplet {
         s=(controller.gui.saturationSlider.value-64)*2+s;
         if (s > 127) s= 127;
         //b=(param03-64)*2+b;
+      /*  if (a <= 0) {
+          a = a;
+        } else {
         a=controller.gui.generativAlphaSlider.value;
+        }*/
 
         output.pixels[y*input.width+x] = color(h, s, b, a);
       }

@@ -33,10 +33,12 @@ class GraphicOutput {
     generative.deleteParticle();
     generative.addParticle();
     
+    pgGenerativ.beginDraw();
+    pgGenerativ.clear();
+    pgGenerativ.endDraw();
     
     pgGenerativ.beginDraw();
     pgGenerativ.scale(0.1);
-    pgGenerativ.background(0);
     generative.drawTriangles(pgGenerativ);
     pgGenerativ.endDraw();
 
@@ -44,7 +46,6 @@ class GraphicOutput {
 
     pgVideo.beginDraw();
     pgVideo.scale(0.1);
-    pgVideo.background(0);
     try {
       //println("video1 : " + (255-videoInput.displayedVideo1.fade));
       pgVideo.tint(255, 255-videoInput.displayedVideo1.fade);
@@ -71,6 +72,7 @@ class GraphicOutput {
     scaledGraphic.beginDraw();
     scaledGraphic.background(0);
     scaledGraphic.image(outPut.videoAlteration(pgVideo), 0, 0);
+    scaledGraphic.tint(255, controller.gui.generativAlphaSlider.value);
     scaledGraphic.image(outPut.generativeAlteration(pgGenerativ), 0, 0);
     scaledGraphic.endDraw();
 
