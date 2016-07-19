@@ -1,6 +1,7 @@
 class MidiController {
   PApplet pa;
   MidiBus myBus;
+  boolean fast, middle, slow, women, wave, custom01, custom02, reset;
 
   MidiController(PApplet pa) {
     this.pa = pa;
@@ -17,22 +18,22 @@ class MidiController {
   void updateKnob(int number, int value) {
     switch(number) {
     case 1: 
-      controller.gui.hueSlider.value= (int) map(value, 0, 127, controller.gui.hueSlider.minValue, controller.gui.hueSlider.maxValue);
+      controller.gui.hueSlider.displayValue= (int) map(value, 0, 127, controller.gui.hueSlider.sliderSize/2, controller.gui.hueSlider.size.y-controller.gui.hueSlider.sliderSize/2-1);
       break;
     case 2: 
-      controller.gui.saturationSlider.value=(int) map(value, 0, 127, controller.gui.saturationSlider.minValue, controller.gui.saturationSlider.maxValue);
+      controller.gui.saturationSlider.displayValue= (int) map(value, 0, 127, controller.gui.saturationSlider.sliderSize/2, controller.gui.saturationSlider.size.y-controller.gui.saturationSlider.sliderSize/2-1);
       break;
     case 3: 
-      controller.gui.videoAlphaSlider.value= (int) map(value, 0, 127, controller.gui.videoAlphaSlider.minValue, controller.gui.videoAlphaSlider.maxValue);
+      controller.gui.videoAlphaSlider.displayValue= (int) map(value, 0, 127, controller.gui.videoAlphaSlider.sliderSize/2, controller.gui.videoAlphaSlider.size.y-controller.gui.videoAlphaSlider.sliderSize/2-1);
       break;
     case 4: 
       //param04=value;
       break;
     case 5: 
-      controller.gui.generativAlphaSlider.value= (int) map(value, 0, 127, controller.gui.generativAlphaSlider.minValue, controller.gui.generativAlphaSlider.maxValue);
+      controller.gui.generativAlphaSlider.displayValue= (int) map(value, 0, 127, controller.gui.generativAlphaSlider.sliderSize/2, controller.gui.generativAlphaSlider.size.y-controller.gui.generativAlphaSlider.sliderSize/2-1);
       break;
     case 6: 
-      controller.gui.pitchSlider.value= (int) map(value, 0, 127, controller.gui.pitchSlider.minValue, controller.gui.pitchSlider.maxValue);
+      controller.gui.pitchSlider.displayValue= (int) map(value, 0, 127, controller.gui.pitchSlider.sliderSize/2, controller.gui.pitchSlider.size.y-controller.gui.pitchSlider.sliderSize/2-1);
       break;
     case 7: 
       //param07=value;
@@ -42,33 +43,72 @@ class MidiController {
       break;
     }
   }
+  
+  void startVideosOnClick() {
+    
+    
+    
+    
+  }
+  
   void updateButton(int pitch, boolean on) {
     if (on) {
-      println("abc");
       switch(pitch) {
       case 36: 
-        women();
+        women = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.women, true);
+        println("women");
+        
         break;
       case 37: 
-        wave();
+        wave = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.wave, true);
+        println("wave");
+
         break;
       case 38: 
-        custom01();
+        custom01 = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.custom01, true);
+        println("custom01");
+
         break;
       case 39: 
-        custom02();
+        custom02 = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.custom02, true);
+        println("custom02");
+
         break;
       case 40: 
-        fast();
+        fast = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.fast, true);
+        println("fast");
+
         break;
       case 41: 
-        middle();
+        middle = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.middle, true);
+        println("middle");
+
         break;
       case 42: 
-        slow();
+        slow = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.slow, true);
+        println("slow");
+
         break;
       case 43: 
-        reset();
+        reset = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.reset, true);
+        println("reset");
+
         break;
       }
     }

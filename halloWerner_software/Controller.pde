@@ -1,13 +1,13 @@
 class Controller {
   //test variable until sliders are implemented
-  int particleAmount, playVideo;
+  int particleAmount;
 
   GUI gui;
   MidiController midiController;
 
   PApplet pa;
 
-  public Controller(PApplet pa) {
+   Controller(PApplet pa) {
     particleAmount = 0;
     this.pa = pa;
   }

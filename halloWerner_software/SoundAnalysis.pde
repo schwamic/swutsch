@@ -61,7 +61,7 @@ class SoundAnalysis {
     //song.play();
     //iterate thorugh all the avgFrequencys
     for (int i = 0; i < avgFrequencys.length; i++) {
-      avgFrequencys[i].scaleAvg = map(controller.gui.pitchSlider.value, controller.gui.pitchSlider.minValue, controller.gui.pitchSlider.maxValue, 0, 2);
+      avgFrequencys[i].scaleAvg = map(controller.gui.pitchSlider.value, controller.gui.pitchSlider.minValue, controller.gui.pitchSlider.maxValue, 0, 4);
       //reset the peaked boolean to detect beats peaking
       avgFrequencys[i].peaked = false;
 
