@@ -5,6 +5,8 @@ import ddf.minim.*;
 //import library for video processing
 import processing.video.*;
 
+PImage img;
+
 //import libraries for teensy control
 import processing.serial.*;
 import java.awt.Rectangle;
@@ -34,6 +36,7 @@ void settings() {
 }
 
 void setup() {
+  img = loadImage("kreisviereck.jpg");
   videoInput = new VideoInput(this);
   videoInput.videoInputSetup();
 
@@ -53,55 +56,44 @@ void draw() {
   background(210);
   controller.update();
   videoInput.update();
-  
+
   //update and draw sound Analysis, draw is inside the update since then I only have to iterate through all frequencys once
   soundAnalysis.update();
 }
 
 
 void fast() {
-    videoInput.loadVideoOnClick(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
-    controller.playVideo = 1;
+  videoInput.loadVideoOnClick(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
 }
 
 void middle() {
-    videoInput.loadVideoOnClick(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
-    controller.playVideo = 1;
+  videoInput.loadVideoOnClick(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
 }
 
 void slow() {
-    videoInput.loadVideoOnClick(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
-    controller.playVideo = 1;
+  videoInput.loadVideoOnClick(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
 }
 
 void reset() {
-    controller.playVideo = 0;
-    videoInput.resetVideo(videoInput.displayedVideo1);
-    videoInput.resetVideo(videoInput.displayedVideo2);
+  videoInput.resetVideo(videoInput.displayedVideo1);
+  videoInput.resetVideo(videoInput.displayedVideo2);
 }
 
 void wave() {
-    videoInput.loadVideoOnClick(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
-    controller.playVideo = 1;
+  videoInput.loadVideoOnClick(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
 }
 
 void women() {
-    videoInput.loadVideoOnClick(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
-    controller.playVideo = 1;
+  videoInput.loadVideoOnClick(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
 }
 
 
 void custom01() {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideoOnClick(5, (int) random(-1, videoInput.custom01.size()), videoInput.videos);
-    controller.playVideo = 1;
+  videoInput.loadVideoOnClick(5, (int) random(-1, videoInput.custom01.size()), videoInput.videos);
 }
 
 void custom02() {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideoOnClick(6, (int) random(-1, videoInput.custom02.size()), videoInput.videos);
-    controller.playVideo = 1;
-
+  videoInput.loadVideoOnClick(6, (int) random(-1, videoInput.custom02.size()), videoInput.videos);
 }
 
 
@@ -109,16 +101,18 @@ void custom02() {
 //midi input, wird üner controller an midiController weiter geleitet
 void controllerChange(ControlChange change) {
   controller.updateKnob(change.number(), change.value());
-  println("Number:"+change.number());
-  println("Value:"+change.value());
+  //println("Number:"+change.number());
+  // println("Value:"+change.value());
 }
 
 void noteOn(Note note) {
-  controller.updateButton(note.pitch(), true);
-  println("Pitch:"+note.pitch());
-}
-
-void noteOff(Note note) {
-  controller.updateButton(note.pitch(), false);
-  //println("Pitch:"+note.pitch());
+  try {
+    try {
+      controller.updateButton(note.pitch(), true);
+    }
+    catch(IllegalStateException e) {
+    }
+  }
+  catch(NullPointerException e) {
+  }
 }

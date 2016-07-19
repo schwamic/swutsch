@@ -17,6 +17,8 @@ class GUI {
   Button wave;
   Button custom01;
   Button custom02;
+  
+  boolean midiInput = false;
 
 
   GUI(PApplet sketch) {
@@ -70,37 +72,66 @@ class GUI {
 
 
   void buttonUpdate(Button b) {
-    b.drawSlider();
+    b.drawButton();
     String name = b.name;
-    if (mousePressed) {
-      if (mouseX > b.pos.x && mouseX < (b.pos.x+b.size.x) && mouseY > b.pos.y && mouseY < (b.pos.y + b.size.y)) {
+    if (mousePressed || midiInput == true) {
+      if ((mouseX > b.pos.x && mouseX < (b.pos.x+b.size.x) && mouseY > b.pos.y && mouseY < (b.pos.y + b.size.y)) || midiInput == true) {
         if (b.pressed == false) {
-          for (Button bt : buttons) {
-            bt.active = false;
-          }
-          if (name == "Schnelle Videos")
+          resetButtons();
+            if ((name == "Schnelle Videos" && mousePressed) || controller.midiController.fast == true) {
             fast();
+            controller.midiController.fast = false;
+            println("fast1");
+            }
 
-          else if (name == "Mittlere Videos")
+          else if (name == "Mittlere Videos" && mousePressed || controller.midiController.middle == true) {
             middle();
+            controller.midiController.middle = false;
+            println("middle");
+            
+          }
 
-          else if (name == "Langsame Videos")
+          else if (name == "Langsame Videos" && mousePressed || controller.midiController.slow == true){
             slow();
+            controller.midiController.slow = false;
+            println("slow");
+            
+          }
 
-          else if (name == "Stop Videos") 
+          else if (name == "Stop Videos" && mousePressed || controller.midiController.reset == true) {
             reset();
+            controller.midiController.reset = false;
+            println("reset");
+            
+          }
 
-          else if (name == "Wellen") 
+          else if (name == "Wellen" && mousePressed || controller.midiController.wave == true) {
             wave();
+            controller.midiController.wave =false;
+            println("wave");
+          }
 
-          else if (name == "Frauen")
+          else if (name == "Frauen" && mousePressed || controller.midiController.women == true){
             women();
+            controller.midiController.women = false;
+            println("women");
+            
+          }
 
-          else if (name == "Eigene Videos 1")
+          else if (name == "Eigene Videos 1" && mousePressed || controller.midiController.custom01 == true){
             custom01();
+            controller.midiController.custom01 = false;
+            println("custom01");
+            
+          }
 
-          else if (name == "Eigene Videos 2") 
+          else if (name == "Eigene Videos 2" && mousePressed || controller.midiController.custom02 == true) {
             custom02();
+            controller.midiController.custom02 = false;
+            println("custom02");
+            
+          }
+          midiInput = false;
 
           b.value = -b.value;
 
@@ -110,6 +141,13 @@ class GUI {
       }
     } else {
       b.pressed = false;
+    }
+  }
+
+  void resetButtons() {
+
+    for (Button bt : buttons) {
+      bt.active = false;
     }
   }
 }

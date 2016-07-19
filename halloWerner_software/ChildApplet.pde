@@ -42,31 +42,20 @@ class ChildApplet extends PApplet {
     for (int y=0; y<input.height; y++) {
       for (int x= 0; x<input.width; x++) {
         color c = input.get(x, y);
-        float h = hue(c);
-        float s = saturation(c);
+        float h = map(controller.gui.hueSlider.value, controller.gui.hueSlider.minValue, controller.gui.hueSlider.maxValue, 240, 360);
+        float s = map(controller.gui.saturationSlider.value, controller.gui.saturationSlider.minValue, controller.gui.saturationSlider.maxValue, 0, 360);
         float b = brightness(c);
         float a = 0;
-        /* int r = (c >> 16) & 0xFF;  
-         int g = (c >> 8) & 0xFF;   
-         int b = c & 0xFF;*/
-
-        //h=(param01-64)*2+h;//alle farben ändern sich
-        //h=232+param01;//tint
-        //h=(h/360)*232+param01;//test
-        h= 240+newHSB((int)h)/2*controller.gui.hueSlider.value/127;//final
-        s=(controller.gui.saturationSlider.value-64)*2+s;
         if (s > 127) s= 127;
-        //b=(param03-64)*2+b;
         a=controller.gui.videoAlphaSlider.value;
 
         output.pixels[y*input.width+x] = color(h, s, b, a);
       }
     }
     output.updatePixels();
-    //output.blend(input, 0, 0, input.width, input.height, 0, 0, input.width, input.height, OVERLAY);
     return output;
   }
-  
+
   int newHSB(int oldHSB) {
     if (oldHSB>0 && oldHSB<240)return 360-oldHSB/2;
     else return oldHSB;
@@ -83,32 +72,17 @@ class ChildApplet extends PApplet {
     for (int y=0; y<input.height; y++) {
       for (int x= 0; x<input.width; x++) {
         color c = input.get(x, y);
-        float h = hue(c);
-        float s = saturation(c);
+        float h = map(controller.gui.hueSlider.value, controller.gui.hueSlider.minValue, controller.gui.hueSlider.maxValue, 240, 360);
+        float s = map(controller.gui.saturationSlider.value, controller.gui.saturationSlider.minValue, controller.gui.saturationSlider.maxValue, 0, 360);
         float b = brightness(c);
         float a = alpha(c);
-        /* int r = (c >> 16) & 0xFF;  
-         int g = (c >> 8) & 0xFF;   
-         int b = c & 0xFF;*/
-
-        //h=(param01-64)*2+h;//alle farben ändern sich
-        //h=232+param01;//tint
-        //h=(h/360)*232+param01;//test
-        h= 240+newHSB((int)h)/2*controller.gui.hueSlider.value/127;//final
+        h= 240+newHSB((int)h)/2*controller.gui.hueSlider.value/127;
         s=(controller.gui.saturationSlider.value-64)*2+s;
         if (s > 127) s= 127;
-        //b=(param03-64)*2+b;
-      /*  if (a <= 0) {
-          a = a;
-        } else {
-        a=controller.gui.generativAlphaSlider.value;
-        }*/
-
         output.pixels[y*input.width+x] = color(h, s, b, a);
       }
     }
     output.updatePixels();
-    //output.blend(input, 0, 0, input.width, input.height, 0, 0, input.width, input.height, OVERLAY);
     return output;
   }
 }

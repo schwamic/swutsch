@@ -2,8 +2,8 @@ class GraphicOutput {
 
   PApplet pa;
   LEDOutput ledOutput;
-  PGraphics pgGenerative;
   PGraphics pgVideo;
+  PGraphics pgGenerativ;
   Generative generative;
 
   GraphicOutput(PApplet pa) {
@@ -14,7 +14,7 @@ class GraphicOutput {
 
   void setupGraphic() {
     pgVideo  = pa.createGraphics(pa.width, pa.height);
-    pgGenerative = pa.createGraphics(pa.width, pa.height);
+    pgGenerativ = pa.createGraphics(pa.width, pa.height);
 
     //create generative soudn visualizer
     generative = new Generative(pa, 150);
@@ -32,16 +32,17 @@ class GraphicOutput {
     generative.updateParticles();
     generative.deleteParticle();
     generative.addParticle();
-
+    
+    pgGenerativ.beginDraw();
+    pgGenerativ.clear();
+    pgGenerativ.endDraw();
+    
+    pgGenerativ.beginDraw();
+    pgGenerativ.scale(0.1);
+    generative.drawTriangles(pgGenerativ);
+    pgGenerativ.endDraw();
 
     //draw everything into the PGraphic pg to later scale to LED screen size
-
-    pgGenerative.beginDraw();
-    pgGenerative.scale(0.1);
-    pgGenerative.background(0);
-    generative.drawTriangles(pgGenerative);
-    pgGenerative.endDraw();
-
 
     pgVideo.beginDraw();
     pgVideo.scale(0.1);
@@ -72,8 +73,14 @@ class GraphicOutput {
     scaledGraphic.beginDraw();
     scaledGraphic.background(0);
     scaledGraphic.image(outPut.videoAlteration(pgVideo), 0, 0);
-    scaledGraphic.image(outPut.generativeAlteration(pgGenerative), 0, 0);
-    scaledGraphic.endDraw();
+    scaledGraphic.tint(255, controller.gui.generativAlphaSlider.value);
+    scaledGraphic.image(outPut.generativeAlteration(pgGenerativ), 0, 0);
+    
+    scaledGraphic.tint(255,255);
+    
+    //hier Einrichtbild
+    //scaledGraphic.image(img,0,0);
+    //scaledGraphic.endDraw();
 
     //LED OUTPUT FUNCTIONS
     ledOutput.getGraphic(scaledGraphic);
@@ -82,7 +89,7 @@ class GraphicOutput {
 
     //displays scaled down graphic output for LEDs
     //pa.image(scaledGraphic, 0, 0, pa.width, pa.height);
-    pa.image(scaledGraphic, 0, 0);
+    pa.image(scaledGraphic, 0, 0, pa.width, pa.height);
 
 
 

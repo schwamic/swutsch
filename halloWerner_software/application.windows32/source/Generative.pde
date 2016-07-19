@@ -17,7 +17,6 @@ class Generative {
     for (int i = 0; i < particleNbr; i++) {
       PVector randomizePosition = new PVector(random(pa.width), random(pa.height));
       AvgFrequency randomPartnerFrequency = soundAnalysis.avgFrequencys[(int) random(0, soundAnalysis.fftLog.avgSize()-10)];
-      //particles.get(i) = new SoundParticle(randomizePosition, randomPartnerFrequency, maxRadius);
       particles.add(i, new SoundParticle(randomizePosition, randomPartnerFrequency, 0));
     }
   }
@@ -126,11 +125,12 @@ class Generative {
     pg.beginShape(TRIANGLES);
     for (SoundParticle p : particles) {
       //DODAT another fill formula
-      pg.fill(p.energy*controller.colorIntensity, 255, 255, p.energy*controller.colorIntensity);
+      pg.fill(p.energy*5, 255, 255, p.energy*5);
+      
 
-      pg.strokeWeight(1);
+      pg.strokeWeight(0);
       //DODAT another stroke formula
-      pg.stroke(p.energy*controller.colorIntensity, 255, 255, p.energy*controller.colorIntensity);
+      //pg.stroke(p.energy*5, 255, 255, p.energy*5);
 
       //pg.noStroke();
       pg.vertex(p.pos.x, p.pos.y);

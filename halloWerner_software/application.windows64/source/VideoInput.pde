@@ -18,7 +18,7 @@ class VideoInput {
   int videoNumber1, videoNumber2, videoPlays;
 
 
-  String currentFolder;
+  //String currentFolder;
 
 
   VideoInput(PApplet pa) {
@@ -45,6 +45,8 @@ class VideoInput {
 
 
     displayedVideo1 = new Video(null, 0);
+    //ArrayList<Video> m = videos[0];
+    //displayedVideo1 = m.get(0);
     displayedVideo2 = new Video(null, 0);
   }
 
@@ -75,7 +77,7 @@ class VideoInput {
       displayedVideo1.play = true;
       displayedVideo1.end = false;
       videoPlays = 0;
-      displayedVideo1.video.noLoop();
+      //displayedVideo1.video.noLoop();
     } else if ( displayedVideo1.play == true && displayedVideo2.play == false) {
       currentVideos = n;
       videoNumber2 = i;
@@ -84,7 +86,7 @@ class VideoInput {
       displayedVideo2.play = true;
       displayedVideo2.end = false;
       videoPlays = 0;
-      displayedVideo2.video.noLoop();
+      //displayedVideo2.video.noLoop();
       displayedVideo1.end = true;
     } else if (displayedVideo2.play == true && displayedVideo1.play == false) {
       currentVideos = n;
@@ -93,24 +95,54 @@ class VideoInput {
       displayedVideo1.video.play();
       displayedVideo1.play = true;
       displayedVideo1.end = false;
-      displayedVideo1.video.noLoop();
+      //displayedVideo1.video.noLoop();
       videoPlays = 0;
       displayedVideo2.end = true;
     }
   }
 
 
-  void loadVideo(int n, int i, ArrayList[] b, Video v) {
+  /* void loadVideo(int n, int i, ArrayList[] b, Video v) {
+   ArrayList<Video> m = b[n];
+   currentVideos = n;
+   videoNumber2 = i;
+   videoNumber1 = i;
+   
+   
+   displayedVideo1 = m.get(i);
+   displayedVideo1.video.jump(0);
+   displayedVideo1.video.play();
+   displayedVideo1.play = true;
+   displayedVideo1.end = false;
+   
+   
+   //v.video.noLoop();
+   videoPlays = 0;
+   }*/
+
+  void loadVideo(int n, int i, ArrayList[] b, Video v2) {
     ArrayList<Video> m = b[n];
     currentVideos = n;
     videoNumber2 = i;
-    v = m.get(i);
+    videoNumber1 = i;
+    Video v = m.get(i);
+    if (v2 == displayedVideo1) {
+      displayedVideo1 = v;
+      displayedVideo2.fade = 255;
+      displayedVideo2.end = true;
+      displayedVideo2.play = false;
+    } else {
+      displayedVideo2 = v;
+      displayedVideo1.fade = 255;
+      displayedVideo1.end = true;
+      displayedVideo1.play = false;
+    }
     v.video.jump(0);
     v.video.play();
     v.play = true;
     v.end = false;
-    videoPlays = 0;
     v.video.noLoop();
+    videoPlays = 0;
   }
 
   void update() {
@@ -121,6 +153,9 @@ class VideoInput {
   void updateVideo(Video v, int vN) {
     try {
       //println(vN + "    " + v.video.time() + "    //    " + v.loopTimes + "   " + v.video.duration());
+      //v.video.play();
+      //println("available " + v.video.available());
+
       if (v.video.available() == true && v.play == true) {
         v.video.read();
       }
@@ -136,20 +171,22 @@ class VideoInput {
         v.fade -= 255/pa.frameRate;
       }
       //loop video
-      if (v.video.time() >= v.video.duration()-0.12 && v.play == true && videoPlays < v.loopTimes) {
+      if (v.video.time() >= v.video.duration()-0.12 && v.play == true && videoPlays < v.loopTimes-1 && v.video.duration() > 0) {
         v.video.jump(0);
         videoPlays += 1;
       }
       //next video in folder
-      else if (v.video.time() >= v.video.duration()-0.12 && videoPlays >= v.loopTimes && vN < videos[currentVideos].size()-1 && v.play == true) {
+      else if (v.video.time() >= v.video.duration()-0.12 && videoPlays >= v.loopTimes-1 && vN < videos[currentVideos].size()-1 && v.play == true && v.video.duration() > 0) {
         videoPlays = 0;
         vN += 1;
+        v.video.stop();
         loadVideo(currentVideos, vN, videos, v);
       }
-      //random video in same folder
-      else if (v.video.time() >= v.video.duration()-0.12 && videoPlays >= v.loopTimes && vN >= videos[currentVideos].size()-1 && v.play == true) {
+      //first video in folder
+      else if (v.video.time() >= v.video.duration()-0.12 && videoPlays >= v.loopTimes-1 && vN >= videos[currentVideos].size()-1 && v.play == true && v.video.duration() > 0) {
         videoPlays = 0;
-        vN = (int) random(-1, videos[currentVideos].size()- 1);
+        vN = 0;
+        v.video.stop();
         loadVideo(currentVideos, vN, videos, v);
       }
     }

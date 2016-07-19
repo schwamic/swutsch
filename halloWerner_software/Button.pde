@@ -12,7 +12,7 @@ class Button {
     this.name = name;
   }
 
-  void drawSlider() {
+  void drawButton() {
     strokeWeight(1);
     stroke(255, 100);
     textAlign(CENTER);

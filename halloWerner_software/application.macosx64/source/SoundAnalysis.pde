@@ -33,7 +33,7 @@ class SoundAnalysis {
 
   void setup() {
 
-    float scaleAvg = 0.8;
+    float scaleAvg = controller.gui.pitchSlider.value;
 
     pastAverages = new float[avgSeconds*setFrameRate];
 
@@ -43,10 +43,10 @@ class SoundAnalysis {
     fftLog.logAverages(100, 10);
 
     avgFrequencys = new AvgFrequency[fftLog.avgSize()];
-    float avgFrequencyXDisplayLength = pa.width/2/fftLog.avgSize();
+    float avgFrequencyXDisplayLength = pa.width/2/1.2/fftLog.avgSize();
     for (int i = 0; i < avgFrequencys.length; i++) {
 
-      avgFrequencys[i] = new AvgFrequency(pa.width/2-avgFrequencys.length/2*avgFrequencyXDisplayLength+i*avgFrequencyXDisplayLength, fftLog.getAverageCenterFrequency(i), scaleAvg, avgFrequencyXDisplayLength);
+      avgFrequencys[i] = new AvgFrequency(pa.width/2-avgFrequencys.length/2*avgFrequencyXDisplayLength+i*avgFrequencyXDisplayLength-220, fftLog.getAverageCenterFrequency(i), scaleAvg, avgFrequencyXDisplayLength);
     }
 
     pastAverages = new float[avgSeconds*setFrameRate];
@@ -61,6 +61,7 @@ class SoundAnalysis {
     //song.play();
     //iterate thorugh all the avgFrequencys
     for (int i = 0; i < avgFrequencys.length; i++) {
+      avgFrequencys[i].scaleAvg = map(controller.gui.pitchSlider.value, controller.gui.pitchSlider.minValue, controller.gui.pitchSlider.maxValue, 0, 4);
       //reset the peaked boolean to detect beats peaking
       avgFrequencys[i].peaked = false;
 

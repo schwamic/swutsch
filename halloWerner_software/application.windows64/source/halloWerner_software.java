@@ -31,6 +31,8 @@ public class halloWerner_software extends PApplet {
 //import library for video processing
 
 
+PImage img;
+
 //import libraries for teensy control
 
 
@@ -53,26 +55,6 @@ VideoInput videoInput;
 //must be setFrameRate % 5 = 0 -- used in some calculations in soundAnalysis
 int setFrameRate = 30;
 
-//control parameters
-float speed = 1.0f;
-int param01 = 127;
-int param02 = 64;
-int param03 = 127;
-int param04 = 0;
-int param05 = 0;
-int param06 = 0;
-int param07 = 0;
-int param08 = 0;
-boolean button01 = false;
-boolean button02 = false;
-boolean button03 = false;
-boolean button04 = false;
-boolean button05 = false;
-boolean button06 = false;
-boolean button07 = false;
-boolean button08 = false;
-boolean GUI = false;
-
 
 public void settings() {
   size(1000, 500);
@@ -80,17 +62,17 @@ public void settings() {
 }
 
 public void setup() {
+  img = loadImage("kreisviereck.jpg");
   videoInput = new VideoInput(this);
   videoInput.videoInputSetup();
 
+  controller = new Controller(this);
+  controller.init();
 
   //analysis has to be called before the output, since the generative animation needs sound values
   soundAnalysis = new SoundAnalysis(this);
   soundAnalysis.setup();
   outPut = new ChildApplet();
-
-  controller = new Controller(this);
-  controller.init();
 
   surface.setTitle("Input - main sketch");
   frameRate(setFrameRate);
@@ -100,90 +82,44 @@ public void draw() {
   background(210);
   controller.update();
   videoInput.update();
+
   //update and draw sound Analysis, draw is inside the update since then I only have to iterate through all frequencys once
   soundAnalysis.update();
 }
 
 
-
-//this has to be done here because the libraries (midibus and ControlP5) only check for these methods in the PApplet itself, not in it's classes...
-//slow = 0; middle = 1; fast = 2; wave = 3; women = 4;
-
-// Moved to Controller
-public void button01(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button3: "+theValue);
-    videoInput.loadVideoOnClick(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
+public void fast() {
+  videoInput.loadVideoOnClick(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
 }
 
-public void button02(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideoOnClick(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
+public void middle() {
+  videoInput.loadVideoOnClick(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
 }
 
-public void button03(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideoOnClick(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
+public void slow() {
+  videoInput.loadVideoOnClick(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
 }
 
-public void button04(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    controller.playVideo = 0;
-    videoInput.resetVideo(videoInput.displayedVideo1);
-    videoInput.resetVideo(videoInput.displayedVideo2);
-  }
+public void reset() {
+  videoInput.resetVideo(videoInput.displayedVideo1);
+  videoInput.resetVideo(videoInput.displayedVideo2);
 }
 
-public void button05(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideoOnClick(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
+public void wave() {
+  videoInput.loadVideoOnClick(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
+}
+
+public void women() {
+  videoInput.loadVideoOnClick(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
 }
 
 
-public void keyPressed() {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideoOnClick(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
+public void custom01() {
+  videoInput.loadVideoOnClick(5, (int) random(-1, videoInput.custom01.size()), videoInput.videos);
 }
 
-
-public void button06(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideoOnClick(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
-}
-
-
-public void button07(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideoOnClick(5, (int) random(-1, videoInput.custom01.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
-}
-
-public void button08(int theValue) {
-  if (frameCount > 10) {
-    //println("a button event from button2: "+theValue);
-    videoInput.loadVideoOnClick(6, (int) random(-1, videoInput.custom02.size()), videoInput.videos);
-    controller.playVideo = 1;
-  }
+public void custom02() {
+  videoInput.loadVideoOnClick(6, (int) random(-1, videoInput.custom02.size()), videoInput.videos);
 }
 
 
@@ -191,18 +127,20 @@ public void button08(int theValue) {
 //midi input, wird \u00fcner controller an midiController weiter geleitet
 public void controllerChange(ControlChange change) {
   controller.updateKnob(change.number(), change.value());
-  println("Number:"+change.number());
-  println("Value:"+change.value());
+  //println("Number:"+change.number());
+  // println("Value:"+change.value());
 }
 
 public void noteOn(Note note) {
-  controller.updateButton(note.pitch(), true);
-  println("Pitch:"+note.pitch());
-}
-
-public void noteOff(Note note) {
-  controller.updateButton(note.pitch(), false);
-  //println("Pitch:"+note.pitch());
+  try {
+    try {
+      controller.updateButton(note.pitch(), true);
+    }
+    catch(IllegalStateException e) {
+    }
+  }
+  catch(NullPointerException e) {
+  }
 }
 
 class AvgFrequency {
@@ -242,6 +180,35 @@ class AvgFrequency {
     }
 
     avgValue /= pastAverages.length;
+  }
+}
+class Button {
+
+
+  PVector pos, size;
+  boolean pressed = false;
+  boolean active = false;
+  int value;
+  String name;
+  Button(String name, PVector pos, PVector size) {
+    this.pos = pos;
+    this.size = size;
+    this.name = name;
+  }
+
+  public void drawButton() {
+    strokeWeight(1);
+    stroke(255, 100);
+    textAlign(CENTER);
+    fill(0, 180);
+    text(name, pos.x + size.x/2, pos.y -10);
+
+    if (active == false) {
+      fill(120);
+    } else if ( active == true) {
+      fill(180,0,0);
+    }
+    rect(pos.x, pos.y, size.x, size.y);
   }
 }
 class ChildApplet extends PApplet {
@@ -288,31 +255,20 @@ class ChildApplet extends PApplet {
     for (int y=0; y<input.height; y++) {
       for (int x= 0; x<input.width; x++) {
         int c = input.get(x, y);
-        float h = hue(c);
-        float s = saturation(c);
+        float h = map(controller.gui.hueSlider.value, controller.gui.hueSlider.minValue, controller.gui.hueSlider.maxValue, 240, 360);
+        float s = map(controller.gui.saturationSlider.value, controller.gui.saturationSlider.minValue, controller.gui.saturationSlider.maxValue, 0, 360);
         float b = brightness(c);
         float a = 0;
-        /* int r = (c >> 16) & 0xFF;  
-         int g = (c >> 8) & 0xFF;   
-         int b = c & 0xFF;*/
-
-        //h=(param01-64)*2+h;//alle farben \u00e4ndern sich
-        //h=232+param01;//tint
-        //h=(h/360)*232+param01;//test
-        h= 240+newHSB((int)h)/2*param01/127;//final
-        s=(param02-64)*2+s;
         if (s > 127) s= 127;
-        //b=(param03-64)*2+b;
-        a=param03;
+        a=controller.gui.videoAlphaSlider.value;
 
         output.pixels[y*input.width+x] = color(h, s, b, a);
       }
     }
     output.updatePixels();
-    //output.blend(input, 0, 0, input.width, input.height, 0, 0, input.width, input.height, OVERLAY);
-    if (!button01)return output;
-    else return input;
+    return output;
   }
+
   public int newHSB(int oldHSB) {
     if (oldHSB>0 && oldHSB<240)return 360-oldHSB/2;
     else return oldHSB;
@@ -329,45 +285,31 @@ class ChildApplet extends PApplet {
     for (int y=0; y<input.height; y++) {
       for (int x= 0; x<input.width; x++) {
         int c = input.get(x, y);
-        float h = hue(c);
-        float s = saturation(c);
+        float h = map(controller.gui.hueSlider.value, controller.gui.hueSlider.minValue, controller.gui.hueSlider.maxValue, 240, 360);
+        float s = map(controller.gui.saturationSlider.value, controller.gui.saturationSlider.minValue, controller.gui.saturationSlider.maxValue, 0, 360);
         float b = brightness(c);
-        float a = 0;
-        /* int r = (c >> 16) & 0xFF;  
-         int g = (c >> 8) & 0xFF;   
-         int b = c & 0xFF;*/
-
-        //h=(param01-64)*2+h;//alle farben \u00e4ndern sich
-        //h=232+param01;//tint
-        //h=(h/360)*232+param01;//test
-        h= 240+newHSB((int)h)/2*param01/127;//final
-        s=(param02-64)*2+s;
+        float a = alpha(c);
+        h= 240+newHSB((int)h)/2*controller.gui.hueSlider.value/127;
+        s=(controller.gui.saturationSlider.value-64)*2+s;
         if (s > 127) s= 127;
-        //b=(param03-64)*2+b;
-        a=param05;
-
         output.pixels[y*input.width+x] = color(h, s, b, a);
       }
     }
     output.updatePixels();
-    //output.blend(input, 0, 0, input.width, input.height, 0, 0, input.width, input.height, OVERLAY);
-    if (!button01)return output;
-    else return input;
+    return output;
   }
 }
 class Controller {
   //test variable until sliders are implemented
-  int playVideo, particleAmount, colorIntensity, triangleSize;
+  int particleAmount;
 
   GUI gui;
   MidiController midiController;
 
   PApplet pa;
 
-  public Controller(PApplet pa) {
-    colorIntensity = 5;
-    particleAmount = 125;
-    triangleSize = 1;
+   Controller(PApplet pa) {
+    particleAmount = 0;
     this.pa = pa;
   }
 
@@ -375,11 +317,10 @@ class Controller {
     gui = new GUI(pa);
     gui.init();
     midiController = new MidiController(pa);
-    //gui.guiSetup();
     midiController.midiControllerSetup();
   }
   public void update() {
-    if (GUI) gui.update(); //funktioniert nicht mit midi zusammen
+     gui.update();
   }
   public void updateKnob(int number, int value) {   
     midiController.updateKnob(number, value);
@@ -389,160 +330,156 @@ class Controller {
   }
 }
 class GUI {
-  ControlP5 cp5;
   PApplet pa;
-  Knob knob1;
-  Knob knob2;
-  Knob knob3;
-  Knob knob4;
-  Knob knob5;
-  Knob knob6;
-  Knob knob7;
-  Knob knob8;
+
+
+  Slider hueSlider;
+  Slider saturationSlider;
+  Slider videoAlphaSlider;
+  Slider generativAlphaSlider;
+  Slider pitchSlider;
+
+  Button[] buttons;
+  Button fast;
+  Button middle;
+  Button slow;
+  Button reset;
+  Button women;
+  Button wave;
+  Button custom01;
+  Button custom02;
+  
+  boolean midiInput = false;
+
 
   GUI(PApplet sketch) {
     pa = sketch;
   }
 
   public void init() {
-    cp5 = new ControlP5(pa);
 
-    knob1 = cp5.addKnob("param01")
-      .setRange(0, 127)
-      .setValue(param01)
-      .setPosition(440, 0)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;
 
-    knob2 = cp5.addKnob("param02")
-      .setRange(0, 127)
-      .setValue(param02)
-      .setPosition(550, 0)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;
+    //Slider
+    int SliderXPos = 500;
+    hueSlider = new Slider("Hue", new PVector(50+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    saturationSlider = new Slider("Saturation", new PVector(200+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    videoAlphaSlider = new Slider("Video Alpha", new PVector(350+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    generativAlphaSlider = new Slider("Generativ Alpha", new PVector(50+SliderXPos, 250), new PVector(50, 150), 50, 0, 255);
+    pitchSlider = new Slider("Pitch", new PVector(200+SliderXPos, 250), new PVector(50, 150), 50, 0, 100);
 
-    knob3 = cp5.addKnob("param03")
-      .setRange(0, 127)
-      .setValue(param03)
-      .setPosition(660, 0)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;
-    knob4 = cp5.addKnob("param04")
-      .setRange(0, 127)
-      .setValue(param04)
-      .setPosition(770, 0)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;   
-    knob5 = cp5.addKnob("param05")
-      .setRange(0, 127)
-      .setValue(param05)
-      .setPosition(440, 110)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;
-    knob6 = cp5.addKnob("param06")
-      .setRange(0, 127)
-      .setValue(param06)
-      .setPosition(550, 110)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;
-    knob7 = cp5.addKnob("param07")
-      .setRange(0, 127)
-      .setValue(param07)
-      .setPosition(660, 110)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;   
-    knob8 = cp5.addKnob("param08")
-      .setRange(0, 127)
-      .setValue(param08)
-      .setPosition(770, 110)
-      .setRadius(50)
-      .setColorForeground(color(255))
-      .setColorBackground(color(0, 0, 0))
-      .setColorActive(color(255, 0, 0))
-      .setDragDirection(Knob.HORIZONTAL)
-      ;   
-
-    cp5.addButton("button01")
-      .setValue(0)
-      .setPosition(0, 0)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button02")
-      .setValue(0)
-      .setPosition(110, 0)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button03")
-      .setValue(0)
-      .setPosition(220, 0)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button04")
-      .setValue(0)
-      .setPosition(330, 0)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button05")
-      .setValue(0)
-      .setPosition(0, 110)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button06")
-      .setValue(0)
-      .setPosition(110, 110)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button07")
-      .setValue(0)
-      .setPosition(220, 110)
-      .setSize(100, 100)
-      ;
-    cp5.addButton("button08")
-      .setValue(0)
-      .setPosition(330, 110)
-      .setSize(100, 100)
-      ;
-  }
-  public void white(int theValue) {
-    println("a button event from white: "+theValue);
+    //Buttons
+    int ButtonXPos = 50;
+    buttons = new Button[8];
+    fast = new Button("Schnelle Videos", new PVector (50+ButtonXPos, 50), new PVector (50, 50));
+    buttons[0] = fast;
+    middle = new Button("Mittlere Videos", new PVector (150+ButtonXPos, 50), new PVector (50, 50));
+    buttons[1] = middle;
+    slow = new Button("Langsame Videos", new PVector (250+ButtonXPos, 50), new PVector (50, 50));
+    buttons[2] = slow;
+    reset = new Button("Stop Videos", new PVector (350+ButtonXPos, 50), new PVector (50, 50));
+    buttons[3] = reset;
+    women = new Button("Frauen", new PVector(50+ButtonXPos, 150), new PVector(50, 50));
+    buttons[4] = women;
+    wave = new Button("Wellen", new PVector(150+ButtonXPos, 150), new PVector(50, 50));
+    buttons[5] = wave;
+    custom01 = new Button("Eigene Videos 1", new PVector(250+ButtonXPos, 150), new PVector(50, 50));
+    buttons[6] = custom01;
+    custom02 = new Button("Eigene Videos 2", new PVector(350+ButtonXPos, 150), new PVector(50, 50));
+    buttons[7] = custom02;
   }
   public void update() {
-    param01=(int)knob1.getValue();
-    param02=(int)knob2.getValue();
-    param03=(int)knob3.getValue();
-    param04=(int)knob4.getValue();
-    param05=(int)knob5.getValue();
-    param06=(int)knob6.getValue();
-    param07=(int)knob7.getValue();
-    param08=(int)knob8.getValue();
+    //Slider
+    hueSlider.update();
+    saturationSlider.update();
+    videoAlphaSlider.update();
+    generativAlphaSlider.update();
+    pitchSlider.update();
+
+    //Buttons
+    for (Button b : buttons) {
+      buttonUpdate(b);
+    }
+  }
+
+
+  public void buttonUpdate(Button b) {
+    b.drawButton();
+    String name = b.name;
+    if (mousePressed || midiInput == true) {
+      if ((mouseX > b.pos.x && mouseX < (b.pos.x+b.size.x) && mouseY > b.pos.y && mouseY < (b.pos.y + b.size.y)) || midiInput == true) {
+        if (b.pressed == false) {
+          resetButtons();
+            if ((name == "Schnelle Videos" && mousePressed) || controller.midiController.fast == true) {
+            fast();
+            controller.midiController.fast = false;
+            println("fast1");
+            }
+
+          else if (name == "Mittlere Videos" && mousePressed || controller.midiController.middle == true) {
+            middle();
+            controller.midiController.middle = false;
+            println("middle");
+            
+          }
+
+          else if (name == "Langsame Videos" && mousePressed || controller.midiController.slow == true){
+            slow();
+            controller.midiController.slow = false;
+            println("slow");
+            
+          }
+
+          else if (name == "Stop Videos" && mousePressed || controller.midiController.reset == true) {
+            reset();
+            controller.midiController.reset = false;
+            println("reset");
+            
+          }
+
+          else if (name == "Wellen" && mousePressed || controller.midiController.wave == true) {
+            wave();
+            controller.midiController.wave =false;
+            println("wave");
+          }
+
+          else if (name == "Frauen" && mousePressed || controller.midiController.women == true){
+            women();
+            controller.midiController.women = false;
+            println("women");
+            
+          }
+
+          else if (name == "Eigene Videos 1" && mousePressed || controller.midiController.custom01 == true){
+            custom01();
+            controller.midiController.custom01 = false;
+            println("custom01");
+            
+          }
+
+          else if (name == "Eigene Videos 2" && mousePressed || controller.midiController.custom02 == true) {
+            custom02();
+            controller.midiController.custom02 = false;
+            println("custom02");
+            
+          }
+          midiInput = false;
+
+          b.value = -b.value;
+
+          b.active = true;
+        }
+        b.pressed = true;
+      }
+    } else {
+      b.pressed = false;
+    }
+  }
+
+  public void resetButtons() {
+
+    for (Button bt : buttons) {
+      bt.active = false;
+    }
   }
 }
 class Generative {
@@ -564,7 +501,6 @@ class Generative {
     for (int i = 0; i < particleNbr; i++) {
       PVector randomizePosition = new PVector(random(pa.width), random(pa.height));
       AvgFrequency randomPartnerFrequency = soundAnalysis.avgFrequencys[(int) random(0, soundAnalysis.fftLog.avgSize()-10)];
-      //particles.get(i) = new SoundParticle(randomizePosition, randomPartnerFrequency, maxRadius);
       particles.add(i, new SoundParticle(randomizePosition, randomPartnerFrequency, 0));
     }
   }
@@ -673,11 +609,12 @@ class Generative {
     pg.beginShape(TRIANGLES);
     for (SoundParticle p : particles) {
       //DODAT another fill formula
-      pg.fill(p.energy*controller.colorIntensity, 255, 255, p.energy*controller.colorIntensity);
+      pg.fill(p.energy*5, 255, 255, p.energy*5);
+      
 
-      pg.strokeWeight(1);
+      pg.strokeWeight(0);
       //DODAT another stroke formula
-      pg.stroke(p.energy*controller.colorIntensity, 255, 255, p.energy*controller.colorIntensity);
+      //pg.stroke(p.energy*5, 255, 255, p.energy*5);
 
       //pg.noStroke();
       pg.vertex(p.pos.x, p.pos.y);
@@ -721,8 +658,8 @@ class GraphicOutput {
 
   PApplet pa;
   LEDOutput ledOutput;
-  PGraphics pgGenerative;
   PGraphics pgVideo;
+  PGraphics pgGenerativ;
   Generative generative;
 
   GraphicOutput(PApplet pa) {
@@ -733,7 +670,7 @@ class GraphicOutput {
 
   public void setupGraphic() {
     pgVideo  = pa.createGraphics(pa.width, pa.height);
-    pgGenerative = pa.createGraphics(pa.width, pa.height);
+    pgGenerativ = pa.createGraphics(pa.width, pa.height);
 
     //create generative soudn visualizer
     generative = new Generative(pa, 150);
@@ -751,16 +688,17 @@ class GraphicOutput {
     generative.updateParticles();
     generative.deleteParticle();
     generative.addParticle();
-
+    
+    pgGenerativ.beginDraw();
+    pgGenerativ.clear();
+    pgGenerativ.endDraw();
+    
+    pgGenerativ.beginDraw();
+    pgGenerativ.scale(0.1f);
+    generative.drawTriangles(pgGenerativ);
+    pgGenerativ.endDraw();
 
     //draw everything into the PGraphic pg to later scale to LED screen size
-
-    pgGenerative.beginDraw();
-    pgGenerative.scale(0.1f);
-    pgGenerative.background(0);
-    generative.drawTriangles(pgGenerative);
-    pgGenerative.endDraw();
-
 
     pgVideo.beginDraw();
     pgVideo.scale(0.1f);
@@ -791,8 +729,14 @@ class GraphicOutput {
     scaledGraphic.beginDraw();
     scaledGraphic.background(0);
     scaledGraphic.image(outPut.videoAlteration(pgVideo), 0, 0);
-    scaledGraphic.image(outPut.generativeAlteration(pgGenerative), 0, 0);
-    scaledGraphic.endDraw();
+    scaledGraphic.tint(255, controller.gui.generativAlphaSlider.value);
+    scaledGraphic.image(outPut.generativeAlteration(pgGenerativ), 0, 0);
+    
+    scaledGraphic.tint(255,255);
+    
+    //hier Einrichtbild
+    //scaledGraphic.image(img,0,0);
+    //scaledGraphic.endDraw();
 
     //LED OUTPUT FUNCTIONS
     ledOutput.getGraphic(scaledGraphic);
@@ -801,7 +745,7 @@ class GraphicOutput {
 
     //displays scaled down graphic output for LEDs
     //pa.image(scaledGraphic, 0, 0, pa.width, pa.height);
-    pa.image(scaledGraphic, 0, 0);
+    pa.image(scaledGraphic, 0, 0, pa.width, pa.height);
 
 
 
@@ -809,7 +753,7 @@ class GraphicOutput {
   }
 }
 /*                                  
- OUTPUT - MS WERNER
+ LED_OUTPUT - MS WERNER
  Jedes Modul in Processing auf 16 x 16 angelegt. An 
  der Wand sind die Module jedoch vom Index und der
  Anzahl nicht gleich. Damit alles passt, hier die
@@ -845,59 +789,46 @@ class GraphicOutput {
  
  Somit muss das Array zum Auslesen f\u00fcr das ProcessingModul wie 
  folgt aussehen: [5,10,9,13,14,15,20,19,18,17,22,23,24,25],
- damit es am Display in Reihe ausgegeben werden kann. 
- 
- 
- //println( c ); // -16711936        
- //println( hex(c) ); // FF00FF00                         
+ damit es am Display in Reihe ausgegeben werden kann.                       
  */
+
 class LEDOutput {
   
-  
   PApplet pa;
-  LEDOutput(PApplet pa){
+  PGraphics pg;
+  //Konstruktor
+  LEDOutput(PApplet pa) {
     this.pa = pa;
   }
-  
+  //GetMethode
+  public void getGraphic(PGraphics newPg) {
+    pg = newPg;
+  }
+
   //VARIABLEN
   int WidthModule = 16;
   int[] Pixels;
-  PImage img;
-  PGraphics pg;
   int state;
   int count;
   int state1;
   int state2;
   boolean firstRaw;
   String val;
-  //Serial
   Serial myPort;  // Create object from Serial class
-  //byte[][] allModulesLED;
   byte[] dataLED;
-  byte[] dataLED2;
   float[] moduleEmpty;
-
-  //MODULE
   int[][] allModules;
   float[][] rgbModules;
 
+  //################################################################# SETUP #################################################################
   public void setupDisplay() {
-
     println(Serial.list()[3]);
-    //INIZIALISIEREN
-
-
-    //Serial
-
     //println(Serial.list());
     String portName = Serial.list()[3]; //3 entspricht ...usbmodem1635641
     myPort = new Serial(pa, portName, 115200);  //9600 ist langsam -> hochsetzen auf 115200
     myPort.setDTR(true);
-    //println(Serial.list());
     myPort.bufferUntil('\n'); 
 
-
-    //strokeWeight(12);  
     firstRaw = true;
     Pixels = new int[0];
     count = 0;
@@ -905,130 +836,89 @@ class LEDOutput {
     state2=5;
     allModules = new int[10][0];
     rgbModules = new float[10][0];
-    dataLED =  new byte[0];    //Hier f\u00fcr 245LEDs pro Modul -> muss sp\u00e4ter angepasst werden!!!
-    dataLED2 =  new byte[0]; 
+    dataLED =  new byte[0];  
     float[] moduleEmpty = new float[0]; 
+
     for (int i = 0; i < 144; i++) {
       moduleEmpty = append(moduleEmpty, PApplet.parseFloat(255));
     }
-    //println(moduleEmpty[99]);
-  }
-  
-  public void getGraphic(PGraphics newPg) {
-  pg = newPg;
   }
 
+  //################################################################# DRAW #################################################################
   public void drawDisplay() {
-    fillPixelArray();  //HIER FEHLER SUCHEN - DAUER ZU LANGE
+    fillPixelArray();
     moduleAufbau();
-    //drawAll();
 
+    //Bild in 10 Module aufteilen und 16x16 f\u00fcllen
     drawM1();
     drawM2();
     drawM3();
     drawM4();
     drawM5();
-
     drawM6();
-
     drawM7();
     drawM8();
     drawM9();
-
     drawM10();
 
-    //***************
-    //HIER MUSS (newrgb1 mit newrgb6) und (newrgb5 mit newrgb10) zusammengefuegt werden.
+    //Module f\u00fcr das Teensy vorbereiten
+    float[] newrgb1 = makeRightOrderSide(rgbModules[0], moduleOrder1);
+    float[] newrgb2 = makeRightOrder(rgbModules[1], moduleOrder2);
+    float[] newrgb3 = makeRightOrder(rgbModules[2], moduleOrder3);
+    float[] newrgb4 = makeRightOrder(rgbModules[3], moduleOrder4);
+    float[] newrgb5 = makeRightOrderSide(rgbModules[4], moduleOrder5);
+    float[] newrgb6 = makeRightOrder(rgbModules[5], moduleOrder6);
+    float[] newrgb7 = makeRightOrder(rgbModules[6], moduleOrder7);
+    float[] newrgb8 = makeRightOrder(rgbModules[7], moduleOrder8);
+    float[] newrgb9 = makeRightOrder(rgbModules[8], moduleOrder9);
+    float[] newrgb10 = makeRightOrder(rgbModules[9], moduleOrder10);
 
-    float[] newrgb1 = makeRightOrderSide(rgbModules[0], moduleOrder1); //hier richtiges Modul \u00fcbergeben!
-    float[] newrgb2 = makeRightOrder(rgbModules[1], moduleOrder2); //hier richtiges Modul \u00fcbergeben!
-    float[] newrgb3 = makeRightOrder(rgbModules[2], moduleOrder3); //hier richtiges Modul \u00fcbergeben!
-    float[] newrgb4 = makeRightOrder(rgbModules[3], moduleOrder4); //hier richtiges Modul \u00fcbergeben!
-    float[] newrgb5 = makeRightOrderSide(rgbModules[4], moduleOrder5); //hier richtiges Modul \u00fcbergeben!
-    float[] newrgb6 = makeRightOrder(rgbModules[5], moduleOrder6); //hier richtiges Modul \u00fcbergeben!
-    float[] newrgb7 = makeRightOrder(rgbModules[6], moduleOrder7); //hier richtiges Modul \u00fcbergeben!
-    float[] newrgb8 = makeRightOrder(rgbModules[7], moduleOrder8); //hier richtiges Modul \u00fcbergeben!
-    float[] newrgb9 = makeRightOrder(rgbModules[8], moduleOrder9); //hier richtiges Modul \u00fcbergeben!
-    float[] newrgb10 = makeRightOrder(rgbModules[9], moduleOrder10); //hier richtiges Modul \u00fcbergeben!
-
-    //println("10: "+newrgb5.length);
-
-    //float[] newrgb5u10 = ?
-    //println(newrgb);
-
-
-    makeDataLED(newrgb3); //passt  
+    //F\u00fcr Serial ein byteString erstellen
+    makeDataLED(newrgb3); //1  
+    fillEmpty();
+    
+    makeDataLED(newrgb2); //2 
     fillEmpty();
 
-    makeDataLED(newrgb1); //passt
-    //fillEmpty(); 18;
-    for (int i = 0; i < 18; i++) {
-
-      dataLED = append(dataLED, PApplet.parseByte(0));
-    }
+    makeDataLED(newrgb1); //3
     makeDataLED(newrgb6);
-    //makeDataLED(newrgb3); //
 
-
-    makeDataLED(newrgb2); //passt 
+    makeDataLED(newrgb4); //4
     fillEmpty();
 
-    makeDataLED(newrgb4); //passt
-    fillEmpty();
-
-    makeDataLED(newrgb8); //passt
+    makeDataLED(newrgb8); //5
     fillEmpty();
 
 
-    makeDataLED(newrgb7); //passt 
+    makeDataLED(newrgb7); //6
     fillEmpty();
 
     makeDataLED(newrgb5);
-    makeDataLED(newrgb10); //passt -> 5 + 10
-
-
-    makeDataLED(newrgb9); //passt
-    fillEmpty(); //muss 10 sein
-
-    //println(dataLED.length);
-
-
-    //println(newrgb7.length); //-> 735 -> 3*245 -> muss noch auf 300 angepasst werden. -> 900
-    // Auch Arduino !
-    //println(dataLED.length);
-    //println(dataLED[5877]);
-
-    for (int i = 0; i < 5880; i++) {
-      dataLED2 = append(dataLED, PApplet.parseByte(255));
+    makeDataLED(newrgb10); //7
+        for (int i = 0; i < 18; i++) {    //Ausgleich: (74-68)*3 = 18
+      dataLED = append(dataLED, PApplet.parseByte(0));
     }
-    //println("dataLED2: "+dataLED[50]);
-    //***************
 
-    //myPort.write(dataLED);
+
+    makeDataLED(newrgb9); //8
+    fillEmpty(); 
+
+    //An Teensy versenden
     myPort.write(dataLED);
+    
+    //Reset
     clearAll();
-    //delay(10);
   }
 
+  //################################################################# FUNKTIONEN #################################################################
+  //Zum Modulausgleich
   public void fillEmpty() {
     for (int i = 0; i<222; i++) {
       dataLED = append(dataLED, PApplet.parseByte(0));
     }
   }
 
-  /*#########################################*/
-  public void serialEvent( Serial myPort) {
-    val = myPort.readStringUntil('\n');
-    //make sure our data isn't empty before continuing
-    if (val != null) {
-      //trim whitespace and formatting characters (like carriage return)
-      val = trim(val);
-      //println(val);
-    }
-  }
-  /*#########################################*/
-
-
+  //Erstellt aus dem Frame ein Farbarray
   public void fillPixelArray() {
     pg.loadPixels();
     for (int i = 0; i < pg.height; i += 1) {
@@ -1041,23 +931,12 @@ class LEDOutput {
   //Zeichnet und gibt dem makeRGBModule() die rgb-Werte
   public void drawPixels(int index1, int posX, int posY) {
     int index2 = 0;
-
-    //println("0: "+allModules[0]);
     for (int y = 0; y < WidthModule; y++) { 
       for (int x = 0; x < WidthModule; x++) { 
         float red = (allModules[index1][index2]) >> 16 & 0xFF;
         float green = (allModules[index1][index2]) >> 8 & 0xFF;
         float blue =  (allModules[index1][index2]) & 0xFF;
-        //println("red: "+bed);
-        //println("green: "+breen);
-        //println("blue: "+bbue);
-        //println(byte(-1));
-        //float all = byte(colorWiring(allModules[index1][index2]));
-        //println("all: "+ all);
         makeRGBModules(index1, red, green, blue);
-        //stroke(red, green, blue);
-        //point(x*16+posX, y*16+posY);
-
         index2++;
       }
     }
@@ -1076,18 +955,6 @@ class LEDOutput {
       dataLED = append(dataLED, PApplet.parseByte(rgbArray[i]));
       //println(dataLED[i]);
     }
-  }
-
-  //ganz wichtig, zum Schluss alles leeren.
-  public void clearAll() {
-    Pixels = new int[0];
-    allModules = new int[10][0];
-    rgbModules = new float[10][0];
-    dataLED =  new byte[0];
-    dataLED2 =  new byte[0];
-    count = 0;
-    state1=0;
-    state2=5;
   }
 
   //Funktionen zum Zeichnen der Module
@@ -1128,21 +995,6 @@ class LEDOutput {
 
   public void drawM10() {
     drawPixels(9, 1029, 365);
-  }
-
-  //Zum Zeichen aller Module
-  public void drawAll() {
-    int index = 0;
-    for (int i = 20; i < height; i += 22) {
-      for (int j = 8; j < width+8; j += 16) { 
-        float red = (Pixels[index]) >> 16 & 0xFF;
-        float green = (Pixels[index]) >> 8 & 0xFF;
-        float blue =  (Pixels[index]) & 0xFF;    //shiften geht schneller
-        //stroke(red, green, blue);
-        //point(j, i);
-        index++;
-      }
-    }
   }
 
   //Zum F\u00fcllen der Module
@@ -1193,7 +1045,7 @@ class LEDOutput {
     }
   }
 
-  //Wichtige Funktion zum Aufteilen der Module -> State: SwitchCase
+  //Wichtige Funktion zum Aufteilen der Module
   public void updateState(int index) {
 
     if (index < 1280) { //1280 = 16 * 80 -> die ersten 16 Reihen fuer Module 1-5
@@ -1224,32 +1076,74 @@ class LEDOutput {
     }
   }
 
-  //LEERARRAY 16*3 -> 48
-  /*for(int i = 0; i < 144; i++){
-   float[] moduleEmpty = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-   }
-   */
+  //Erstellt die Reihenfolge f\u00fcr die Module.
+  public float[] makeRightOrder(float[] rgb, int[] order) {
+    int count = 1;
+    float[] newrgb = new float[735];      //245*3=735 304*3=912
+    for (int i = 0; i<order.length; i++) {
+      if (order[i] != -1) {
+        newrgb[(count*3)-3] = rgb[(order[i]*3)-3];
+        newrgb[(count*3)-2] = rgb[(order[i]*3)-2];
+        newrgb[(count*3)-1] = rgb[(order[i]*3)-1];
+        count += 1;
+      }
+    }
+    return newrgb;
+  }
 
-  //Modul1 mit 68 Pixel
+  public float[] makeRightOrderSide(float[] rgb, int[] order) {
+    float[] newrgb = new float[0]; 
+    for (int i = 0; i<order.length; i++) {
+      if (order[i] != -1) {
+        newrgb = append(newrgb, rgb[(order[i]*3)-3]);
+        newrgb = append(newrgb, rgb[(order[i]*3)-2]);
+        newrgb = append(newrgb, rgb[(order[i]*3)-1]);
+      }
+    }
+    return newrgb;
+  }
+
+  //Reset f\u00fcr den n\u00e4chsten Frame
+  public void clearAll() {
+    Pixels = new int[0];
+    allModules = new int[10][0];
+    rgbModules = new float[10][0];
+    dataLED =  new byte[0];
+    count = 0;
+    state1=0;
+    state2=5;
+  }
+
+  //########################################################### SERIALE KOMMUNIKATION #######################################################
+  public void serialEvent( Serial myPort) {
+    val = myPort.readStringUntil('\n');
+    //make sure our data isn't empty before continuing
+    if (val != null) {
+      //trim whitespace and formatting characters (like carriage return)
+      val = trim(val);
+      //println(val);
+    }
+  }
+
+  //################################################################# DATA #################################################################
+  //Modul1 mit 74 Pixel
   int[] moduleOrder1 = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 79, 80, 
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 82, 81, 
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 110, 111, 112, 
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 114, 113, 
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 111, 112, 
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 116, 115, 114, 113, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 140, 141, 142, 143, 144, 
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 149, 148, 147, 146, 145, 
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, 151, 150, 149, 148, 147, 146, 145, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 171, 172, 173, 174, 175, 176, 
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 182, 181, 180, 179, 178, 177, 
+    -1, -1, -1, -1, -1, -1, -1, -1, 184, 183, 182, 181, 180, 179, 178, 177, 
     -1, -1, -1, -1, -1, -1, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 
-    -1, -1, -1, -1, -1, -1, -1, -1, 216, 215, 214, 213, 212, 211, 210, 209, 
-    -1, -1, -1, -1, -1, -1, -1, 232, 233, 234, 235, 236, 237, 238, 239, 240, 
-    -1, -1, -1, -1, -1, -1, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241 
+    -1, -1, -1, -1, -1, -1, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 
+    -1, -1, -1, -1, -1, -1, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 
+    -1, -1, -1, -1, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241 
   };
 
   //Modul2 fehlt mit 204 Pixel
@@ -1262,7 +1156,7 @@ class LEDOutput {
     -1, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85, 84, 83, 82, 81, 
     -1, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 
     -1, 127, 126, 125, 124, 123, 122, 121, 120, 119, 118, 117, 116, 115, 114, 113, 
-    -1, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 
+    129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 
     160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, 145, 
     161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 
     192, 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 
@@ -1297,13 +1191,13 @@ class LEDOutput {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
     33, 34, 35, 36, 37, 38, 39, 40, -1, -1, -1, -1, -1, -1, -1, -1, 
-    64, 63, 62, 61, 60, 59, 58, 57, -1, -1, -1, -1, -1, -1, -1, -1, 
+    64, 63, 62, 61, 60, 59, 58, 57, 56, -1, -1, -1, -1, -1, -1, -1, 
     65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 
     96, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85, 84, 83, 82, 81, 
     97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, -1, 
     128, 127, 126, 125, 124, 123, 122, 121, 120, 119, 118, 117, 116, 115, 114, -1, 
-    129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 
-    160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, -1, 
+    129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, -1, 
+    160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, 145, 
     161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 
     192, 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 
     193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 
@@ -1312,44 +1206,24 @@ class LEDOutput {
     256, 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241 
   };
 
-  //Modul5 mit 74 Pixel
+  //Modul5 mit 68 Pixel
   int[] moduleOrder5 = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    64, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    65, 66, 67, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    96, 95, 94, 93, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    97, 98, 99, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    128, 127, 126, 125, 124, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    129, 130, 131, 132, 133, 134, 135, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    160, 159, 158, 157, 156, 155, 154, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    161, 162, 163, 164, 165, 166, 167, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    192, 191, 190, 189, 188, 187, 186, 185, 184, -1, -1, -1, -1, -1, -1, -1, 
-    193, 194, 195, 196, 197, 198, 199, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    224, 223, 222, 221, 220, 219, 218, 217, -1, -1, -1, -1, -1, -1, -1, -1, 
-    225, 226, 227, 228, 229, 230, 231, 232, 233, 234, -1, -1, -1, -1, -1, -1, 
-    256, 255, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
-  };
-
-  //Modul5 mit 74 Pixel
-  int[] moduleOrder55 = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    64, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    65, 66, 67, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    96, 95, 94, 93, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    97, 98, 99, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    128, 127, 126, 125, 124, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    129, 130, 131, 132, 133, 134, 135, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    160, 159, 158, 157, 156, 155, 154, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    161, 162, 163, 164, 165, 166, 167, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    192, 191, 190, 189, 188, 187, 186, 185, 184, -1, -1, -1, -1, -1, -1, -1, 
-    193, 194, 195, 196, 197, 198, 199, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
-    224, 223, 222, 221, 220, 219, 218, 217, -1, -1, -1, -1, -1, -1, -1, -1, 
-    225, 226, 227, 228, 229, 230, 231, 232, 233, 234, -1, -1, -1, -1, -1, -1, 
-    256, 255, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
+    97, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+    128, 127, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+    129, 130, 131, 132, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+    160, 159, 158, 157, 156, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+    161, 162, 163, 164, 165, 166, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+    192, 191, 190, 189, 188, 187, 186, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
+    193, 194, 195, 196, 197, 198, 199, 200, -1, -1, -1, -1, -1, -1, -1, -1, 
+    224, 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, -1, -1, -1, -1, -1, 
+    225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, -1, -1, -1, -1, 
+    256, 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, -1, -1, -1, -1
   };
 
   //Modul6 mit 222 Pixel
@@ -1385,7 +1259,7 @@ class LEDOutput {
     129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 
     160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, -1, 
     161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, -1, 
-    192, 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, -1, 
+    192, 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 179, 
     193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, -1, 
     224, 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, -1, 
     225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, -1, 
@@ -1405,7 +1279,7 @@ class LEDOutput {
     129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 
     160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, -1, 
     161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, -1, 
-    192, 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, -1, 
+    192, 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 
     193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, -1, 
     224, 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, -1, 
     225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, -1, 
@@ -1426,7 +1300,7 @@ class LEDOutput {
     160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, -1, 
     161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, -1, 
     192, 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, -1, 
-    193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, -1, 
+    193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 205, 
     224, 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, -1, 
     225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, -1, 
     256, 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241 
@@ -1452,40 +1326,8 @@ class LEDOutput {
     256, 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241 
   };
 
-  //float[] makeLeftSideOrder(float[] rgb, int[] order) {}
-  //float[] makeRightSideOrder(float[] rgb, int[] order) {}
-  //Funktion f\u00fcr das kleine Modul -> Spiegeln
-
-  //Erstellt die Reihenfolge f\u00fcr die Module.
-  public float[] makeRightOrder(float[] rgb, int[] order) {
-    int count = 1;
-    float[] newrgb = new float[735];      //245*3=735 304*3=912
-    //float[] newrgb = new float[900];    //max=300 -> 3*300=900
-    for (int i = 0; i<order.length; i++) {
-      if (order[i] != -1) {
-        newrgb[(count*3)-3] = rgb[(order[i]*3)-3];
-        newrgb[(count*3)-2] = rgb[(order[i]*3)-2];
-        newrgb[(count*3)-1] = rgb[(order[i]*3)-1];
-        count += 1;
-      }
-    }
-    return newrgb;
-  }
-
-  public float[] makeRightOrderSide(float[] rgb, int[] order) {
-    float[] newrgb = new float[0]; 
-    for (int i = 0; i<order.length; i++) {
-      if (order[i] != -1) {
-        newrgb = append(newrgb, rgb[(order[i]*3)-3]);
-        newrgb = append(newrgb, rgb[(order[i]*3)-2]);
-        newrgb = append(newrgb, rgb[(order[i]*3)-1]);
-      }
-    }
-    return newrgb;
-  }
 
   /*ZUM MERKEN
-   
    int colorWiring(int c) {
    //   return c;  // RGB
    return ((c & 0xFF0000) >> 8) | ((c & 0x00FF00) << 8) | (c & 0x0000FF); // GRB - most common wiring
@@ -1507,32 +1349,11 @@ class LEDOutput {
    }
    }
    */
-
-  /*BoilerModule mit 256 Pixel
-   int[] boiler = {
-   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 
-   32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 
-   33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 
-   64, 63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 
-   65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 
-   96, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85, 84, 83, 82, 81, 
-   97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 
-   128, 127, 126, 125, 124, 123, 122, 121, 120, 119, 118, 117, 116, 115, 114, 113, 
-   129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 
-   160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, 145, 
-   161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 
-   192, 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 
-   193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 
-   224, 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 
-   225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 
-   256, 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241 
-   };
-   */
 }
-
 class MidiController {
   PApplet pa;
   MidiBus myBus;
+  boolean fast, middle, slow, women, wave, custom01, custom02, reset;
 
   MidiController(PApplet pa) {
     this.pa = pa;
@@ -1543,107 +1364,152 @@ class MidiController {
     List<String> midiList = Arrays.asList(midiArray);
     if (midiList.contains("LPD8")) {
       myBus = new MidiBus(pa, "LPD8", 0);
-      GUI = false;
-    } else
-    {
-      GUI = true;
     }
   }
 
   public void updateKnob(int number, int value) {
     switch(number) {
     case 1: 
-      param01=value;
-      println("updateKnob "+value);
+      controller.gui.hueSlider.displayValue= (int) map(value, 0, 127, controller.gui.hueSlider.sliderSize/2, controller.gui.hueSlider.size.y-controller.gui.hueSlider.sliderSize/2-1);
       break;
     case 2: 
-      param02=value;
+      controller.gui.saturationSlider.displayValue= (int) map(value, 0, 127, controller.gui.saturationSlider.sliderSize/2, controller.gui.saturationSlider.size.y-controller.gui.saturationSlider.sliderSize/2-1);
       break;
     case 3: 
-      param03=value;
+      controller.gui.videoAlphaSlider.displayValue= (int) map(value, 0, 127, controller.gui.videoAlphaSlider.sliderSize/2, controller.gui.videoAlphaSlider.size.y-controller.gui.videoAlphaSlider.sliderSize/2-1);
       break;
     case 4: 
-      param04=value;
+      //param04=value;
       break;
     case 5: 
-      param05=value;
+      controller.gui.generativAlphaSlider.displayValue= (int) map(value, 0, 127, controller.gui.generativAlphaSlider.sliderSize/2, controller.gui.generativAlphaSlider.size.y-controller.gui.generativAlphaSlider.sliderSize/2-1);
       break;
     case 6: 
-      param06=value;
+      controller.gui.pitchSlider.displayValue= (int) map(value, 0, 127, controller.gui.pitchSlider.sliderSize/2, controller.gui.pitchSlider.size.y-controller.gui.pitchSlider.sliderSize/2-1);
       break;
     case 7: 
-      param07=value;
+      //param07=value;
       break;
     case 8: 
-      param08=value;
+      //param08=value;
       break;
     }
   }
+  
+  public void startVideosOnClick() {
+    
+    
+    
+    
+  }
+  
   public void updateButton(int pitch, boolean on) {
     if (on) {
-      println("abc");
       switch(pitch) {
       case 36: 
-        //button01 = true;
-        button05(0);
+        women = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.women, true);
+        println("women");
+        
         break;
       case 37: 
-        button06(0);
-        //button02 = true;
+        wave = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.wave, true);
+        println("wave");
+
         break;
       case 38: 
-        button07(0);
-        //button03 = true;
+        custom01 = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.custom01, true);
+        println("custom01");
+
         break;
       case 39: 
-        button08(0);
-        //button04 = true;
+        custom02 = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.custom02, true);
+        println("custom02");
+
         break;
       case 40: 
-        button01(0);
-        //button05 = true;
+        fast = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.fast, true);
+        println("fast");
+
         break;
       case 41: 
-        button02(0);
-        //button06 = true;
+        middle = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.middle, true);
+        println("middle");
+
         break;
       case 42: 
-        button03(0);
-        //button07 = true;
+        slow = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.slow, true);
+        println("slow");
+
         break;
       case 43: 
-        button04(0);
-        //button08 = true;
+        reset = true;
+        controller.gui.midiInput = true;
+        //controller.gui.buttonUpdate(controller.gui.reset, true);
+        println("reset");
+
         break;
       }
-    } else {
-      /*switch(pitch) {
-       case 36: 
-       button01 = false;
-       break;
-       case 37: 
-       button02 = false;
-       break;
-       case 38: 
-       button03 = false;
-       break;
-       case 39: 
-       button04 = false;
-       break;
-       case 40: 
-       button05 = false;
-       break;
-       case 41: 
-       button06 = false;
-       break;
-       case 42: 
-       button07 = false;
-       break;
-       case 43: 
-       button08 = false;
-       break;
-       }*/
     }
+  }
+}
+class Slider {
+
+  PVector pos, size;
+  int displayValue, sliderSize;
+  float minValue, maxValue, value;
+  String name;
+
+  Slider(String name, PVector pos, PVector size, int defaultValue, float minValue, float maxValue) {
+    this.pos = pos;
+    this.size = size;
+    this.sliderSize = 10;
+    this.displayValue = defaultValue;
+    this.minValue = minValue;
+    this.maxValue = maxValue;
+    this.name = name;
+  }
+
+  public void moveSlider() {
+    if (mousePressed) {
+      if (mouseX > pos.x && mouseX < (pos.x + size.x) && mouseY > pos.y+sliderSize/2 && mouseY <  pos.y+size.y-sliderSize/2) {
+        if ( displayValue < size.y-sliderSize/2 && displayValue > sliderSize/2) {
+          displayValue = (int)  mouseY - (int)  pos.y;
+        }
+      }
+    }
+  }
+
+
+  public void update() {
+    moveSlider();
+    strokeWeight(1);
+    stroke(255, 100);
+
+    textAlign(CENTER);
+    fill(0, 180);
+    value = (int) map(displayValue, sliderSize/2, size.y-sliderSize/2, minValue, maxValue+1);
+    text(name + ": " + value, pos.x+size.x/2, pos.y - 10);
+
+    noFill();
+    rect(pos.x, pos.y, size.x, size.y);
+
+    fill(255, 100);
+    rect(pos.x, pos.y+displayValue-sliderSize/2, size.x, sliderSize);
+    noFill();
   }
 }
 class SoundAnalysis {
@@ -1681,7 +1547,7 @@ class SoundAnalysis {
 
   public void setup() {
 
-    float scaleAvg = 0.8f;
+    float scaleAvg = controller.gui.pitchSlider.value;
 
     pastAverages = new float[avgSeconds*setFrameRate];
 
@@ -1691,10 +1557,10 @@ class SoundAnalysis {
     fftLog.logAverages(100, 10);
 
     avgFrequencys = new AvgFrequency[fftLog.avgSize()];
-    float avgFrequencyXDisplayLength = pa.width/2/fftLog.avgSize();
+    float avgFrequencyXDisplayLength = pa.width/2/1.2f/fftLog.avgSize();
     for (int i = 0; i < avgFrequencys.length; i++) {
 
-      avgFrequencys[i] = new AvgFrequency(pa.width/2-avgFrequencys.length/2*avgFrequencyXDisplayLength+i*avgFrequencyXDisplayLength, fftLog.getAverageCenterFrequency(i), scaleAvg, avgFrequencyXDisplayLength);
+      avgFrequencys[i] = new AvgFrequency(pa.width/2-avgFrequencys.length/2*avgFrequencyXDisplayLength+i*avgFrequencyXDisplayLength-220, fftLog.getAverageCenterFrequency(i), scaleAvg, avgFrequencyXDisplayLength);
     }
 
     pastAverages = new float[avgSeconds*setFrameRate];
@@ -1709,6 +1575,7 @@ class SoundAnalysis {
     //song.play();
     //iterate thorugh all the avgFrequencys
     for (int i = 0; i < avgFrequencys.length; i++) {
+      avgFrequencys[i].scaleAvg = map(controller.gui.pitchSlider.value, controller.gui.pitchSlider.minValue, controller.gui.pitchSlider.maxValue, 0, 4);
       //reset the peaked boolean to detect beats peaking
       avgFrequencys[i].peaked = false;
 
@@ -1787,10 +1654,10 @@ class SoundParticle {
     this.pos = pos;
     this.energy = 0;
     vel = new PVector(0, 0);
-    this.neighbour1Pos = new PVector(0,0);
-    this.neighbour2Pos = new PVector(width,height);
-    this.newNeighbour1Pos = new PVector(0,0);
-    this.newNeighbour2Pos = new PVector(width,height);
+    this.neighbour1Pos = new PVector(0, 0);
+    this.neighbour2Pos = new PVector(width, height);
+    this.newNeighbour1Pos = new PVector(0, 0);
+    this.newNeighbour2Pos = new PVector(width, height);
     this.partnerFrequency = partnerFrequency;
     created = true;
   }
@@ -1828,7 +1695,7 @@ class VideoInput {
   int videoNumber1, videoNumber2, videoPlays;
 
 
-  String currentFolder;
+  //String currentFolder;
 
 
   VideoInput(PApplet pa) {
@@ -1855,6 +1722,8 @@ class VideoInput {
 
 
     displayedVideo1 = new Video(null, 0);
+    //ArrayList<Video> m = videos[0];
+    //displayedVideo1 = m.get(0);
     displayedVideo2 = new Video(null, 0);
   }
 
@@ -1885,7 +1754,7 @@ class VideoInput {
       displayedVideo1.play = true;
       displayedVideo1.end = false;
       videoPlays = 0;
-      displayedVideo1.video.noLoop();
+      //displayedVideo1.video.noLoop();
     } else if ( displayedVideo1.play == true && displayedVideo2.play == false) {
       currentVideos = n;
       videoNumber2 = i;
@@ -1894,7 +1763,7 @@ class VideoInput {
       displayedVideo2.play = true;
       displayedVideo2.end = false;
       videoPlays = 0;
-      displayedVideo2.video.noLoop();
+      //displayedVideo2.video.noLoop();
       displayedVideo1.end = true;
     } else if (displayedVideo2.play == true && displayedVideo1.play == false) {
       currentVideos = n;
@@ -1903,24 +1772,54 @@ class VideoInput {
       displayedVideo1.video.play();
       displayedVideo1.play = true;
       displayedVideo1.end = false;
-      displayedVideo1.video.noLoop();
+      //displayedVideo1.video.noLoop();
       videoPlays = 0;
       displayedVideo2.end = true;
     }
   }
 
 
-  public void loadVideo(int n, int i, ArrayList[] b, Video v) {
+  /* void loadVideo(int n, int i, ArrayList[] b, Video v) {
+   ArrayList<Video> m = b[n];
+   currentVideos = n;
+   videoNumber2 = i;
+   videoNumber1 = i;
+   
+   
+   displayedVideo1 = m.get(i);
+   displayedVideo1.video.jump(0);
+   displayedVideo1.video.play();
+   displayedVideo1.play = true;
+   displayedVideo1.end = false;
+   
+   
+   //v.video.noLoop();
+   videoPlays = 0;
+   }*/
+
+  public void loadVideo(int n, int i, ArrayList[] b, Video v2) {
     ArrayList<Video> m = b[n];
     currentVideos = n;
     videoNumber2 = i;
-    v = m.get(i);
+    videoNumber1 = i;
+    Video v = m.get(i);
+    if (v2 == displayedVideo1) {
+      displayedVideo1 = v;
+      displayedVideo2.fade = 255;
+      displayedVideo2.end = true;
+      displayedVideo2.play = false;
+    } else {
+      displayedVideo2 = v;
+      displayedVideo1.fade = 255;
+      displayedVideo1.end = true;
+      displayedVideo1.play = false;
+    }
     v.video.jump(0);
     v.video.play();
     v.play = true;
     v.end = false;
-    videoPlays = 0;
     v.video.noLoop();
+    videoPlays = 0;
   }
 
   public void update() {
@@ -1931,6 +1830,9 @@ class VideoInput {
   public void updateVideo(Video v, int vN) {
     try {
       //println(vN + "    " + v.video.time() + "    //    " + v.loopTimes + "   " + v.video.duration());
+      //v.video.play();
+      //println("available " + v.video.available());
+
       if (v.video.available() == true && v.play == true) {
         v.video.read();
       }
@@ -1946,20 +1848,22 @@ class VideoInput {
         v.fade -= 255/pa.frameRate;
       }
       //loop video
-      if (v.video.time() >= v.video.duration()-0.12f && v.play == true && videoPlays < v.loopTimes) {
+      if (v.video.time() >= v.video.duration()-0.12f && v.play == true && videoPlays < v.loopTimes-1 && v.video.duration() > 0) {
         v.video.jump(0);
         videoPlays += 1;
       }
       //next video in folder
-      else if (v.video.time() >= v.video.duration()-0.12f && videoPlays >= v.loopTimes && vN < videos[currentVideos].size()-1 && v.play == true) {
+      else if (v.video.time() >= v.video.duration()-0.12f && videoPlays >= v.loopTimes-1 && vN < videos[currentVideos].size()-1 && v.play == true && v.video.duration() > 0) {
         videoPlays = 0;
         vN += 1;
+        v.video.stop();
         loadVideo(currentVideos, vN, videos, v);
       }
-      //random video in same folder
-      else if (v.video.time() >= v.video.duration()-0.12f && videoPlays >= v.loopTimes && vN >= videos[currentVideos].size()-1 && v.play == true) {
+      //first video in folder
+      else if (v.video.time() >= v.video.duration()-0.12f && videoPlays >= v.loopTimes-1 && vN >= videos[currentVideos].size()-1 && v.play == true && v.video.duration() > 0) {
         videoPlays = 0;
-        vN = (int) random(-1, videos[currentVideos].size()- 1);
+        vN = 0;
+        v.video.stop();
         loadVideo(currentVideos, vN, videos, v);
       }
     }
