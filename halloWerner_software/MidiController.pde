@@ -135,13 +135,13 @@ class MidiController {
   void updateKnob(int number, int value) {
     switch(number) {
     case 1: 
-      controller.gui.hueSlider.displayValue= (int) map(value, 0, 127, controller.gui.hueSlider.sliderSize/2, controller.gui.hueSlider.size.y-controller.gui.hueSlider.sliderSize/2-1);
+      controller.gui.videoAlphaSlider.displayValue= (int) map(value, 0, 127, controller.gui.videoAlphaSlider.sliderSize/2, controller.gui.videoAlphaSlider.size.y-controller.gui.videoAlphaSlider.sliderSize/2-1);
       break;
     case 2: 
       controller.gui.saturationSlider.displayValue= (int) map(value, 0, 127, controller.gui.saturationSlider.sliderSize/2, controller.gui.saturationSlider.size.y-controller.gui.saturationSlider.sliderSize/2-1);
       break;
     case 3: 
-      controller.gui.videoAlphaSlider.displayValue= (int) map(value, 0, 127, controller.gui.videoAlphaSlider.sliderSize/2, controller.gui.videoAlphaSlider.size.y-controller.gui.videoAlphaSlider.sliderSize/2-1);
+      controller.gui.hueSlider.displayValue= (int) map(value, 0, 127, controller.gui.hueSlider.sliderSize/2, controller.gui.hueSlider.size.y-controller.gui.hueSlider.sliderSize/2-1);
       break;
     case 4: 
       //param04=value;

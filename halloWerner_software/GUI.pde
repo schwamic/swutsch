@@ -184,9 +184,9 @@ class GUI {
 
     //Slider
     int SliderXPos = 500;
-    hueSlider = new Slider("Hue", new PVector(50+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    hueSlider = new Slider("Hue", new PVector(350+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
     saturationSlider = new Slider("Saturation", new PVector(200+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
-    videoAlphaSlider = new Slider("Video Alpha", new PVector(350+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    videoAlphaSlider = new Slider("Video Alpha", new PVector(50+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
     generativAlphaSlider = new Slider("Generativ Alpha", new PVector(50+SliderXPos, 250), new PVector(50, 150), 50, 0, 255);
     pitchSlider = new Slider("Pitch", new PVector(200+SliderXPos, 250), new PVector(50, 150), 50, 0, 100);
 
@@ -236,58 +236,60 @@ class GUI {
             fast();
             controller.midiController.fast = false;
             println("fast1");
+            buttons[0].active = true;
             }
 
           else if (name == "Mittlere Videos" && mousePressed || controller.midiController.middle == true) {
             middle();
             controller.midiController.middle = false;
             println("middle");
-            
+            buttons[1].active = true;
           }
 
           else if (name == "Langsame Videos" && mousePressed || controller.midiController.slow == true){
             slow();
             controller.midiController.slow = false;
             println("slow");
-            
+            buttons[2].active = true;
           }
 
           else if (name == "Stop Videos" && mousePressed || controller.midiController.reset == true) {
             reset();
             controller.midiController.reset = false;
             println("reset");
-            
+            buttons[3].active = true;
           }
 
           else if (name == "Wellen" && mousePressed || controller.midiController.wave == true) {
             wave();
             controller.midiController.wave =false;
             println("wave");
+            buttons[4].active = true;
           }
 
           else if (name == "Frauen" && mousePressed || controller.midiController.women == true){
             women();
             controller.midiController.women = false;
             println("women");
-            
+            buttons[5].active = true;
           }
 
           else if (name == "Eigene Videos 1" && mousePressed || controller.midiController.custom01 == true){
             custom01();
             controller.midiController.custom01 = false;
             println("custom01");
-            
+            buttons[6].active = true;
           }
 
           else if (name == "Eigene Videos 2" && mousePressed || controller.midiController.custom02 == true) {
             custom02();
             controller.midiController.custom02 = false;
             println("custom02");
-            
+            buttons[7].active = true;
           }
           midiInput = false;
 
-          b.value = -b.value;
+          //b.value = -b.value;
 
           b.active = true;
         }
