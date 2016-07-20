@@ -1,4 +1,3 @@
-
 class AvgFrequency {
 
   float currentValue, maxValue, avgValue, xPos, displayedAvgFrequency, scaleAvg, xDisplayLength;
