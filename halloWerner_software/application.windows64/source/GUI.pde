@@ -17,7 +17,7 @@ class GUI {
   Button wave;
   Button custom01;
   Button custom02;
-  
+
   boolean midiInput = false;
 
 
@@ -30,9 +30,9 @@ class GUI {
 
     //Slider
     int SliderXPos = 500;
-    hueSlider = new Slider("Hue", new PVector(50+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    hueSlider = new Slider("Hue", new PVector(350+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
     saturationSlider = new Slider("Saturation", new PVector(200+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
-    videoAlphaSlider = new Slider("Video Alpha", new PVector(350+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    videoAlphaSlider = new Slider("Video Alpha", new PVector(50+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
     generativAlphaSlider = new Slider("Generativ Alpha", new PVector(50+SliderXPos, 250), new PVector(50, 150), 50, 0, 255);
     pitchSlider = new Slider("Pitch", new PVector(200+SliderXPos, 250), new PVector(50, 150), 50, 0, 100);
 
@@ -78,64 +78,52 @@ class GUI {
       if ((mouseX > b.pos.x && mouseX < (b.pos.x+b.size.x) && mouseY > b.pos.y && mouseY < (b.pos.y + b.size.y)) || midiInput == true) {
         if (b.pressed == false) {
           resetButtons();
-            if ((name == "Schnelle Videos" && mousePressed) || controller.midiController.fast == true) {
+          if ((name == "Schnelle Videos" && mousePressed) || controller.midiController.fast == true) {
             fast();
             controller.midiController.fast = false;
             println("fast1");
-            }
-
-          else if (name == "Mittlere Videos" && mousePressed || controller.midiController.middle == true) {
+            buttons[0].active = true;
+          } else if (name == "Mittlere Videos" && mousePressed || controller.midiController.middle == true) {
             middle();
             controller.midiController.middle = false;
             println("middle");
-            
-          }
-
-          else if (name == "Langsame Videos" && mousePressed || controller.midiController.slow == true){
+            buttons[1].active = true;
+          } else if (name == "Langsame Videos" && mousePressed || controller.midiController.slow == true) {
             slow();
             controller.midiController.slow = false;
             println("slow");
-            
-          }
-
-          else if (name == "Stop Videos" && mousePressed || controller.midiController.reset == true) {
+            buttons[2].active = true;
+          } else if (name == "Stop Videos" && mousePressed || controller.midiController.reset == true) {
             reset();
             controller.midiController.reset = false;
             println("reset");
-            
-          }
-
-          else if (name == "Wellen" && mousePressed || controller.midiController.wave == true) {
+            buttons[3].active = true;
+          } else if (name == "Wellen" && mousePressed || controller.midiController.wave == true) {
             wave();
             controller.midiController.wave =false;
             println("wave");
-          }
-
-          else if (name == "Frauen" && mousePressed || controller.midiController.women == true){
+            buttons[5].active = true;
+          } else if (name == "Frauen" && mousePressed || controller.midiController.women == true) {
             women();
             controller.midiController.women = false;
             println("women");
-            
-          }
-
-          else if (name == "Eigene Videos 1" && mousePressed || controller.midiController.custom01 == true){
+            buttons[4].active = true;
+          } else if (name == "Eigene Videos 1" && mousePressed || controller.midiController.custom01 == true) {
             custom01();
             controller.midiController.custom01 = false;
             println("custom01");
-            
-          }
-
-          else if (name == "Eigene Videos 2" && mousePressed || controller.midiController.custom02 == true) {
+            buttons[6].active = true;
+          } else if (name == "Eigene Videos 2" && mousePressed || controller.midiController.custom02 == true) {
             custom02();
             controller.midiController.custom02 = false;
             println("custom02");
-            
+            buttons[7].active = true;
           }
           midiInput = false;
 
           b.value = -b.value;
 
-          b.active = true;
+          //b.active = true;
         }
         b.pressed = true;
       }

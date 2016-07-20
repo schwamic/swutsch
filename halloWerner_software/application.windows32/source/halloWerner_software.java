@@ -142,7 +142,6 @@ public void noteOn(Note note) {
   catch(NullPointerException e) {
   }
 }
-
 class AvgFrequency {
 
   float currentValue, maxValue, avgValue, xPos, displayedAvgFrequency, scaleAvg, xDisplayLength;
@@ -348,7 +347,7 @@ class GUI {
   Button wave;
   Button custom01;
   Button custom02;
-  
+
   boolean midiInput = false;
 
 
@@ -361,9 +360,9 @@ class GUI {
 
     //Slider
     int SliderXPos = 500;
-    hueSlider = new Slider("Hue", new PVector(50+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    hueSlider = new Slider("Hue", new PVector(350+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
     saturationSlider = new Slider("Saturation", new PVector(200+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
-    videoAlphaSlider = new Slider("Video Alpha", new PVector(350+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
+    videoAlphaSlider = new Slider("Video Alpha", new PVector(50+SliderXPos, 50), new PVector(50, 150), 50, 0, 255);
     generativAlphaSlider = new Slider("Generativ Alpha", new PVector(50+SliderXPos, 250), new PVector(50, 150), 50, 0, 255);
     pitchSlider = new Slider("Pitch", new PVector(200+SliderXPos, 250), new PVector(50, 150), 50, 0, 100);
 
@@ -409,64 +408,52 @@ class GUI {
       if ((mouseX > b.pos.x && mouseX < (b.pos.x+b.size.x) && mouseY > b.pos.y && mouseY < (b.pos.y + b.size.y)) || midiInput == true) {
         if (b.pressed == false) {
           resetButtons();
-            if ((name == "Schnelle Videos" && mousePressed) || controller.midiController.fast == true) {
+          if ((name == "Schnelle Videos" && mousePressed) || controller.midiController.fast == true) {
             fast();
             controller.midiController.fast = false;
             println("fast1");
-            }
-
-          else if (name == "Mittlere Videos" && mousePressed || controller.midiController.middle == true) {
+            buttons[0].active = true;
+          } else if (name == "Mittlere Videos" && mousePressed || controller.midiController.middle == true) {
             middle();
             controller.midiController.middle = false;
             println("middle");
-            
-          }
-
-          else if (name == "Langsame Videos" && mousePressed || controller.midiController.slow == true){
+            buttons[1].active = true;
+          } else if (name == "Langsame Videos" && mousePressed || controller.midiController.slow == true) {
             slow();
             controller.midiController.slow = false;
             println("slow");
-            
-          }
-
-          else if (name == "Stop Videos" && mousePressed || controller.midiController.reset == true) {
+            buttons[2].active = true;
+          } else if (name == "Stop Videos" && mousePressed || controller.midiController.reset == true) {
             reset();
             controller.midiController.reset = false;
             println("reset");
-            
-          }
-
-          else if (name == "Wellen" && mousePressed || controller.midiController.wave == true) {
+            buttons[3].active = true;
+          } else if (name == "Wellen" && mousePressed || controller.midiController.wave == true) {
             wave();
             controller.midiController.wave =false;
             println("wave");
-          }
-
-          else if (name == "Frauen" && mousePressed || controller.midiController.women == true){
+            buttons[5].active = true;
+          } else if (name == "Frauen" && mousePressed || controller.midiController.women == true) {
             women();
             controller.midiController.women = false;
             println("women");
-            
-          }
-
-          else if (name == "Eigene Videos 1" && mousePressed || controller.midiController.custom01 == true){
+            buttons[4].active = true;
+          } else if (name == "Eigene Videos 1" && mousePressed || controller.midiController.custom01 == true) {
             custom01();
             controller.midiController.custom01 = false;
             println("custom01");
-            
-          }
-
-          else if (name == "Eigene Videos 2" && mousePressed || controller.midiController.custom02 == true) {
+            buttons[6].active = true;
+          } else if (name == "Eigene Videos 2" && mousePressed || controller.midiController.custom02 == true) {
             custom02();
             controller.midiController.custom02 = false;
             println("custom02");
-            
+            buttons[7].active = true;
           }
           midiInput = false;
 
           b.value = -b.value;
 
-          b.active = true;
+          //b.active = true;
         }
         b.pressed = true;
       }
@@ -678,8 +665,8 @@ class GraphicOutput {
 
     //create output to LEDs
     //LED OUTPUT FUNCTIONS
-    ledOutput = new LEDOutput(pa);
-    ledOutput.setupDisplay();
+    //ledOutput = new LEDOutput(pa);
+    //ledOutput.setupDisplay();
   }
 
 
@@ -736,11 +723,11 @@ class GraphicOutput {
     
     //hier Einrichtbild
     //scaledGraphic.image(img,0,0);
-    //scaledGraphic.endDraw();
+    scaledGraphic.endDraw();
 
     //LED OUTPUT FUNCTIONS
-    ledOutput.getGraphic(scaledGraphic);
-    ledOutput.drawDisplay();
+   // ledOutput.getGraphic(scaledGraphic);
+   // ledOutput.drawDisplay();
 
 
     //displays scaled down graphic output for LEDs
@@ -1370,13 +1357,13 @@ class MidiController {
   public void updateKnob(int number, int value) {
     switch(number) {
     case 1: 
-      controller.gui.hueSlider.displayValue= (int) map(value, 0, 127, controller.gui.hueSlider.sliderSize/2, controller.gui.hueSlider.size.y-controller.gui.hueSlider.sliderSize/2-1);
+      controller.gui.videoAlphaSlider.displayValue= (int) map(value, 0, 127, controller.gui.videoAlphaSlider.sliderSize/2, controller.gui.videoAlphaSlider.size.y-controller.gui.videoAlphaSlider.sliderSize/2-1);
       break;
     case 2: 
       controller.gui.saturationSlider.displayValue= (int) map(value, 0, 127, controller.gui.saturationSlider.sliderSize/2, controller.gui.saturationSlider.size.y-controller.gui.saturationSlider.sliderSize/2-1);
       break;
     case 3: 
-      controller.gui.videoAlphaSlider.displayValue= (int) map(value, 0, 127, controller.gui.videoAlphaSlider.sliderSize/2, controller.gui.videoAlphaSlider.size.y-controller.gui.videoAlphaSlider.sliderSize/2-1);
+      controller.gui.hueSlider.displayValue= (int) map(value, 0, 127, controller.gui.hueSlider.sliderSize/2, controller.gui.hueSlider.size.y-controller.gui.hueSlider.sliderSize/2-1);
       break;
     case 4: 
       //param04=value;
@@ -1395,14 +1382,10 @@ class MidiController {
       break;
     }
   }
-  
+
   public void startVideosOnClick() {
-    
-    
-    
-    
   }
-  
+
   public void updateButton(int pitch, boolean on) {
     if (on) {
       switch(pitch) {
@@ -1411,7 +1394,7 @@ class MidiController {
         controller.gui.midiInput = true;
         //controller.gui.buttonUpdate(controller.gui.women, true);
         println("women");
-        
+
         break;
       case 37: 
         wave = true;

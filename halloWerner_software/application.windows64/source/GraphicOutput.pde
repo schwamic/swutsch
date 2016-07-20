@@ -22,8 +22,8 @@ class GraphicOutput {
 
     //create output to LEDs
     //LED OUTPUT FUNCTIONS
-    ledOutput = new LEDOutput(pa);
-    ledOutput.setupDisplay();
+    //ledOutput = new LEDOutput(pa);
+    //ledOutput.setupDisplay();
   }
 
 
@@ -80,11 +80,11 @@ class GraphicOutput {
     
     //hier Einrichtbild
     //scaledGraphic.image(img,0,0);
-    //scaledGraphic.endDraw();
+    scaledGraphic.endDraw();
 
     //LED OUTPUT FUNCTIONS
-    ledOutput.getGraphic(scaledGraphic);
-    ledOutput.drawDisplay();
+   // ledOutput.getGraphic(scaledGraphic);
+   // ledOutput.drawDisplay();
 
 
     //displays scaled down graphic output for LEDs
