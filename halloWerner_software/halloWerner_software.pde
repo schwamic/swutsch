@@ -63,15 +63,16 @@ void draw() {
 
 
 void fast() {
-  videoInput.loadVideoOnClick(2, (int) random(-1, videoInput.fast.size()), videoInput.videos);
+  //videoInput.loadVideoOnClick(2, (int) random(-1, videoInput.fast.size()), videoInput.videos); //random
+  videoInput.loadVideoOnClick(2, 0, videoInput.videos);  //linear
 }
 
 void middle() {
-  videoInput.loadVideoOnClick(1, (int) random(-1, videoInput.middle.size()), videoInput.videos);
+  videoInput.loadVideoOnClick(1, 0, videoInput.videos);
 }
 
 void slow() {
-  videoInput.loadVideoOnClick(0, (int) random(-1, videoInput.slow.size()), videoInput.videos);
+  videoInput.loadVideoOnClick(0, 0, videoInput.videos);
 }
 
 void reset() {
@@ -80,20 +81,20 @@ void reset() {
 }
 
 void wave() {
-  videoInput.loadVideoOnClick(3, (int) random(-1, videoInput.wave.size()), videoInput.videos);
+  videoInput.loadVideoOnClick(3, 0, videoInput.videos);
 }
 
 void women() {
-  videoInput.loadVideoOnClick(4, (int) random(-1, videoInput.women.size()), videoInput.videos);
+  videoInput.loadVideoOnClick(4, 0, videoInput.videos);
 }
 
 
 void custom01() {
-  videoInput.loadVideoOnClick(5, (int) random(-1, videoInput.custom01.size()), videoInput.videos);
+  videoInput.loadVideoOnClick(5, 0, videoInput.videos);
 }
 
 void custom02() {
-  videoInput.loadVideoOnClick(6, (int) random(-1, videoInput.custom02.size()), videoInput.videos);
+  videoInput.loadVideoOnClick(6, 0, videoInput.videos);
 }
 
 

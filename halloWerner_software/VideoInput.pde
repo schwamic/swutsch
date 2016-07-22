@@ -68,7 +68,6 @@ class VideoInput {
   void loadVideoOnClick(int n, int i, ArrayList[] b) {
 
     ArrayList<Video> m = b[n];
-
     if (displayedVideo1.play == false && displayedVideo2.play == false) {
       currentVideos = n;
       videoNumber1 = i;
@@ -78,7 +77,7 @@ class VideoInput {
       displayedVideo1.end = false;
       videoPlays = 0;
       //displayedVideo1.video.noLoop();
-    } else if ( displayedVideo1.play == true && displayedVideo2.play == false) {
+    } else if ( displayedVideo1.play == true && displayedVideo2.play == false && m.get(i) != displayedVideo1) {
       currentVideos = n;
       videoNumber2 = i;
       displayedVideo2 = m.get(i);
@@ -88,7 +87,7 @@ class VideoInput {
       videoPlays = 0;
       //displayedVideo2.video.noLoop();
       displayedVideo1.end = true;
-    } else if (displayedVideo2.play == true && displayedVideo1.play == false) {
+    } else if (displayedVideo2.play == true && displayedVideo1.play == false && m.get(i) != displayedVideo2) {
       currentVideos = n;
       videoNumber1 = i;
       displayedVideo1 = m.get(i);
