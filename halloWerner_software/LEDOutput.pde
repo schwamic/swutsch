@@ -68,10 +68,10 @@ class LEDOutput {
 
   //################################################################# SETUP #################################################################
   void setupDisplay() {
-    println(Serial.list()[3]);
+    //println(Serial.list()[3]);
     //println(Serial.list());
-    String portName = Serial.list()[3]; //3 entspricht ...usbmodem1635641
-    myPort = new Serial(pa, portName, 115200);  //9600 ist langsam -> hochsetzen auf 115200
+    //String portName = Serial.list()[3]; //3 entspricht ...usbmodem1635641
+    myPort = new Serial(pa, "COM4", 115200);  //9600 ist langsam -> hochsetzen auf 115200
     myPort.setDTR(true);
     myPort.bufferUntil('\n'); 
 
